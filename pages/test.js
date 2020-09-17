@@ -13,13 +13,39 @@ const test = {
   data: [],
 };
 
+// Function to convert the JSON array to an object with key-value pairs
+function arrayToJSONObject (arr){
+  //header
+  var data = arr.data;
+  var keys = data[0];
+
+  var formatted = [],
+  cols = keys,
+  l = cols.length;
+
+  // Create an object for each array and append column names (keys)
+  for (var i=0; i<data.length; i++) {
+          var d = data[i],
+                  o = {};
+          for (var j=0; j<l; j++)
+                  o[cols[j]] = d[j];
+          formatted.push(o);
+  }
+
+  // Convert JSON object to string for the component to parse
+  return JSON.stringify(formatted);
+};
+
+
 export default function Test() {
   const [result, setResult] = useState("");
   const [jsonInput, setJsonInput] = useState("");
   const [input, setInput] = useState("");
 
+
+
   const queryNames = (names) => {
-    const query = names.split("\n").map((v, i) => [v, i + 1]);
+    const query = names.split("\n").map((v, i) => [v, i ]);
     test.data = query;
     //test.data.push(query);
     setJsonInput(JSON.stringify(test));
@@ -30,14 +56,18 @@ export default function Test() {
       })
       .then(
         (res) => {
-          console.log(res);
-          setResult(JSON.stringify(res));
+          console.log(res)
+          setResult(arrayToJSONObject(res))
         },
         (error) => {
           console.log(error);
         }
       );
   };
+
+
+
+
   return (
     <div className="container">
       <Head>
