@@ -1,6 +1,10 @@
 import { useState } from "react";
+import { useTable } from "react-table";
 import Head from "next/head";
 import axios from "axios";
+import { Table } from "react-bootstrap";
+import React from 'react';
+import * as ReactBootStrap from 'react-bootstrap';
 
 const test = {
   opts: {
@@ -14,38 +18,38 @@ const test = {
 };
 
 // Function to convert the JSON array to an object with key-value pairs
-function arrayToJSONObject (arr){
-  //header
-  var data = arr.data;
-  var keys = data[0];
+// function arrayToJSONObject (arr){
+//   //header
+//   var data = arr.data;
+//   var keys = data[0];
 
-  var formatted = [],
-  cols = keys,
-  l = cols.length;
+//   var formatted = [],
+//   cols = keys,
+//   l = cols.length;
 
-  // Create an object for each array and append column names (keys)
-  for (var i=0; i<data.length; i++) {
-          var d = data[i],
-                  o = {};
-          for (var j=0; j<l; j++)
-                  o[cols[j]] = d[j];
-          formatted.push(o);
-  }
+//   // Create an object for each array and append column names (keys)
+//   for (var i=0; i<data.length; i++) {
+//           var d = data[i],
+//                   o = {};
+//           for (var j=0; j<l; j++)
+//                   o[cols[j]] = d[j];
+//           formatted.push(o);
+//   }
 
-  // Convert JSON object to string for the component to parse
-  return JSON.stringify(formatted);
-};
+//   // Convert JSON object to string for the component to parse
+//   return JSON.stringify(formatted);
+// };
 
 
-export default function Test() {
+function Test() {
   const [result, setResult] = useState("");
   const [jsonInput, setJsonInput] = useState("");
   const [input, setInput] = useState("");
-
+  const [x, setX] = useState([]);
 
 
   const queryNames = (names) => {
-    const query = names.split("\n").map((v, i) => [v, i ]);
+    const query = names.split("\n").map((v, i) => [i+1, v]);
     test.data = query;
     //test.data.push(query);
     setJsonInput(JSON.stringify(test));
@@ -56,16 +60,40 @@ export default function Test() {
       })
       .then(
         (res) => {
-          console.log(res)
-          setResult(arrayToJSONObject(res))
+          //console.log(res);
+          setResult(JSON.stringify(res.data))
+          setX(res.data);
         },
         (error) => {
           console.log(error);
         }
       );
-  };
+  }
 
+  const y = [
+    {
+      ID: 12,
+      Name_matched: 'erfwerew'
+    },
+    {
+      ID: 78,
+      Name_matched: 'rtherd34'
+    },
+  ]
 
+  // setX(y);
+
+  const renderTNRS = (name, index) => {
+    return(
+      <tr key={index}>
+        <td>{name.ID}</td>
+        <td>{name.Name_matched}</td>
+      </tr>
+
+    )
+  }
+
+  
 
 
   return (
@@ -85,6 +113,7 @@ export default function Test() {
           Click Me!
         </button>
         <div>JsonInput: {jsonInput}</div>
+        <br/>
         <div>Result: {result}</div>
       </main>
       <footer>
@@ -92,6 +121,25 @@ export default function Test() {
         <br />
         TNRS 2020
       </footer>
+
+
+      <ReactBootStrap.Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name_matched</th>
+          </tr>
+        </thead>
+        <tbody>
+          {x.map(renderTNRS)}
+        </tbody>
+      </ReactBootStrap.Table>
+
+
     </div>
+
   );
 }
+
+
+export default Test;
