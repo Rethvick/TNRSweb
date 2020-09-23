@@ -11,8 +11,9 @@ export function SearchBox({ onSearch }) {
         display="flex"
         flexDirection="column"
         justifyContent="center"
+        height={1}
       >
-        <Box>
+        <Box px={2}>
           <TextField
             rows={5}
             multiline
@@ -22,7 +23,7 @@ export function SearchBox({ onSearch }) {
             onChange={(e) => setInput(e.target.value)}
           />
         </Box>
-        <Box mt={2}>
+        <Box px={2}>
           <Button
             onClick={() => onSearch(input)}
             variant="contained"
