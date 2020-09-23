@@ -13,9 +13,9 @@ export function SearchBox({ onSearch }) {
         justifyContent="center"
         height={1}
       >
-        <Box px={2}>
+        <Box p={2}>
           <TextField
-            rows={5}
+            rows={10}
             multiline
             fullWidth
             variant="outlined"
@@ -23,7 +23,7 @@ export function SearchBox({ onSearch }) {
             onChange={(e) => setInput(e.target.value)}
           />
         </Box>
-        <Box px={2}>
+        <Box p={2} pt={0}>
           <Button
             onClick={() => onSearch(input)}
             variant="contained"

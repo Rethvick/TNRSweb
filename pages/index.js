@@ -3,7 +3,7 @@ import { useState } from "react";
 import Head from "next/head";
 import axios from "axios";
 
-import { SearchBox } from "../components/";
+import { SearchBox, OptionsBox, ResultTable } from "../components/";
 
 import {
   Paper,
@@ -13,21 +13,6 @@ import {
   Typography,
   Box,
   Container,
-  TextField,
-  Button,
-  InputLabel,
-  MenuItem,
-  Select,
-  FormControlLabel,
-  FormGroup,
-  FormLabel,
-  FormControl,
-  Checkbox,
-  Slider,
-  ToggleButtonGroup,
-  ToggleButton,
-  Switch,
-  Divider,
   Link,
 } from "@material-ui/core";
 
@@ -100,9 +85,9 @@ export default function Test() {
         <Box>
           <Menu />
         </Box>
-        <Box flexGrow={1} mt={2}>
+        <Box flexGrow={1} my={2}>
           <main>
-            <Container>
+            <Container maxWidth="lg">
               <Grid
                 spacing={2}
                 direction="row"
@@ -110,64 +95,18 @@ export default function Test() {
                 alignItems="stretch"
                 container
               >
-                <Grid xs={6} item>
-                  <SearchBox onSearch={queryNames}/>
+                <Grid lg={6} xs={12} item>
+                  <SearchBox onSearch={queryNames} />
                 </Grid>
-                <Grid xs={6} item>
-                  <Paper>
-                    <Box p={2}>
-                      <Divider />
-                      <FormGroup row>
-                        <InputLabel>Processing Mode</InputLabel>
-                        <Select fullWidth>
-                          <MenuItem value={0}>Perform name resulution</MenuItem>
-                          <MenuItem value={1}>Parse names only</MenuItem>
-                        </Select>
-                        <Divider />
-                        <FormControlLabel
-                          control={<Checkbox checked={true} />}
-                          label="Allow partial matching"
-                        />
-                      </FormGroup>
-                      <FormGroup row>
-                        <Typography id="fuzzy-slider" gutterBottom>
-                          Sensitivity
-                        </Typography>
-                        <Slider
-                          defaultValue={0.05}
-                          aria-labelledby="fuzzy-slider"
-                          step={0.01}
-                          min={0.05}
-                          max={1}
-                          marks
-                          valueLabelDisplay="auto"
-                        />
-                      </FormGroup>
-                      <Divider />
-                      <FormLabel component="legend">Sources</FormLabel>
-                      <FormGroup row>
-                        <FormControlLabel
-                          control={<Switch checked={false} />}
-                          label="TROPICOS"
-                        />
-                        <FormControlLabel
-                          control={<Switch checked={false} />}
-                          label="TPL"
-                        />
-                        <FormControlLabel
-                          control={<Switch checked={false} />}
-                          label="USDA"
-                        />
-                      </FormGroup>
-                    </Box>
-                  </Paper>
+                <Grid lg={6} xs={12} item>
+                  <OptionsBox />
                 </Grid>
-                <Grid xs={12} item>
+                <Grid lg={12} xs={12} item>
+                  <ResultTable tableData={result} />
+                </Grid>
+                <Grid lg={12} xs={12} item>
                   <Paper>
-                    <Box p={2}>
-                      <div>JsonInput: {jsonInput}</div>
-                      <div>Result: {result}</div>
-                    </Box>
+                    <Box p={2}>Query: {jsonInput}</Box>
                   </Paper>
                 </Grid>
               </Grid>
