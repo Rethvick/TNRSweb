@@ -1,209 +1,213 @@
-import Head from 'next/head'
+import { useState } from "react";
 
-export default function Home() {
+import Head from "next/head";
+import axios from "axios";
+
+import {
+  Paper,
+  Grid,
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  Container,
+  TextField,
+  Button,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  FormControl,
+  Checkbox,
+  Slider,
+  ToggleButtonGroup,
+  ToggleButton,
+  Switch,
+  Divider,
+  Link
+} from "@material-ui/core";
+
+const test = {
+  opts: {
+    sources: "tropicos,tpl,usda",
+    class: "tropicos",
+    mode: "resolve",
+    matches: "best",
+  },
+  data: [],
+};
+
+function Copyright() {
   return (
-    <div className="container">
+    <Typography variant="body2" color="textSecondary" align='center'>
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        TNRS
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+
+const Menu = () => {
+  return (
+    <AppBar position="static">
+      <Container>
+        <Toolbar>
+          <Typography variant="h6">TNRS</Typography>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+};
+
+export default function Test() {
+  const [result, setResult] = useState("");
+  const [jsonInput, setJsonInput] = useState("");
+  const [input, setInput] = useState("");
+
+  const queryNames = (names) => {
+    const query = names.split("\n").map((v, i) => [v, i + 1]);
+    test.data = query;
+    //test.data.push(query);
+    setJsonInput(JSON.stringify(test));
+    setResult("loading");
+    axios
+      .post("http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php", test, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then(
+        (res) => {
+          console.log(res);
+          setResult(JSON.stringify(res));
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
+  return (
+    <>
       <Head>
-        <title>Create Next App</title>
+        <title>TNRS</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Box display="flex" flexDirection="column" minHeight="100vh">
+        <Box>
+          <Menu />
+        </Box>
+        <Box flexGrow={1} mt={2}>
+          <main>
+            <Container>
+              <Grid
+                spacing={2}
+                direction="row"
+                justify="center"
+                alignItems="center"
 
-      <main>
-        <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-
-        <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/zeit/next.js/tree/master/examples"
-            className="card"
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
-        </a>
-      </footer>
-
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
-          padding: 0 0.5rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer img {
-          margin-left: 0.5rem;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .title a {
-          color: #0070f3;
-          text-decoration: none;
-        }
-
-        .title a:hover,
-        .title a:focus,
-        .title a:active {
-          text-decoration: underline;
-        }
-
-        .title {
-          margin: 0;
-          line-height: 1.15;
-          font-size: 4rem;
-        }
-
-        .title,
-        .description {
-          text-align: center;
-        }
-
-        .description {
-          line-height: 1.5;
-          font-size: 1.5rem;
-        }
-
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 800px;
-          margin-top: 3rem;
-        }
-
-        .card {
-          margin: 1rem;
-          flex-basis: 45%;
-          padding: 1.5rem;
-          text-align: left;
-          color: inherit;
-          text-decoration: none;
-          border: 1px solid #eaeaea;
-          border-radius: 10px;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
-        }
-
-        .card h3 {
-          margin: 0 0 1rem 0;
-          font-size: 1.5rem;
-        }
-
-        .card p {
-          margin: 0;
-          font-size: 1.25rem;
-          line-height: 1.5;
-        }
-
-        .logo {
-          height: 1em;
-        }
-
-        @media (max-width: 600px) {
-          .grid {
-            width: 100%;
-            flex-direction: column;
-          }
-        }
-      `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
-    </div>
-  )
+                container
+              >
+                <Grid xs={6} item>
+                  <Paper>
+                    <Box display="flex" p={2} flexDirection="column" minHeight="100%">
+                      <Box flexGrow={1}>
+                        <TextField
+                          rows={4}
+                          multiline
+                          fullWidth
+                          variant="outlined"
+                          label="Species Names"
+                          onChange={(e) => setInput(e.target.value)}
+                        />
+                      </Box>
+                      <Box>
+                        <Button
+                          onClick={() => queryNames(input)}
+                          variant="contained"
+                          color="primary"
+                        >
+                          Resolve
+                        </Button>
+                        <Button variant="contained" color="secondary">
+                          Clear
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Paper>
+                </Grid>
+                <Grid xs={6} item>
+                  <Paper>
+                    <Box p={2}>
+                      <Divider />
+                      <FormGroup row>
+                        <InputLabel>Processing Mode</InputLabel>
+                        <Select fullWidth>
+                          <MenuItem value={0}>Perform name resulution</MenuItem>
+                          <MenuItem value={1}>Parse names only</MenuItem>
+                        </Select>
+                        <Divider />
+                        <FormControlLabel
+                          control={<Checkbox checked={true} />}
+                          label="Allow partial matching"
+                        />
+                      </FormGroup>
+                      <FormGroup row>
+                        <Typography id="fuzzy-slider" gutterBottom>
+                          Sensitivity
+                        </Typography>
+                        <Slider
+                          defaultValue={0.05}
+                          aria-labelledby="fuzzy-slider"
+                          step={0.01}
+                          min={0.05}
+                          max={1}
+                          marks
+                          valueLabelDisplay="auto"
+                        />
+                      </FormGroup>
+                      <Divider />
+                      <FormLabel component="legend">Sources</FormLabel>
+                      <FormGroup row>
+                        <FormControlLabel
+                          control={<Switch checked={false} />}
+                          label="TROPICOS"
+                        />
+                        <FormControlLabel
+                          control={<Switch checked={false} />}
+                          label="TPL"
+                        />
+                        <FormControlLabel
+                          control={<Switch checked={false} />}
+                          label="USDA"
+                        />
+                      </FormGroup>
+                    </Box>
+                  </Paper>
+                </Grid>
+                <Grid xs={12} item>
+                  <Paper>
+                    <Box p={2}>
+                      <div>JsonInput: {jsonInput}</div>
+                      <div>Result: {result}</div>
+                    </Box>
+                  </Paper>
+                </Grid>
+              </Grid>
+            </Container>
+          </main>
+        </Box>
+        <Box>
+          <footer>
+            <Box py={10} bgcolor="gray">
+              <Container><Copyright /></Container>
+            </Box>
+          </footer>
+        </Box>
+      </Box>
+    </>
+  );
 }
