@@ -3,6 +3,8 @@ import { useState } from "react";
 import Head from "next/head";
 import axios from "axios";
 
+import { SearchBox } from "../components/";
+
 import {
   Paper,
   Grid,
@@ -26,7 +28,7 @@ import {
   ToggleButton,
   Switch,
   Divider,
-  Link
+  Link,
 } from "@material-ui/core";
 
 const test = {
@@ -41,17 +43,16 @@ const test = {
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align='center'>
-      {'Copyright © '}
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
         TNRS
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
-
 
 const Menu = () => {
   return (
@@ -68,7 +69,6 @@ const Menu = () => {
 export default function Test() {
   const [result, setResult] = useState("");
   const [jsonInput, setJsonInput] = useState("");
-  const [input, setInput] = useState("");
 
   const queryNames = (names) => {
     const query = names.split("\n").map((v, i) => [v, i + 1]);
@@ -107,37 +107,11 @@ export default function Test() {
                 spacing={2}
                 direction="row"
                 justify="center"
-                alignItems="center"
-
+                alignItems="stretch"
                 container
               >
                 <Grid xs={6} item>
-                  <Paper>
-                    <Box display="flex" p={2} flexDirection="column" minHeight="100%">
-                      <Box flexGrow={1}>
-                        <TextField
-                          rows={4}
-                          multiline
-                          fullWidth
-                          variant="outlined"
-                          label="Species Names"
-                          onChange={(e) => setInput(e.target.value)}
-                        />
-                      </Box>
-                      <Box>
-                        <Button
-                          onClick={() => queryNames(input)}
-                          variant="contained"
-                          color="primary"
-                        >
-                          Resolve
-                        </Button>
-                        <Button variant="contained" color="secondary">
-                          Clear
-                        </Button>
-                      </Box>
-                    </Box>
-                  </Paper>
+                  <SearchBox onSearch={queryNames}/>
                 </Grid>
                 <Grid xs={6} item>
                   <Paper>
@@ -203,7 +177,9 @@ export default function Test() {
         <Box>
           <footer>
             <Box py={10} bgcolor="gray">
-              <Container><Copyright /></Container>
+              <Container>
+                <Copyright />
+              </Container>
             </Box>
           </footer>
         </Box>
