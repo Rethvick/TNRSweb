@@ -87,7 +87,10 @@ function Test() {
     return(
       <tr key={index}>
         <td>{name.ID}</td>
+        <td>{name.Name_submitted}</td> 
         <td>{name.Name_matched}</td>
+        <td>{name.Overall_score}</td>
+               
       </tr>
 
     )
@@ -127,7 +130,9 @@ function Test() {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Name_matched</th>
+            <th>Name Submitted</th>
+            <th>Name Matched</th>
+            <th>Overall Score</th>
           </tr>
         </thead>
         <tbody>
