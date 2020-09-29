@@ -22,7 +22,7 @@ const test = {
     sources: "tropicos,tpl,usda",
     class: "tropicos",
     mode: "resolve",
-    matches: "best",
+    matches: "all",
   },
   data: [],
 };
@@ -55,9 +55,10 @@ const Menu = () => {
 export default function Test() {
   const [result, setResult] = useState("");
   const [jsonInput, setJsonInput] = useState("");
+  const [resdata, setResdata] = useState([]);
 
   const queryNames = (names) => {
-    const query = names.split("\n").map((v, i) => [v, i + 1]);
+    const query = names.split("\n").map((v, i) => [i+1, v]);
     test.data = query;
     //test.data.push(query);
     setJsonInput(JSON.stringify(test));
@@ -68,8 +69,10 @@ export default function Test() {
       })
       .then(
         (res) => {
-          console.log(res);
+          // console.log(res);
           setResult(JSON.stringify(res));
+          setResdata(res.data);
+          //res.data.map(console.log);
         },
         (error) => {
           console.log(error);
@@ -103,13 +106,18 @@ export default function Test() {
                   <OptionsBox />
                 </Grid>
                 <Grid lg={12} xs={12} item>
-                  <ResultTable tableData={result} />
+                  <ResultTable tableData={resdata} />
                 </Grid>
-                <Grid lg={12} xs={12} item>
+                {/* <Grid lg={12} xs={12} item>
                   <Paper>
                     <Box p={2}>Query: {jsonInput}</Box>
                   </Paper>
                 </Grid>
+                <Grid lg={12} xs ={12} item>
+                  <Paper>
+                    <Box p={2}>Result: {JSON.stringify(resdata)}</Box>
+                  </Paper>
+                </Grid> */}
               </Grid>
             </Container>
           </main>

@@ -17,6 +17,7 @@ export function SearchBox({ onSearch }) {
           <TextField
             rows={10}
             multiline
+            lael="Multiline"
             fullWidth
             variant="outlined"
             label="Species Names"
