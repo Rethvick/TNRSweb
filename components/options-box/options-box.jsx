@@ -24,7 +24,7 @@ export function OptionsBox() {
           </Box>
           <FormControl variant="outlined" fullWidth>
             <Select value={0}>
-              <MenuItem value={0}>Perform name resulution</MenuItem>
+              <MenuItem value={0}>Perform name resolution</MenuItem>
               <MenuItem value={1}>Parse names only</MenuItem>
             </Select>
           </FormControl>
