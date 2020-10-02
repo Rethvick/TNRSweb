@@ -3,6 +3,7 @@ import { useState } from "react";
 import Head from "next/head";
 import axios from "axios";
 import { parse } from 'json2csv';
+import { saveAs } from 'file-saver';
 
 import { SearchBox, OptionsBox, ResultTable, Footer } from "../components/";
 
@@ -28,14 +29,17 @@ const test = {
 
 const downloadData = (data) => {
   // TODO: add the entire list of columns
-  console.log(data)
   // TODO ID should be renamed to 'Name_number'
   const fields = ['ID', 'Name_submitted', 'Overall_score', 'Name_matched']
   const opts = {fields}
   // convert data to CSV
   try {
+    // convert data (json) to csv
     const csv = parse(data, opts);
-    console.log(csv)
+    // create the download file
+    const csvBlob = new Blob([csv], {type: "text/plain;charset=utf-8"});
+    saveAs(csvBlob, 'test.txt')
+    //
   } catch(error) {
     // TODO: think about what to do in case of errors
     // for now, logging the error to the console
@@ -57,8 +61,10 @@ const Menu = () => {
 };
 
 export default function IndexApp() {
+  // state where we keep the results that come from the API
   const [result, setResult] = useState([]);
-
+  // function to query data from the api
+  // TODO: move this somewhere else
   const queryNames = (names) => {
     const query = names.split("\n").map((v, i) => [i + 1, v]);
     test.data = query;
@@ -123,3 +129,4 @@ export default function IndexApp() {
     </>
   );
 }
+
