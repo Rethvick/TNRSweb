@@ -1,20 +1,17 @@
-
 import { useState } from "react";
 
 import Head from "next/head";
 import axios from "axios";
 
-import { SearchBox, OptionsBox, ResultTable } from "../components/";
+import { SearchBox, OptionsBox, ResultTable, Footer } from "../components/";
 
 import {
-  Paper,
   Grid,
   AppBar,
   Toolbar,
   Typography,
   Box,
   Container,
-  Link,
 } from "@material-ui/core";
 
 const test = {
@@ -26,19 +23,6 @@ const test = {
   },
   data: [],
 };
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        TNRS
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const Menu = () => {
   return (
@@ -52,19 +36,19 @@ const Menu = () => {
   );
 };
 
-export default function Test() {
+export default function IndexApp() {
   const [result, setResult] = useState("");
   const [jsonInput, setJsonInput] = useState("");
   const [resdata, setResdata] = useState([]);
 
   const queryNames = (names) => {
-    const query = names.split("\n").map((v, i) => [i+1, v]);
+    const query = names.split("\n").map((v, i) => [i + 1, v]);
     test.data = query;
     //test.data.push(query);
     setJsonInput(JSON.stringify(test));
     setResult("loading");
     axios
-      .post("http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php", test, {
+      .post("http://localhost:4000/", test, {
         headers: { "Content-Type": "application/json" },
       })
       .then(
@@ -123,13 +107,7 @@ export default function Test() {
           </main>
         </Box>
         <Box>
-          <footer>
-            <Box py={10} bgcolor="gray">
-              <Container>
-                <Copyright />
-              </Container>
-            </Box>
-          </footer>
+          <Footer />
         </Box>
       </Box>
     </>
