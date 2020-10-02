@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import Head from "next/head";
 import axios from "axios";
+import { parse } from 'json2csv';
 
 import { SearchBox, OptionsBox, ResultTable, Footer } from "../components/";
 
@@ -25,6 +26,24 @@ const test = {
   data: [],
 };
 
+const downloadData = (data) => {
+  // TODO: add the entire list of columns
+  console.log(data)
+  // TODO ID should be renamed to 'Name_number'
+  const fields = ['ID', 'Name_submitted', 'Overall_score', 'Name_matched']
+  const opts = {fields}
+  // convert data to CSV
+  try {
+    const csv = parse(data, opts);
+    console.log(csv)
+  } catch(error) {
+    // TODO: think about what to do in case of errors
+    // for now, logging the error to the console
+    console.error(error)
+  }
+}
+
+// TODO: move this to a separate component
 const Menu = () => {
   return (
     <AppBar position="static">
@@ -87,7 +106,7 @@ export default function IndexApp() {
                     <Button variant='outlined'  color='secondary'>
                       Download Settings
                     </Button>
-                    <Button variant='outlined'  color='primary'>
+                    <Button variant='outlined'  color='primary' onClick={() => downloadData(result)}>
                       Download Data
                     </Button>
                   </Box>
