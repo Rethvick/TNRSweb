@@ -5,13 +5,10 @@ import axios from "axios";
 import { parse } from 'json2csv';
 import { saveAs } from 'file-saver';
 
-import { SearchBox, OptionsBox, ResultTable, Footer } from "../components/";
+import { SearchBox, OptionsBox, ResultTable, Footer, TopBar } from "../components/";
 
 import {
   Grid,
-  AppBar,
-  Toolbar,
-  Typography,
   Box,
   Container,
   Button
@@ -47,19 +44,6 @@ const downloadData = (data) => {
   }
 }
 
-// TODO: move this to a separate component
-const Menu = () => {
-  return (
-    <AppBar position="static">
-      <Container>
-        <Toolbar>
-          <Typography variant="h6">TNRS</Typography>
-        </Toolbar>
-      </Container>
-    </AppBar>
-  );
-};
-
 export default function IndexApp() {
   // state where we keep the results that come from the API
   const [result, setResult] = useState([]);
@@ -89,7 +73,7 @@ export default function IndexApp() {
       </Head>
       <Box display="flex" flexDirection="column" minHeight="100vh">
         <Box>
-          <Menu />
+          <TopBar />
         </Box>
         <Box flexGrow={1} my={2}>
           <main>
