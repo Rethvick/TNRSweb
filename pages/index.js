@@ -12,6 +12,7 @@ import {
   Typography,
   Box,
   Container,
+  Button
 } from "@material-ui/core";
 
 const test = {
@@ -37,26 +38,18 @@ const Menu = () => {
 };
 
 export default function IndexApp() {
-  const [result, setResult] = useState("");
-  const [jsonInput, setJsonInput] = useState("");
-  const [resdata, setResdata] = useState([]);
+  const [result, setResult] = useState([]);
 
   const queryNames = (names) => {
     const query = names.split("\n").map((v, i) => [i + 1, v]);
     test.data = query;
-    //test.data.push(query);
-    setJsonInput(JSON.stringify(test));
-    setResult("loading");
     axios
       .post("http://localhost:4000/", test, {
         headers: { "Content-Type": "application/json" },
       })
       .then(
-        (res) => {
-          // console.log(res);
-          setResult(JSON.stringify(res));
-          setResdata(res.data);
-          //res.data.map(console.log);
+        (response) => {
+          setResult(response.data);
         },
         (error) => {
           console.log(error);
@@ -90,18 +83,16 @@ export default function IndexApp() {
                   <OptionsBox />
                 </Grid>
                 <Grid lg={12} xs={12} item>
-                  <ResultTable tableData={resdata} />
+                  <Box>
+                    <Button variant='outlined'  color='secondary'>
+                      Download Settings
+                    </Button>
+                    <Button variant='outlined'  color='primary'>
+                      Download Data
+                    </Button>
+                  </Box>
+                  <ResultTable tableData={result} />
                 </Grid>
-                {/* <Grid lg={12} xs={12} item>
-                  <Paper>
-                    <Box p={2}>Query: {jsonInput}</Box>
-                  </Paper>
-                </Grid>
-                <Grid lg={12} xs ={12} item>
-                  <Paper>
-                    <Box p={2}>Result: {JSON.stringify(resdata)}</Box>
-                  </Paper>
-                </Grid> */}
               </Grid>
             </Container>
           </main>
