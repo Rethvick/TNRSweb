@@ -1,21 +1,19 @@
-
 import { useState } from "react";
 
 import Head from "next/head";
 import axios from "axios";
 
-import { SearchBox, OptionsBox, ResultTable } from "../components/";
-
 import {
-  Paper,
-  Grid,
-  AppBar,
-  Toolbar,
-  Typography,
-  Box,
-  Container,
-  Link,
-} from "@material-ui/core";
+  SearchBox,
+  OptionsBox,
+  ResultTable,
+  Footer,
+  TopBar,
+  DownloadResults,
+  generateDownloadFile,
+} from "../components/";
+
+import { Grid, Box, Container } from "@material-ui/core";
 
 const test = {
   opts: {
@@ -27,58 +25,32 @@ const test = {
   data: [],
 };
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        TNRS
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-const Menu = () => {
-  return (
-    <AppBar position="static">
-      <Container>
-        <Toolbar>
-          <Typography variant="h6">TNRS</Typography>
-        </Toolbar>
-      </Container>
-    </AppBar>
-  );
-};
-
-export default function Test() {
-  const [result, setResult] = useState("");
-  const [jsonInput, setJsonInput] = useState("");
-  const [resdata, setResdata] = useState([]);
-
+export default function IndexApp() {
+  // state where we keep the results that come from the API
+  const [result, setResult] = useState([]);
+  // function to query data from the api
+  // TODO: move this somewhere else
   const queryNames = (names) => {
-    const query = names.split("\n").map((v, i) => [i+1, v]);
+    const query = names.split("\n").map((v, i) => [i + 1, v]);
     test.data = query;
-    //test.data.push(query);
-    setJsonInput(JSON.stringify(test));
-    setResult("loading");
     axios
       .post("http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php", test, {
         headers: { "Content-Type": "application/json" },
       })
       .then(
-        (res) => {
-          // console.log(res);
-          setResult(JSON.stringify(res));
-          setResdata(res.data);
-          //res.data.map(console.log);
+        (response) => {
+          setResult(response.data);
         },
         (error) => {
           console.log(error);
         }
       );
   };
+  ///
+  const downloadResultsHandler = (fileName, fileFormat) => {
+    generateDownloadFile(result, fileName, fileFormat);
+  };
+  //
   return (
     <>
       <Head>
@@ -87,7 +59,7 @@ export default function Test() {
       </Head>
       <Box display="flex" flexDirection="column" minHeight="100vh">
         <Box>
-          <Menu />
+          <TopBar />
         </Box>
         <Box flexGrow={1} my={2}>
           <main>
@@ -106,30 +78,17 @@ export default function Test() {
                   <OptionsBox />
                 </Grid>
                 <Grid lg={12} xs={12} item>
-                  <ResultTable tableData={resdata} />
+                  <Box>
+                    <DownloadResults onClickDownload={downloadResultsHandler} />
+                  </Box>
+                  <ResultTable tableData={result} />
                 </Grid>
-                {/* <Grid lg={12} xs={12} item>
-                  <Paper>
-                    <Box p={2}>Query: {jsonInput}</Box>
-                  </Paper>
-                </Grid>
-                <Grid lg={12} xs ={12} item>
-                  <Paper>
-                    <Box p={2}>Result: {JSON.stringify(resdata)}</Box>
-                  </Paper>
-                </Grid> */}
               </Grid>
             </Container>
           </main>
         </Box>
         <Box>
-          <footer>
-            <Box py={10} bgcolor="gray">
-              <Container>
-                <Copyright />
-              </Container>
-            </Box>
-          </footer>
+          <Footer />
         </Box>
       </Box>
     </>
