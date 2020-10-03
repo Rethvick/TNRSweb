@@ -34,7 +34,7 @@ export default function IndexApp() {
     const query = names.split("\n").map((v, i) => [i + 1, v]);
     test.data = query;
     axios
-      .post("http://localhost:4000/", test, {
+      .post("http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php", test, {
         headers: { "Content-Type": "application/json" },
       })
       .then(
