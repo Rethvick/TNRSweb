@@ -1,0 +1,4 @@
+{
+    "python.pythonPath": "/Users/rsajja/.msvscode.hdinsight/hdinsightJupyter/bin/python",
+    "python.dataScience.jupyterLaunchTimeout": 240000
+}
