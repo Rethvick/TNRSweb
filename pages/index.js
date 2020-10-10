@@ -39,7 +39,12 @@ export default function IndexApp() {
       })
       .then(
         (response) => {
-          setResult(response.data);
+          // use the column 'Overall_score_order' to create the column selected
+          let response_selected = response.data.map(
+            (row) => {return {...row, ...{'selected' : row.Overall_score_order==1}}}
+          )
+          // 
+          setResult(response_selected);
         },
         (error) => {
           console.log(error);
