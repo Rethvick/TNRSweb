@@ -10,14 +10,22 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import * as ReactBootStrap from "react-bootstrap";
 import Popup from "../Popup/Popup.jsx";
 
+// TODO: receive a call back function to set the id
 export function ResultTable({ tableData }) {
+  // filter table data where selected == true
+  let tableDataSelected = tableData.filter(row => row.selected == true)
+
+  const getRows = (id) => {
+    return tableData.filter((row) => row.ID==id)
+  }
+
   const classes = useStyles();
   const [openPopup, setOpenPopup] = useState(false);
   const renderTNRS = (name, index) => {
     return(
-      <tr key={index}>
+      <tr key={index} onClick={() => console.log( getRows(name.ID) )}>
         <td>{name.ID}</td>
-        <td onClick={() => { setOpenPopup(true); }}>{name.Name_submitted}</td> 
+        <td>{name.Name_submitted}</td> 
         <td>{name.Name_matched}</td>
         <td><a href={name.Accepted_name_url}>{name.Source.toUpperCase()}</a></td>
         <td>{name.Overall_score}</td>
@@ -40,7 +48,7 @@ export function ResultTable({ tableData }) {
   return (
     <Paper>
       <Box p={2}>
-        {/* <div>Result: {tableData}</div> */}
+        {/* <div>Result: {tableDataSelected}</div> */}
       </Box>
       <Table striped bordered hover responsive>
         <thead>
@@ -55,13 +63,13 @@ export function ResultTable({ tableData }) {
           </tr>
         </thead>
         <tbody>
-          {tableData.map(renderTNRS)}
+          {tableDataSelected.map(renderTNRS)}
         </tbody>
       </Table>
 
       <BootstrapTable 
         keyField="ID"
-        data={tableData}
+        data={tableDataSelected}
         columns={columns}
         pagination={paginationFactory()}
       />
@@ -70,7 +78,7 @@ export function ResultTable({ tableData }) {
         title="Employee Form"
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
-        children={tableData.map(renderTNRS)}
+        children={tableDataSelected.map(renderTNRS)}
       >
       </Popup>
 
