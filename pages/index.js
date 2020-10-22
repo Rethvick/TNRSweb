@@ -40,11 +40,12 @@ export default function IndexApp() {
       .then(
         (response) => {
           // use the column 'Overall_score_order' to create the column selected
-          let response_selected = response.data.map(
-            (row) => {return {...row, ...{'selected' : row.Overall_score_order==1}}}
-          )
-          // 
+          let response_selected = response.data.map((row, idx) => {
+            return { ...row, ...{ selected: row.Overall_score_order == 1, unique_id: idx } };
+          });
+          //
           setResult(response_selected);
+          console.log(response_selected);
         },
         (error) => {
           console.log(error);
@@ -55,6 +56,22 @@ export default function IndexApp() {
   const downloadResultsHandler = (fileName, fileFormat) => {
     generateDownloadFile(result, fileName, fileFormat);
   };
+
+  const changeSelectedRowHandler = (rowToSelect) => {
+    console.log(rowToSelect.index)
+    let new_results = result.map((row) => {
+      if (row.unique_id == rowToSelect.unique_id) {
+        row.selected = true;
+        return row;
+      } else if (row.ID == rowToSelect.ID) {
+        row.selected = false;
+        return row;
+      }
+    });
+    console.log(new_results)
+    setResult(new_results);
+  };
+
   //
   return (
     <>
@@ -86,7 +103,10 @@ export default function IndexApp() {
                   <Box>
                     <DownloadResults onClickDownload={downloadResultsHandler} />
                   </Box>
-                  <ResultTable tableData={result} />
+                  <ResultTable
+                    tableData={result}
+                    onChangeSelectedRow={changeSelectedRowHandler}
+                  />
                 </Grid>
               </Grid>
             </Container>
