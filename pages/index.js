@@ -45,7 +45,6 @@ export default function IndexApp() {
           });
           //
           setResult(response_selected);
-          console.log(response_selected);
         },
         (error) => {
           console.log(error);
@@ -58,7 +57,6 @@ export default function IndexApp() {
   };
 
   const changeSelectedRowHandler = (rowToSelect) => {
-    console.log(rowToSelect.index)
     let new_results = result.map((row) => {
       if (row.unique_id == rowToSelect.unique_id) {
         row.selected = true;
@@ -66,9 +64,10 @@ export default function IndexApp() {
       } else if (row.ID == rowToSelect.ID) {
         row.selected = false;
         return row;
+      } else {
+        return row;
       }
     });
-    console.log(new_results)
     setResult(new_results);
   };
 

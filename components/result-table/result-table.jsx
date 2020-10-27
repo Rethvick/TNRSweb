@@ -71,6 +71,7 @@ function SelectRowDialog(props) {
 // TODO: receive a call back function to set the id
 export function ResultTable({ tableData, onChangeSelectedRow }) {
   // filter table data where selected == true
+  //
   let tableDataSelected = tableData.filter((row) => row.selected == true);
 
   const getRows = (id) => {
@@ -91,8 +92,6 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
         key={index}
         onClick={() => {
           setPopUpRows(getRows(name.ID));
-          console.log(getRows(name.ID));
-          //onChangeSelectedRow(getRows(name.ID)[1]);
           setPopUpOpen(true);
         }}
       >
