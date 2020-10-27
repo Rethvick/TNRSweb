@@ -4,13 +4,15 @@ import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
+
+// FIXME: move these to their respective pages
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 
 
-export default function MyApp(props) {
+export default function TNRSApp(props) {
   const { Component, pageProps } = props;
 
   React.useEffect(() => {
@@ -24,7 +26,7 @@ export default function MyApp(props) {
   return (
     <React.Fragment>
       <Head>
-        <title>My page</title>
+        <title>TNRS</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>
@@ -36,7 +38,7 @@ export default function MyApp(props) {
   );
 }
 
-MyApp.propTypes = {
+TNRSApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired,
 };
