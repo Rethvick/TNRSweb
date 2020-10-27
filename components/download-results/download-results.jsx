@@ -107,7 +107,7 @@ export function DownloadResults(props) {
 export const generateDownloadFile = (data, fileName, fileFormat) => {
   // TODO: add the entire list of columns
   // TODO ID should be renamed to 'Name_number'
-  const fields = ["ID", "Name_submitted", "Overall_score", "Name_matched"];
+  const fields = ["ID", "Name_submitted", "Overall_score", "Name_matched", "selected"];
   //
   let opts;
   if (fileFormat == "tsv") {
