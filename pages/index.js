@@ -147,7 +147,7 @@ export default function IndexApp() {
                 </Grid>
                 <Grid lg={12} xs={12} item>
                   <Paper>
-                    <Box ml={2}>
+                    <Box ml={2} pt={2}>
                       <DownloadResults
                         onClickDownload={downloadResultsHandler}
                       />
