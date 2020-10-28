@@ -57,7 +57,7 @@ export default function IndexApp() {
                       row.Name_matched +
                       row.Overall_score +
                       row.Accepted_name +
-                      row.Taxonomic_status + 
+                      row.Taxonomic_status +
                       row.Accepted_name +
                       row.Accepted_name_author
                     );
@@ -145,19 +145,21 @@ export default function IndexApp() {
                 <Grid lg={6} xs={12} item>
                   <OptionsBox />
                 </Grid>
-                <Grid lg={12} xs={12} item>
-                  <Paper>
-                    <Box ml={2} pt={2}>
-                      <DownloadResults
-                        onClickDownload={downloadResultsHandler}
+                {result.length > 0 && (
+                  <Grid lg={12} xs={12} item>
+                    <Paper>
+                      <Box ml={2} pt={2}>
+                        <DownloadResults
+                          onClickDownload={downloadResultsHandler}
+                        />
+                      </Box>
+                      <ResultTable
+                        tableData={result}
+                        onChangeSelectedRow={changeSelectedRowHandler}
                       />
-                    </Box>
-                    <ResultTable
-                      tableData={result}
-                      onChangeSelectedRow={changeSelectedRowHandler}
-                    />
-                  </Paper>
-                </Grid>
+                    </Paper>
+                  </Grid>
+                )}
               </Grid>
             </Container>
           </main>
