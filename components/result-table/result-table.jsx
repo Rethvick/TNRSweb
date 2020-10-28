@@ -109,50 +109,55 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
     setPopUpOpen(false);
   };
   const renderRow = (row, index) => {
+    let allRows = getRows(row.ID);
     return (
       <TableRow key={index}>
         <TableCell>{row.ID}</TableCell>
         <TableCell>{row.Name_submitted} </TableCell>
         <TableCell>
           {row.Name_matched + " " + row.Accepted_name_author}{" "}
-          <Link
-            href="#"
-            onClick={() => {
-              setPopUpRows(getRows(row.ID));
-              setPopUpOpen(true);
-            }}
-          >
-            {"(+" + getRows(row.ID).length + " more)"}
-          </Link>
+          {allRows.length > 1 && (
+            <Link
+              href="#"
+              onClick={() => {
+                setPopUpRows(allRows);
+                setPopUpOpen(true);
+              }}
+            >
+              {"(+" + (allRows.length - 1) + " more)"}
+            </Link>
+          )}
         </TableCell>
         <TableCell>{mkLinks(row)}</TableCell>
         <TableCell>{row.Overall_score}</TableCell>
         <TableCell>{row.Taxonomic_status}</TableCell>
-        <TableCell>{row.Accepted_name + " " + row.Accepted_name_author}</TableCell>
+        <TableCell>
+          {row.Accepted_name + " " + row.Accepted_name_author}
+        </TableCell>
       </TableRow>
     );
   };
 
   return (
     <>
-        <Box m={2} mt={0}>
-          <TableContainer>
-            <Table aria-label="change selection table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Name Submitted</TableCell>
-                  <TableCell>Name Matched</TableCell>
-                  <TableCell>Source</TableCell>
-                  <TableCell>Overall Score</TableCell>
-                  <TableCell>Taxonomic Status</TableCell>
-                  <TableCell>Accepted Name</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>{tableDataSelected.map(renderRow)}</TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
+      <Box m={2} mt={0}>
+        <TableContainer>
+          <Table aria-label="change selection table">
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Name Submitted</TableCell>
+                <TableCell>Name Matched</TableCell>
+                <TableCell>Source</TableCell>
+                <TableCell>Overall Score</TableCell>
+                <TableCell>Taxonomic Status</TableCell>
+                <TableCell>Accepted Name</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{tableDataSelected.map(renderRow)}</TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
 
       <SelectRowDialog
         open={popUpOpen}
