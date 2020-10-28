@@ -56,7 +56,10 @@ export default function IndexApp() {
                       row.Author_matched +
                       row.Name_matched +
                       row.Overall_score +
-                      row.Accepted_name
+                      row.Accepted_name +
+                      row.Taxonomic_status + 
+                      row.Accepted_name +
+                      row.Accepted_name_author
                     );
                   })
                   // consolidate Source, Name_matched_url and Accepted_name_url
