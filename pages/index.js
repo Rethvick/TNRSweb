@@ -16,7 +16,7 @@ import {
   generateDownloadFile,
 } from "../components/";
 
-import { Grid, Box, Container } from "@material-ui/core";
+import { Grid, Box, Container, Paper } from "@material-ui/core";
 
 const test = {
   opts: {
@@ -143,13 +143,17 @@ export default function IndexApp() {
                   <OptionsBox />
                 </Grid>
                 <Grid lg={12} xs={12} item>
-                  <Box>
-                    <DownloadResults onClickDownload={downloadResultsHandler} />
-                  </Box>
-                  <ResultTable
-                    tableData={result}
-                    onChangeSelectedRow={changeSelectedRowHandler}
-                  />
+                  <Paper>
+                    <Box ml={2}>
+                      <DownloadResults
+                        onClickDownload={downloadResultsHandler}
+                      />
+                    </Box>
+                    <ResultTable
+                      tableData={result}
+                      onChangeSelectedRow={changeSelectedRowHandler}
+                    />
+                  </Paper>
                 </Grid>
               </Grid>
             </Container>
