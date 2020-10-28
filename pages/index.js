@@ -3,6 +3,9 @@ import { useState } from "react";
 import Head from "next/head";
 import axios from "axios";
 
+// importing loadash
+import _ from "lodash";
+
 import {
   SearchBox,
   OptionsBox,
@@ -28,8 +31,9 @@ const test = {
 export default function IndexApp() {
   // state where we keep the results that come from the API
   const [result, setResult] = useState([]);
+
   // function to query data from the api
-  // TODO: move this somewhere else
+  // FIXME: move this function to a separate file
   const queryNames = (names) => {
     const query = names.split("\n").map((v, i) => [i + 1, v]);
     test.data = query;
@@ -39,19 +43,59 @@ export default function IndexApp() {
       })
       .then(
         (response) => {
+          // group data using Author_matched + Name_matched + Overall_score + Accepted_name
+          let groupedData = _.chain(response.data)
+            //for each ID returned
+            .groupBy("ID")
+            .map((idGroup) => {
+              // group by selected properties
+              return (
+                _.chain(idGroup)
+                  .groupBy((row) => {
+                    return (
+                      row.Author_matched +
+                      row.Name_matched +
+                      row.Overall_score +
+                      row.Accepted_name
+                    );
+                  })
+                  // consolidate Source, Name_matched_url and Accepted_name_url
+                  .map((eqRow) => {
+                    let head = eqRow[0];
+                    let tail = eqRow.slice(1);
+                    tail.forEach((row) => {
+                      head.Source = head.Source + "," + row.Source;
+                      head.Name_matched_url =
+                        head.Name_matched_url + ";" + row.Name_matched_url;
+                      head.Accepted_name_url =
+                        head.Accepted_name_url + ";" + row.Accepted_name_url;
+                    });
+                    // return only one row per group
+                    return head;
+                  })
+                  .value()
+              );
+            })
+            // flatten to remove groupById
+            .flatten()
+            .value();
           // use the column 'Overall_score_order' to create the column selected
-          let response_selected = response.data.map((row, idx) => {
-            return { ...row, ...{ selected: row.Overall_score_order == 1, unique_id: idx } };
+          let responseSelected = groupedData.map((row, idx) => {
+            return {
+              ...row,
+              ...{ selected: row.Overall_score_order == 1, unique_id: idx },
+            };
           });
-          //
-          setResult(response_selected);
+          // update state
+          setResult(responseSelected);
         },
         (error) => {
           console.log(error);
         }
       );
   };
-  ///
+
+  // function to generate the download file
   const downloadResultsHandler = (fileName, fileFormat) => {
     generateDownloadFile(result, fileName, fileFormat);
   };
