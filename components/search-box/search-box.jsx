@@ -21,6 +21,7 @@ export function SearchBox({ onSearch }) {
             fullWidth
             variant="outlined"
             label="Species Names"
+            value={input}
             onChange={(e) => setInput(e.target.value)}
           />
         </Box>
@@ -32,7 +33,11 @@ export function SearchBox({ onSearch }) {
           >
             Resolve
           </Button>
-          <Button variant="contained" color="secondary">
+          <Button
+            onClick={() => setInput("")}
+            variant="contained"
+            color="secondary"
+          >
             Clear
           </Button>
         </Box>
