@@ -55,9 +55,8 @@ function SelectRowDialog(props) {
                 <TableCell>Overall Score</TableCell>
                 <TableCell>Author Matched</TableCell>
                 <TableCell>Author Score</TableCell>
-                <TableCell>Accepted Species</TableCell>
+                <TableCell>Accepted Name</TableCell>
                 <TableCell>Unmatched Terms</TableCell>
-                <TableCell>Accepted Species</TableCell>
                 <TableCell>Taxonomic Status</TableCell>
               </TableRow>
             </TableHead>
@@ -70,14 +69,13 @@ function SelectRowDialog(props) {
                       onChange={() => handleChangeSelectedRow(row)}
                     />
                   </TableCell>
-                  <TableCell>{row.Name_matched}</TableCell>
+                  <TableCell>{row.Name_matched + " " + row.Accepted_name_author}</TableCell>
                   <TableCell>{mkLinks(row)}</TableCell>
                   <TableCell>{row.Overall_score}</TableCell>
                   <TableCell>{row.Author_matched}</TableCell>
                   <TableCell>{row.Author_score}</TableCell>
-                  <TableCell>{row.Accepted_species}</TableCell>
+                  <TableCell>{row.Accepted_name  + " " + row.Accepted_name_author}</TableCell>
                   <TableCell>{row.Unmatched_terms}</TableCell>
-                  <TableCell>{row.Accepted_species}</TableCell>
                   <TableCell>{row.Taxonomic_status}</TableCell>
                 </TableRow>
               ))}
