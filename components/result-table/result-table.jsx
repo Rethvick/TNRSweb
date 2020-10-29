@@ -18,6 +18,7 @@ import {
   Switch,
 } from "@material-ui/core";
 import { Table } from "react-bootstrap";
+import { ROW_SELECT_DISABLED } from "react-bootstrap-table-next";
 
 // import Popup from "../Popup/Popup.jsx";
 
@@ -91,6 +92,53 @@ function SelectRowDialog(props) {
   );
 }
 
+function DetailsDialog(props) {
+  //
+  const { onClose, open, rows } = props;
+
+  var x = rows[0];
+  var l = _.size(x);
+  console.log(l);
+
+  var data = [];
+  for( var i = 0; i < l; i++){
+    var obj = new Object();
+    obj.key = Object.keys(x)[i];
+    obj.value = Object.values(x)[i];
+    data.push(obj);
+  }
+  // console.log(data);
+  
+  return (
+    <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">
+      <DialogTitle id="dtitle">Details of the selected name</DialogTitle>
+      <Box m={4} mt={0}>
+        <TableContainer>
+          <Table aria-label="change selection table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Key</TableCell>
+                <TableCell>Value</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.map((row) => (
+                <TableRow key={row.unique_id}>
+                  <TableCell>{row.key}</TableCell>
+                  <TableCell>{row.value}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Button variant="contained" color="primary" onClick={onClose}>
+          Close
+        </Button>
+      </Box>
+    </Dialog>
+  );
+}
+
 // TODO: receive a call back function to set the id
 export function ResultTable({ tableData, onChangeSelectedRow }) {
   //const classes = useStyles();
@@ -101,15 +149,27 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
   const getRows = (id) => {
     return tableData.filter((row) => row.ID == id);
   };
+
+  const getRowData = (id) => {
+    return tableDataSelected.filter((row) => row.ID == id);
+  };
+
+  
+
+
   // state
   const [popUpOpen, setPopUpOpen] = useState(false);
+  const [dataPopUpOpen, setDataPopUpOpen] = useState(false);
   const [popUpRows, setPopUpRows] = useState([]);
+  const [popUpDetails, setPopUpDetails] = useState([]);
 
   const handleClickClose = () => {
     setPopUpOpen(false);
+    setDataPopUpOpen(false);
   };
   const renderRow = (row, index) => {
     let allRows = getRows(row.ID);
+    let rowData = getRowData(row.ID);
     return (
       <TableRow key={index}>
         <TableCell>{row.ID}</TableCell>
@@ -134,6 +194,17 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
         <TableCell>
           {row.Accepted_name + " " + row.Accepted_name_author}
         </TableCell>
+            <TableCell>{
+              <Link 
+              href="#" 
+              onClick={() => {
+                setDataPopUpOpen(true); 
+                setPopUpDetails(rowData);
+                }}
+              >
+                Details
+              </Link>}
+            </TableCell>
       </TableRow>
     );
   };
@@ -152,6 +223,7 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
                 <TableCell>Overall Score</TableCell>
                 <TableCell>Taxonomic Status</TableCell>
                 <TableCell>Accepted Name</TableCell>
+                <TableCell>Details</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>{tableDataSelected.map(renderRow)}</TableBody>
@@ -165,6 +237,13 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
         rows={popUpRows}
         handleChangeSelectedRow={onChangeSelectedRow}
       />
+
+      <DetailsDialog
+        open={dataPopUpOpen}
+        onClose={handleClickClose}
+        rows={popUpDetails}
+      />
+
     </>
   );
 }
