@@ -4,7 +4,6 @@ import _ from "lodash";
 //
 //
 import {
-  Paper,
   Box,
   Dialog,
   DialogTitle,
@@ -18,24 +17,28 @@ import {
   Switch,
 } from "@material-ui/core";
 import { Table } from "react-bootstrap";
-import { ROW_SELECT_DISABLED } from "react-bootstrap-table-next";
 
 // import Popup from "../Popup/Popup.jsx";
 
+// receives a row and generate the links to the sources
 const mkLinks = (row) => {
-  // Name_matched_url
-  // Source
   let sources = row.Source.split(",");
   let links = row.Name_matched_url.split(";");
   //
   return _.zip(sources, links).map((pair) => (
-    <Link href="#" onClick={() => window.open(pair[1], "_blank")}>
+    <Link
+      key={row.unique_id}
+      href="#"
+      onClick={() => window.open(pair[1], "_blank")}
+    >
       {" "}
       {pair[0].toUpperCase()}
     </Link>
   ));
 };
 
+// FIXME: move to a separate file
+// shows the dialog to allow the user to select a diff row
 function SelectRowDialog(props) {
   //
   const { onClose, open, rows, handleChangeSelectedRow } = props;
@@ -69,12 +72,16 @@ function SelectRowDialog(props) {
                       onChange={() => handleChangeSelectedRow(row)}
                     />
                   </TableCell>
-                  <TableCell>{row.Name_matched + " " + row.Accepted_name_author}</TableCell>
+                  <TableCell>
+                    {row.Name_matched + " " + row.Accepted_name_author}
+                  </TableCell>
                   <TableCell>{mkLinks(row)}</TableCell>
                   <TableCell>{row.Overall_score}</TableCell>
                   <TableCell>{row.Author_matched}</TableCell>
                   <TableCell>{row.Author_score}</TableCell>
-                  <TableCell>{row.Accepted_name  + " " + row.Accepted_name_author}</TableCell>
+                  <TableCell>
+                    {row.Accepted_name + " " + row.Accepted_name_author}
+                  </TableCell>
                   <TableCell>{row.Unmatched_terms}</TableCell>
                   <TableCell>{row.Taxonomic_status}</TableCell>
                 </TableRow>
@@ -90,23 +97,23 @@ function SelectRowDialog(props) {
   );
 }
 
+// FIXME: move to a separate file
+// shows the dialog with details of each row
 function DetailsDialog(props) {
   //
   const { onClose, open, rows } = props;
 
   var x = rows[0];
   var l = _.size(x);
-  console.log(l);
 
   var data = [];
-  for( var i = 0; i < l; i++){
+  for (var i = 0; i < l; i++) {
     var obj = new Object();
     obj.key = Object.keys(x)[i];
     obj.value = Object.values(x)[i];
     data.push(obj);
   }
-  // console.log(data);
-  
+
   return (
     <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">
       <DialogTitle id="dtitle">Details of the selected name</DialogTitle>
@@ -143,17 +150,16 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
 
   // filter table data where selected == true
   let tableDataSelected = tableData.filter((row) => row.selected == true);
-  // filter rows by ID
+
+  // get all rows with a particular ID
   const getRows = (id) => {
     return tableData.filter((row) => row.ID == id);
   };
 
+  // get a single row
   const getRowData = (id) => {
     return tableDataSelected.filter((row) => row.ID == id);
   };
-
-  
-
 
   // state
   const [popUpOpen, setPopUpOpen] = useState(false);
@@ -165,11 +171,12 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
     setPopUpOpen(false);
     setDataPopUpOpen(false);
   };
-  const renderRow = (row, index) => {
+
+  const renderRow = (row) => {
     let allRows = getRows(row.ID);
     let rowData = getRowData(row.ID);
     return (
-      <TableRow key={index}>
+      <TableRow key={row.unique_id}>
         <TableCell>{row.ID}</TableCell>
         <TableCell>{row.Name_submitted} </TableCell>
         <TableCell>
@@ -192,17 +199,19 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
         <TableCell>
           {row.Accepted_name + " " + row.Accepted_name_author}
         </TableCell>
-            <TableCell>{
-              <Link 
-              href="#" 
+        <TableCell>
+          {
+            <Link
+              href="#"
               onClick={() => {
-                setDataPopUpOpen(true); 
+                setDataPopUpOpen(true);
                 setPopUpDetails(rowData);
-                }}
-              >
-                Details
-              </Link>}
-            </TableCell>
+              }}
+            >
+              Details
+            </Link>
+          }
+        </TableCell>
       </TableRow>
     );
   };
@@ -241,7 +250,6 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
         onClose={handleClickClose}
         rows={popUpDetails}
       />
-
     </>
   );
 }
