@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useStyles } from "./options-box.style";
 import {
   Paper,
@@ -13,32 +13,34 @@ import {
   Switch,
 } from "@material-ui/core";
 
-export function OptionsBox(props) {
-  let { sourcesAvailable, onChangeSources } = props;
+export function OptionsBox({ sourcesAvailable, onChangeSources }) {
+  const classes = useStyles();
 
-  let populatedSources = sourcesAvailable.map((name) => {
-    return { name: name, enabled: true };
-  });
-
-  let [sourcesState, setSourcesState] = useState(populatedSources);
+  // populate souce state with sources available
+  let [sourcesState, setSourcesState] = useState(
+    sourcesAvailable?.map((name) => {
+      return { name: name, enabled: true };
+    })
+  );
 
   const handleChangeSources = (name) => {
     let tmpSourcesState = sourcesState.map((source) => {
       if (source.name == name) {
+        // flip switch
         source.enabled = !source.enabled;
       }
       return source;
     });
+    // set state
     setSourcesState(tmpSourcesState);
     // send result to the index page
     let sourceNames = tmpSourcesState
       .filter((s) => s.enabled)
       .map((s) => s.name)
       .join(",");
-    onChangeSources(sourceNames)
+    onChangeSources(sourceNames);
   };
 
-  const classes = useStyles();
   return (
     <Paper className={classes.paper}>
       <Box py={2}>
@@ -56,7 +58,7 @@ export function OptionsBox(props) {
         <Box p={2} pt={0}>
           <FormLabel component="legend">Sources</FormLabel>
           <FormGroup row>
-            {sourcesState.map((s) => {
+            {sourcesState?.map((s) => {
               return (
                 <FormControlLabel
                   key={s.name}
