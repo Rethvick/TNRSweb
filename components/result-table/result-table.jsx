@@ -21,13 +21,13 @@ import { Table } from "react-bootstrap";
 // import Popup from "../Popup/Popup.jsx";
 
 // receives a row and generate the links to the sources
-const mkLinks = (row) => {
+const mkLinks = (row, caller) => {
   let sources = row.Source.split(",");
   let links = row.Name_matched_url.split(";");
   //
   return _.zip(sources, links).map((pair) => (
     <Link
-      key={row.unique_id}
+      key={row.unique_id + caller}
       href="#"
       onClick={() => window.open(pair[1], "_blank")}
     >
@@ -75,7 +75,7 @@ function SelectRowDialog(props) {
                   <TableCell>
                     {row.Name_matched + " " + row.Accepted_name_author}
                   </TableCell>
-                  <TableCell>{mkLinks(row)}</TableCell>
+                  <TableCell>{mkLinks(row, 'select-dialog')}</TableCell>
                   <TableCell>{row.Overall_score}</TableCell>
                   <TableCell>{row.Author_matched}</TableCell>
                   <TableCell>{row.Author_score}</TableCell>
@@ -101,18 +101,14 @@ function SelectRowDialog(props) {
 // shows the dialog with details of each row
 function DetailsDialog(props) {
   //
-  const { onClose, open, rows } = props;
+  const { onClose, open, row } = props;
+  
+  // make a copy of the object being displayed
+  let dataToDisplay = {...row}
 
-  var x = rows[0];
-  var l = _.size(x);
-
-  var data = [];
-  for (var i = 0; i < l; i++) {
-    var obj = new Object();
-    obj.key = Object.keys(x)[i];
-    obj.value = Object.values(x)[i];
-    data.push(obj);
-  }
+  // delete unecessary fields
+  delete dataToDisplay.selected
+  delete dataToDisplay.unique_id
 
   return (
     <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">
@@ -127,10 +123,10 @@ function DetailsDialog(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((row) => (
-                <TableRow key={row.unique_id}>
-                  <TableCell>{row.key}</TableCell>
-                  <TableCell>{row.value}</TableCell>
+              {Object.entries(dataToDisplay).map(([key, value], idx) => (
+                <TableRow key={idx}>
+                  <TableCell>{key}</TableCell>
+                  <TableCell>{value}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -158,14 +154,14 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
 
   // get a single row
   const getRowData = (id) => {
-    return tableDataSelected.filter((row) => row.ID == id);
+    return tableDataSelected.filter((row) => row.ID == id)[0];
   };
 
   // state
   const [popUpOpen, setPopUpOpen] = useState(false);
   const [dataPopUpOpen, setDataPopUpOpen] = useState(false);
   const [popUpRows, setPopUpRows] = useState([]);
-  const [popUpDetails, setPopUpDetails] = useState([]);
+  const [popUpDetails, setPopUpDetails] = useState({});
 
   const handleClickClose = () => {
     setPopUpOpen(false);
@@ -193,7 +189,7 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
             </Link>
           )}
         </TableCell>
-        <TableCell>{mkLinks(row)}</TableCell>
+        <TableCell>{mkLinks(row, 'results')}</TableCell>
         <TableCell>{row.Overall_score}</TableCell>
         <TableCell>{row.Taxonomic_status}</TableCell>
         <TableCell>
@@ -248,7 +244,7 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
       <DetailsDialog
         open={dataPopUpOpen}
         onClose={handleClickClose}
-        rows={popUpDetails}
+        row={popUpDetails}
       />
     </>
   );
