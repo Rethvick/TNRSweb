@@ -40,6 +40,11 @@ function IndexApp({ sourcesAvailable }) {
       // add index starting from 1
       .map((v, i) => [i + 1, v]);
 
+    // don't do anything if no names are provided
+    if(names.length == 0) {
+      return
+    }
+
     // query object sent to the api
     const queryObject = {
       opts: {
@@ -223,7 +228,7 @@ const loadSources = async () => {
 };
 
 // loading sources
-IndexApp.getInitialProps = async (ctx) => {
+IndexApp.getInitialProps = async () => {
   let sources = await loadSources();
   return { sourcesAvailable: sources };
 };
