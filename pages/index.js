@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Head from "next/head";
 import axios from "axios";
@@ -18,27 +18,73 @@ import {
 
 import { Grid, Box, Container, Paper } from "@material-ui/core";
 
-const test = {
-  opts: {
-    sources: "tropicos,tpl,usda",
-    class: "tropicos",
-    mode: "resolve",
-    matches: "all",
-  },
-  data: [],
+const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
+
+const loadSources = (setSources) => {
+  let querySources = {
+    opts: {
+      mode: "sources",
+    },
+  };
+
+  axios
+    .post(apiEndPoint, querySources, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then(
+      (response) => {
+        // get source names
+        let sourceNames = response.data.map((s) => s.sourceName);
+        //
+        //let sourcesString = sourceNames.join(',')
+        setSources(sourceNames);
+      },
+      () => {
+        alert("There was an error while retrieving the sources");
+      }
+    );
 };
 
 export default function IndexApp() {
   // state where we keep the results that come from the API
   const [result, setResult] = useState([]);
+  // we keep the sources available to the API here
+  const [sourcesAvailable, setSourcesAvailable] = useState([]);
+  // we keep the sources selected by the user here
+  const [sourcesQuery, setSourcesQuery] = useState("");
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    loadSources(setSourcesAvailable);
+    //
+  }, []);
 
   // function to query data from the api
   // FIXME: move this function to a separate file
   const queryNames = (names) => {
-    const query = names.split("\n").map((v, i) => [i + 1, v]);
-    test.data = query;
+    // query
+
+    // names from the search box
+    const queryNames = names.split("\n").map((v, i) => [i + 1, v]);
+
+    // query object sent to the api
+    const queryObject = {
+      opts: {
+        // sources coming from the options box
+        sources: sourcesQuery,
+        class: "tropicos",
+        mode: "resolve",
+        matches: "all",
+      },
+      data: [],
+    };
+
+    // queryNames coming from the searchbox
+    queryObject.data = queryNames;
+
+    // sending the request to the API
     axios
-      .post("http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php", test, {
+      .post("http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php", queryObject, {
         headers: { "Content-Type": "application/json" },
       })
       .then(
@@ -143,7 +189,10 @@ export default function IndexApp() {
                   <SearchBox onSearch={queryNames} />
                 </Grid>
                 <Grid lg={6} xs={12} item>
-                  <OptionsBox />
+                  <OptionsBox
+                    sourcesAvailable={sourcesAvailable}
+                    onChangeSources={(sources) => setSourcesQuery(sources)}
+                  />
                 </Grid>
                 {result.length > 0 && (
                   <Grid lg={12} xs={12} item>

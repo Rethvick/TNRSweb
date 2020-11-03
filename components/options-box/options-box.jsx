@@ -1,4 +1,4 @@
-//import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useStyles } from "./options-box.style";
 import {
   Paper,
@@ -13,7 +13,31 @@ import {
   Switch,
 } from "@material-ui/core";
 
-export function OptionsBox() {
+export function OptionsBox(props) {
+  let { sourcesAvailable, onChangeSources } = props;
+
+  let populatedSources = sourcesAvailable.map((name) => {
+    return { name: name, enabled: true };
+  });
+
+  let [sourcesState, setSourcesState] = useState(populatedSources);
+
+  const handleChangeSources = (name) => {
+    let tmpSourcesState = sourcesState.map((source) => {
+      if (source.name == name) {
+        source.enabled = !source.enabled;
+      }
+      return source;
+    });
+    setSourcesState(tmpSourcesState);
+    // send result to the index page
+    let sourceNames = tmpSourcesState
+      .filter((s) => s.enabled)
+      .map((s) => s.name)
+      .join(",");
+    onChangeSources(sourceNames)
+  };
+
   const classes = useStyles();
   return (
     <Paper className={classes.paper}>
@@ -32,15 +56,20 @@ export function OptionsBox() {
         <Box p={2} pt={0}>
           <FormLabel component="legend">Sources</FormLabel>
           <FormGroup row>
-            <FormControlLabel
-              control={<Switch checked={true} />}
-              label="TROPICOS"
-            />
-            <FormControlLabel control={<Switch checked={true} />} label="TPL" />
-            <FormControlLabel
-              control={<Switch checked={true} />}
-              label="USDA"
-            />
+            {sourcesState.map((s) => {
+              return (
+                <FormControlLabel
+                  key={s.name}
+                  control={
+                    <Switch
+                      onClick={() => handleChangeSources(s.name)}
+                      checked={s.enabled}
+                    />
+                  }
+                  label={s.name.toUpperCase()}
+                />
+              );
+            })}
           </FormGroup>
         </Box>
       </Box>
