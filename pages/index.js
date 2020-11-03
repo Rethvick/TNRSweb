@@ -20,52 +20,25 @@ import { Grid, Box, Container, Paper } from "@material-ui/core";
 
 const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
 
-const loadSources = (setSources) => {
-  let querySources = {
-    opts: {
-      mode: "sources",
-    },
-  };
-
-  axios
-    .post(apiEndPoint, querySources, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then(
-      (response) => {
-        // get source names
-        let sourceNames = response.data.map((s) => s.sourceName);
-        //
-        //let sourcesString = sourceNames.join(',')
-        setSources(sourceNames);
-      },
-      () => {
-        alert("There was an error while retrieving the sources");
-      }
-    );
-};
-
-export default function IndexApp() {
+function IndexApp({ sourcesAvailable }) {
   // state where we keep the results that come from the API
   const [result, setResult] = useState([]);
-  // we keep the sources available to the API here
-  const [sourcesAvailable, setSourcesAvailable] = useState([]);
   // we keep the sources selected by the user here
-  const [sourcesQuery, setSourcesQuery] = useState("");
-
-  useEffect(() => {
-    // Update the document title using the browser API
-    loadSources(setSourcesAvailable);
-    //
-  }, []);
+  const [sourcesQuery, setSourcesQuery] = useState(sourcesAvailable.join(","));
 
   // function to query data from the api
   // FIXME: move this function to a separate file
   const queryNames = (names) => {
-    // query
-
     // names from the search box
-    const queryNames = names.split("\n").map((v, i) => [i + 1, v]);
+    const queryNames = names
+      // break lines
+      .split("\n")
+      // remove extra white spaces
+      .map((name) => name.replace(/\s+/g, " ").trim())
+      // remove empty lines
+      .filter((f) => f.length > 0)
+      // add index starting from 1
+      .map((v, i) => [i + 1, v]);
 
     // query object sent to the api
     const queryObject = {
@@ -89,7 +62,8 @@ export default function IndexApp() {
       })
       .then(
         (response) => {
-          // group data using Author_matched + Name_matched + Overall_score + Accepted_name
+          // group data using
+          // Author_matched + Name_matched + Overall_score + Accepted_name
           let groupedData = _.chain(response.data)
             //for each ID returned
             .groupBy("ID")
@@ -138,8 +112,8 @@ export default function IndexApp() {
           // update state
           setResult(responseSelected);
         },
-        (error) => {
-          console.log(error);
+        () => {
+          alert("Error fetching data from API");
         }
       );
   };
@@ -220,3 +194,38 @@ export default function IndexApp() {
     </>
   );
 }
+
+const loadSources = async () => {
+  // query source
+  let querySources = {
+    opts: {
+      mode: "sources",
+    },
+  };
+  // axios
+  return await axios
+    .post(apiEndPoint, querySources, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then(
+      (response) => {
+        // get source names
+        let sourceNames = response.data.map((s) => s.sourceName);
+        //
+        //let sourcesString = sourceNames.join(',')
+        return sourceNames;
+        //setSources(sourceNames);
+      },
+      () => {
+        alert("There was an error while retrieving the sources");
+      }
+    );
+};
+
+// loading sources
+IndexApp.getInitialProps = async (ctx) => {
+  let sources = await loadSources();
+  return { sourcesAvailable: sources };
+};
+
+export default IndexApp;
