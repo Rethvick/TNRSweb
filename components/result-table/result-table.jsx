@@ -21,13 +21,13 @@ import { Table } from "react-bootstrap";
 // import Popup from "../Popup/Popup.jsx";
 
 // receives a row and generate the links to the sources
-const mkLinks = (row, caller) => {
+const mkLinks = (row) => {
   let sources = row.Source.split(",");
   let links = row.Name_matched_url.split(";");
   //
   return _.zip(sources, links).map((pair) => (
     <Link
-      key={row.unique_id + caller}
+      key={row.unique_id + pair[0]}
       href="#"
       onClick={() => window.open(pair[1], "_blank")}
     >
@@ -75,7 +75,7 @@ function SelectRowDialog(props) {
                   <TableCell>
                     {row.Name_matched + " " + row.Accepted_name_author}
                   </TableCell>
-                  <TableCell>{mkLinks(row, 'select-dialog')}</TableCell>
+                  <TableCell>{mkLinks(row)}</TableCell>
                   <TableCell>{row.Overall_score}</TableCell>
                   <TableCell>{row.Author_matched}</TableCell>
                   <TableCell>{row.Author_score}</TableCell>
@@ -189,7 +189,7 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
             </Link>
           )}
         </TableCell>
-        <TableCell>{mkLinks(row, 'results')}</TableCell>
+        <TableCell>{mkLinks(row)}</TableCell>
         <TableCell>{row.Overall_score}</TableCell>
         <TableCell>{row.Taxonomic_status}</TableCell>
         <TableCell>
