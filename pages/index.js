@@ -78,7 +78,7 @@ function IndexApp({ sourcesAvailable }) {
                 _.chain(idGroup)
                   .groupBy((row) => {
                     return (
-                      row.Author_matched +
+                      row.Canonical_author +
                       row.Name_matched +
                       row.Overall_score +
                       row.Accepted_name +

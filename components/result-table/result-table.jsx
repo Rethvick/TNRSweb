@@ -73,7 +73,7 @@ function SelectRowDialog(props) {
                     />
                   </TableCell>
                   <TableCell>
-                    {row.Name_matched + " " + row.Accepted_name_author}
+                    {row.Name_matched + " " + row.Canonical_author}
                   </TableCell>
                   <TableCell>{mkLinks(row)}</TableCell>
                   <TableCell>{row.Overall_score}</TableCell>
