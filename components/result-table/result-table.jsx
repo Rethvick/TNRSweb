@@ -25,28 +25,24 @@ const mkSourceLinks = (row) => {
   let sources = row.Source.split(",");
   let links = row.Name_matched_url.split(";");
   //
-  return _.zip(sources, links).map((pair) => (
-    <Link
-      key={row.unique_id + pair[0]}
-      href={pair[1]}
-      target="_blank"
-    >
-      {" "}
-      {pair[0].toUpperCase()}
-    </Link>
-  ));
+  return _.zip(sources, links).map(
+    (pair) =>
+      pair[1] && (
+        <Link key={row.unique_id + pair[0]} href={pair[1]} target="_blank">
+          {" "}
+          {pair[0].toUpperCase()}
+        </Link>
+      )
+  );
 };
 
 // receives a row and generate the links to the sources
 const mkAcceptedNameLinks = (row) => {
   let links = row.Accepted_name_url.split(";");
   //
-  return links.map((link) => (
-    <Link
-      key={row.unique_id + link}
-      href={link}
-      target="_blank"
-    >
+  return links.map((link) => 
+    link && (
+    <Link key={row.unique_id + link} href={link} target="_blank">
       {" "}
       [+]
     </Link>
@@ -113,7 +109,6 @@ function SelectRowDialog(props) {
                   <TableCell>{row.Author_score}</TableCell>
                   <TableCell>
                     {row.Accepted_name + " " + row.Accepted_name_author}
-                    {mkAcceptedNameLinks(row)}
                   </TableCell>
                   <TableCell>{row.Unmatched_terms}</TableCell>
                   <TableCell>{row.Taxonomic_status}</TableCell>
