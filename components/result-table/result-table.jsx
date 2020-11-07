@@ -37,6 +37,22 @@ const mkLinks = (row) => {
   ));
 };
 
+const roundScore = (value) => {
+  let decimalPlaces = 2;
+  let round = Number(
+    Math.round(parseFloat(value + "e" + decimalPlaces)) + "e-" + decimalPlaces
+  ).toFixed(decimalPlaces);
+
+  // if round is equal to one leave it as it is
+  if (round === "1.00") {
+    return round;
+  }
+  // if it less than one, strip the 0
+  else {
+    return round.slice(1, 4);
+  }
+};
+
 // FIXME: move to a separate file
 // shows the dialog to allow the user to select a diff row
 function SelectRowDialog(props) {
@@ -76,7 +92,7 @@ function SelectRowDialog(props) {
                     {row.Name_matched + " " + row.Canonical_author}
                   </TableCell>
                   <TableCell>{mkLinks(row)}</TableCell>
-                  <TableCell>{row.Overall_score}</TableCell>
+                  <TableCell>{roundScore(row.Overall_score)}</TableCell>
                   <TableCell>{row.Author_matched}</TableCell>
                   <TableCell>{row.Author_score}</TableCell>
                   <TableCell>
@@ -102,13 +118,13 @@ function SelectRowDialog(props) {
 function DetailsDialog(props) {
   //
   const { onClose, open, row } = props;
-  
+
   // make a copy of the object being displayed
-  let dataToDisplay = {...row}
+  let dataToDisplay = { ...row };
 
   // delete unecessary fields
-  delete dataToDisplay.selected
-  delete dataToDisplay.unique_id
+  delete dataToDisplay.selected;
+  delete dataToDisplay.unique_id;
 
   return (
     <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">
@@ -190,7 +206,7 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
           )}
         </TableCell>
         <TableCell>{mkLinks(row)}</TableCell>
-        <TableCell>{row.Overall_score}</TableCell>
+        <TableCell>{roundScore(row.Overall_score)}</TableCell>
         <TableCell>{row.Taxonomic_status}</TableCell>
         <TableCell>
           {row.Accepted_name + " " + row.Accepted_name_author}

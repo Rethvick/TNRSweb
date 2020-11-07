@@ -40,7 +40,7 @@ export function SearchBox({ onSearch, loadingStatus }) {
         >
           <Box>
             <Button
-              disable={loadingStatus}
+              disable={loadingStatus.toString()}
               onClick={() => onSearch(input)}
               variant="contained"
               color="primary"
@@ -58,7 +58,7 @@ export function SearchBox({ onSearch, loadingStatus }) {
             </Button>
           </Box>
           <Box flexGrow={1} />
-          <Box>{loadingStatus && <CircularProgress size={31} />}</Box>
+          <Box>{loadingStatus && <CircularProgress size={30} />}</Box>
         </Box>
       </Box>
     </Paper>
