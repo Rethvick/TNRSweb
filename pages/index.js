@@ -32,7 +32,7 @@ function IndexApp({ sourcesAvailable }) {
   // FIXME: move this function to a separate file
   const queryNames = (names) => {
     // show spinner
-    setLoadingStatus(true)
+    setLoadingStatus(true);
 
     // names from the search box
     const queryNames = names
@@ -46,8 +46,8 @@ function IndexApp({ sourcesAvailable }) {
       .map((v, i) => [i + 1, v]);
 
     // don't do anything if no names are provided
-    if(names.length == 0) {
-      return
+    if (names.length == 0) {
+      return;
     }
 
     // query object sent to the api
@@ -122,7 +122,7 @@ function IndexApp({ sourcesAvailable }) {
           // update state
           setResult(responseSelected);
           // hide spinner
-          setLoadingStatus(false)
+          setLoadingStatus(false);
         },
         () => {
           alert("Error fetching data from API");
@@ -131,8 +131,8 @@ function IndexApp({ sourcesAvailable }) {
   };
 
   // function to generate the download file
-  const downloadResultsHandler = (fileName, fileFormat) => {
-    generateDownloadFile(result, fileName, fileFormat);
+  const downloadResultsHandler = (fileName, fileFormat, matchesToDownload) => {
+    generateDownloadFile(result, fileName, fileFormat, matchesToDownload);
   };
 
   const changeSelectedRowHandler = (rowToSelect) => {
@@ -172,7 +172,10 @@ function IndexApp({ sourcesAvailable }) {
                 container
               >
                 <Grid lg={6} xs={12} item>
-                  <SearchBox onSearch={queryNames} loadingStatus={loadingStatus} />
+                  <SearchBox
+                    onSearch={queryNames}
+                    loadingStatus={loadingStatus}
+                  />
                 </Grid>
                 <Grid lg={6} xs={12} item>
                   <OptionsBox

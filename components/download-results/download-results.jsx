@@ -22,6 +22,7 @@ export function DownloadResults(props) {
   const [open, setOpen] = React.useState(false);
   const [fileName, setFileName] = React.useState("tnrs_result");
   const [fileFormat, setFileFormat] = React.useState("csv");
+  const [matchesToDownload, setMatchesToDownload] = React.useState("all");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -71,18 +72,19 @@ export function DownloadResults(props) {
           <Box mt={2}>
             <FormControl>
               <FormLabel>Results to Download</FormLabel>
-              <RadioGroup value={"all"}>
+              <RadioGroup
+                value={matchesToDownload}
+                onChange={(e) => setMatchesToDownload(e.target.value)}
+              >
                 <FormControlLabel
                   value="best"
                   control={<Radio />}
                   label="Best Matches Only"
-                  disabled
                 />
                 <FormControlLabel
                   value="all"
                   control={<Radio />}
                   label="All Matches"
-                  disabled
                 />
               </RadioGroup>
             </FormControl>
@@ -93,7 +95,9 @@ export function DownloadResults(props) {
             Cancel
           </Button>
           <Button
-            onClick={() => props.onClickDownload(fileName, fileFormat)}
+            onClick={() =>
+              props.onClickDownload(fileName, fileFormat, matchesToDownload)
+            }
             color="primary"
           >
             Download
@@ -104,16 +108,23 @@ export function DownloadResults(props) {
   );
 }
 
-export const generateDownloadFile = (data, fileName, fileFormat) => {
-  // TODO: add the entire list of columns
-  // TODO ID should be renamed to 'Name_number'
-  const fields = [
-    "ID",
-    "Name_submitted",
-    "Overall_score",
-    "Name_matched",
-    "selected",
-  ];
+export const generateDownloadFile = (
+  data,
+  fileName,
+  fileFormat,
+  matchesToDownload
+) => {
+  // add the entire list of columns
+  const fields = Object.keys(data[0]);
+  // create a new var to hold the results to download
+  let downloadData;
+  // if we want all matches, simple reference the new var
+  if (matchesToDownload === "all") {
+    downloadData = data;
+  // if we want only best matches, filter data
+  } else if (matchesToDownload === "best") {
+    downloadData = data.filter((f) => f.selected === true);
+  }
   //
   let opts;
   if (fileFormat == "tsv") {
@@ -125,7 +136,7 @@ export const generateDownloadFile = (data, fileName, fileFormat) => {
   // convert data to CSV
   try {
     // convert data (json) to csv
-    const csv = parser.parse(data, opts);
+    const csv = parser.parse(downloadData, opts);
     // create the download file
     const csvBlob = new Blob([csv], { type: "text/plain;charset=utf-8" });
     saveAs(csvBlob, fileName + "." + fileFormat);
