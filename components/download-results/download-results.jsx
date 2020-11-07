@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   TextField,
   Dialog,
@@ -17,10 +19,10 @@ import { Parser } from "json2csv";
 import { saveAs } from "file-saver";
 
 export function DownloadResults(props) {
-  const [open, setOpen] = React.useState(false);
-  const [fileName, setFileName] = React.useState("tnrs_result");
-  const [fileFormat, setFileFormat] = React.useState("csv");
-  const [matchesToDownload, setMatchesToDownload] = React.useState("all");
+  const [open, setOpen] = useState(false);
+  const [fileName, setFileName] = useState("tnrs_result");
+  const [fileFormat, setFileFormat] = useState("csv");
+  const [matchesToDownload, setMatchesToDownload] = useState("all");
 
   const handleClickOpen = () => {
     setOpen(true);
