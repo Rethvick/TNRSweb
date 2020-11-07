@@ -21,20 +21,52 @@ import { Table } from "react-bootstrap";
 // import Popup from "../Popup/Popup.jsx";
 
 // receives a row and generate the links to the sources
-const mkLinks = (row) => {
+const mkSourceLinks = (row) => {
   let sources = row.Source.split(",");
   let links = row.Name_matched_url.split(";");
   //
   return _.zip(sources, links).map((pair) => (
     <Link
       key={row.unique_id + pair[0]}
-      href="#"
-      onClick={() => window.open(pair[1], "_blank")}
+      href={pair[1]}
+      target="_blank"
     >
       {" "}
       {pair[0].toUpperCase()}
     </Link>
   ));
+};
+
+// receives a row and generate the links to the sources
+const mkAcceptedNameLinks = (row) => {
+  let links = row.Accepted_name_url.split(";");
+  //
+  return links.map((link) => (
+    <Link
+      key={row.unique_id + link}
+      href={link}
+      target="_blank"
+    >
+      {" "}
+      [+]
+    </Link>
+  ));
+};
+
+const roundScore = (value) => {
+  let decimalPlaces = 2;
+  let round = Number(
+    Math.round(parseFloat(value + "e" + decimalPlaces)) + "e-" + decimalPlaces
+  ).toFixed(decimalPlaces);
+
+  // if round is equal to one leave it as it is
+  if (round === "1.00") {
+    return round;
+  }
+  // if it less than one, strip the 0
+  else {
+    return round.slice(1, 4);
+  }
 };
 
 // FIXME: move to a separate file
@@ -73,14 +105,15 @@ function SelectRowDialog(props) {
                     />
                   </TableCell>
                   <TableCell>
-                    {row.Name_matched + " " + row.Accepted_name_author}
+                    {row.Name_matched + " " + row.Canonical_author}
                   </TableCell>
-                  <TableCell>{mkLinks(row)}</TableCell>
-                  <TableCell>{row.Overall_score}</TableCell>
+                  <TableCell>{mkSourceLinks(row)}</TableCell>
+                  <TableCell>{roundScore(row.Overall_score)}</TableCell>
                   <TableCell>{row.Author_matched}</TableCell>
                   <TableCell>{row.Author_score}</TableCell>
                   <TableCell>
                     {row.Accepted_name + " " + row.Accepted_name_author}
+                    {mkAcceptedNameLinks(row)}
                   </TableCell>
                   <TableCell>{row.Unmatched_terms}</TableCell>
                   <TableCell>{row.Taxonomic_status}</TableCell>
@@ -102,13 +135,13 @@ function SelectRowDialog(props) {
 function DetailsDialog(props) {
   //
   const { onClose, open, row } = props;
-  
+
   // make a copy of the object being displayed
-  let dataToDisplay = {...row}
+  let dataToDisplay = { ...row };
 
   // delete unecessary fields
-  delete dataToDisplay.selected
-  delete dataToDisplay.unique_id
+  delete dataToDisplay.selected;
+  delete dataToDisplay.unique_id;
 
   return (
     <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">
@@ -185,15 +218,16 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
                 setPopUpOpen(true);
               }}
             >
-              {"(+" + (allRows.length - 1) + " more)"}
+              {" (+" + (allRows.length - 1) + " more)"}
             </Link>
           )}
         </TableCell>
-        <TableCell>{mkLinks(row)}</TableCell>
-        <TableCell>{row.Overall_score}</TableCell>
+        <TableCell>{mkSourceLinks(row)}</TableCell>
+        <TableCell>{roundScore(row.Overall_score)}</TableCell>
         <TableCell>{row.Taxonomic_status}</TableCell>
         <TableCell>
           {row.Accepted_name + " " + row.Accepted_name_author}
+          {mkAcceptedNameLinks(row)}
         </TableCell>
         <TableCell>
           {

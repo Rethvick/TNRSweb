@@ -25,10 +25,15 @@ function IndexApp({ sourcesAvailable }) {
   const [result, setResult] = useState([]);
   // we keep the sources selected by the user here
   const [sourcesQuery, setSourcesQuery] = useState(sourcesAvailable.join(","));
+  // keep a status for when the system is loading
+  const [loadingStatus, setLoadingStatus] = useState(false);
 
   // function to query data from the api
   // FIXME: move this function to a separate file
   const queryNames = (names) => {
+    // show spinner
+    setLoadingStatus(true);
+
     // names from the search box
     const queryNames = names
       // break lines
@@ -41,8 +46,8 @@ function IndexApp({ sourcesAvailable }) {
       .map((v, i) => [i + 1, v]);
 
     // don't do anything if no names are provided
-    if(names.length == 0) {
-      return
+    if (names.length == 0) {
+      return;
     }
 
     // query object sent to the api
@@ -78,7 +83,7 @@ function IndexApp({ sourcesAvailable }) {
                 _.chain(idGroup)
                   .groupBy((row) => {
                     return (
-                      row.Author_matched +
+                      row.Canonical_author +
                       row.Name_matched +
                       row.Overall_score +
                       row.Accepted_name +
@@ -116,6 +121,8 @@ function IndexApp({ sourcesAvailable }) {
           });
           // update state
           setResult(responseSelected);
+          // hide spinner
+          setLoadingStatus(false);
         },
         () => {
           alert("Error fetching data from API");
@@ -124,8 +131,8 @@ function IndexApp({ sourcesAvailable }) {
   };
 
   // function to generate the download file
-  const downloadResultsHandler = (fileName, fileFormat) => {
-    generateDownloadFile(result, fileName, fileFormat);
+  const downloadResultsHandler = (fileName, fileFormat, matchesToDownload) => {
+    generateDownloadFile(result, fileName, fileFormat, matchesToDownload);
   };
 
   const changeSelectedRowHandler = (rowToSelect) => {
@@ -165,7 +172,10 @@ function IndexApp({ sourcesAvailable }) {
                 container
               >
                 <Grid lg={6} xs={12} item>
-                  <SearchBox onSearch={queryNames} />
+                  <SearchBox
+                    onSearch={queryNames}
+                    loadingStatus={loadingStatus}
+                  />
                 </Grid>
                 <Grid lg={6} xs={12} item>
                   <OptionsBox
