@@ -1,5 +1,3 @@
-import { useStyles } from "./download-results.style.js";
-
 import {
   TextField,
   Dialog,
@@ -121,7 +119,7 @@ export const generateDownloadFile = (
   // if we want all matches, simple reference the new var
   if (matchesToDownload === "all") {
     downloadData = data;
-  // if we want only best matches, filter data
+    // if we want only best matches, filter data
   } else if (matchesToDownload === "best") {
     downloadData = data.filter((f) => f.selected === true);
   }

@@ -21,18 +21,34 @@ import { Table } from "react-bootstrap";
 // import Popup from "../Popup/Popup.jsx";
 
 // receives a row and generate the links to the sources
-const mkLinks = (row) => {
+const mkSourceLinks = (row) => {
   let sources = row.Source.split(",");
   let links = row.Name_matched_url.split(";");
   //
   return _.zip(sources, links).map((pair) => (
     <Link
       key={row.unique_id + pair[0]}
-      href="#"
-      onClick={() => window.open(pair[1], "_blank")}
+      href={pair[1]}
+      target="_blank"
     >
       {" "}
       {pair[0].toUpperCase()}
+    </Link>
+  ));
+};
+
+// receives a row and generate the links to the sources
+const mkAcceptedNameLinks = (row) => {
+  let links = row.Accepted_name_url.split(";");
+  //
+  return links.map((link) => (
+    <Link
+      key={row.unique_id + link}
+      href={link}
+      target="_blank"
+    >
+      {" "}
+      [+]
     </Link>
   ));
 };
@@ -91,12 +107,13 @@ function SelectRowDialog(props) {
                   <TableCell>
                     {row.Name_matched + " " + row.Canonical_author}
                   </TableCell>
-                  <TableCell>{mkLinks(row)}</TableCell>
+                  <TableCell>{mkSourceLinks(row)}</TableCell>
                   <TableCell>{roundScore(row.Overall_score)}</TableCell>
                   <TableCell>{row.Author_matched}</TableCell>
                   <TableCell>{row.Author_score}</TableCell>
                   <TableCell>
                     {row.Accepted_name + " " + row.Accepted_name_author}
+                    {mkAcceptedNameLinks(row)}
                   </TableCell>
                   <TableCell>{row.Unmatched_terms}</TableCell>
                   <TableCell>{row.Taxonomic_status}</TableCell>
@@ -201,15 +218,16 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
                 setPopUpOpen(true);
               }}
             >
-              {"(+" + (allRows.length - 1) + " more)"}
+              {" (+" + (allRows.length - 1) + " more)"}
             </Link>
           )}
         </TableCell>
-        <TableCell>{mkLinks(row)}</TableCell>
+        <TableCell>{mkSourceLinks(row)}</TableCell>
         <TableCell>{roundScore(row.Overall_score)}</TableCell>
         <TableCell>{row.Taxonomic_status}</TableCell>
         <TableCell>
           {row.Accepted_name + " " + row.Accepted_name_author}
+          {mkAcceptedNameLinks(row)}
         </TableCell>
         <TableCell>
           {
