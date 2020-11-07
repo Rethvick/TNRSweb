@@ -25,10 +25,15 @@ function IndexApp({ sourcesAvailable }) {
   const [result, setResult] = useState([]);
   // we keep the sources selected by the user here
   const [sourcesQuery, setSourcesQuery] = useState(sourcesAvailable.join(","));
+  // keep a status for when the system is loading
+  const [loadingStatus, setLoadingStatus] = useState(false);
 
   // function to query data from the api
   // FIXME: move this function to a separate file
   const queryNames = (names) => {
+    // show spinner
+    setLoadingStatus(true)
+
     // names from the search box
     const queryNames = names
       // break lines
@@ -116,6 +121,8 @@ function IndexApp({ sourcesAvailable }) {
           });
           // update state
           setResult(responseSelected);
+          // hide spinner
+          setLoadingStatus(false)
         },
         () => {
           alert("Error fetching data from API");
@@ -165,7 +172,7 @@ function IndexApp({ sourcesAvailable }) {
                 container
               >
                 <Grid lg={6} xs={12} item>
-                  <SearchBox onSearch={queryNames} />
+                  <SearchBox onSearch={queryNames} loadingStatus={loadingStatus} />
                 </Grid>
                 <Grid lg={6} xs={12} item>
                   <OptionsBox
