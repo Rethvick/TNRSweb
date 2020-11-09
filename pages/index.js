@@ -14,6 +14,7 @@ import {
   TopBar,
   DownloadResults,
   generateDownloadFile,
+  ParseTable,
 } from "../components/";
 
 import { Grid, Box, Container, Paper } from "@material-ui/core";
@@ -23,6 +24,8 @@ const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
 function IndexApp({ sourcesAvailable }) {
   // state where we keep the results that come from the API
   const [result, setResult] = useState([]);
+  // state where we store the parsed names
+  const [parsedNames, setParsedNames] = useState([]);
   // we keep the sources selected by the user here
   const [sourcesQuery, setSourcesQuery] = useState(sourcesAvailable.join(","));
   // keep a status for when the system is loading
@@ -128,7 +131,32 @@ function IndexApp({ sourcesAvailable }) {
           alert("Error fetching data from API");
         }
       );
+
+      const parseObject = {
+        opts: {
+          mode: "parse",
+        },
+        data: [],
+      };
+    
+      // queryNames coming from the searchbox
+      parseObject.data = queryNames;
+    
+      axios
+          .post("http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php", parseObject, {
+            headers: { "Content-Type": "application/json" },
+          })
+          .then(
+            (response) => {
+              setParsedNames(response.data);
+            }
+          );
   };
+
+  
+
+
+
 
   // function to generate the download file
   const downloadResultsHandler = (fileName, fileFormat, matchesToDownload) => {
@@ -194,6 +222,9 @@ function IndexApp({ sourcesAvailable }) {
                       <ResultTable
                         tableData={result}
                         onChangeSelectedRow={changeSelectedRowHandler}
+                      />
+                      <ParseTable
+                      tableData={parsedNames}
                       />
                     </Paper>
                   </Grid>

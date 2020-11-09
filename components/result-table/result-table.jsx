@@ -135,8 +135,27 @@ function DetailsDialog(props) {
   let dataToDisplay = { ...row };
 
   // delete unecessary fields
-  delete dataToDisplay.selected;
-  delete dataToDisplay.unique_id;
+  const deleteFields = [
+    'selected',
+    'unique_id',
+    'ID',
+    'Canonical_author',
+    'Name_matched_url',
+    'Name_matched_lsid',
+    'Accepted_name_url',
+    'Overall_score_order',
+    'Highertaxa_score_order',
+    'Accepted_name_lsid',
+    'Accepted_name_id',
+    'Accepted_name_rank',
+    'Family_submitted',
+    'Specific_epithet_submitted',
+    'Genus_submitted',
+    'Author_submitted',
+    'Name_matched_id'
+  ];
+
+  deleteFields.forEach(field => delete dataToDisplay[field]);
 
   return (
     <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">
@@ -201,7 +220,6 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
     let rowData = getRowData(row.ID);
     return (
       <TableRow key={row.unique_id}>
-        <TableCell>{row.ID}</TableCell>
         <TableCell>{row.Name_submitted} </TableCell>
         <TableCell>
           {row.Name_matched + " " + row.Accepted_name_author}{" "}
@@ -248,7 +266,6 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
           <Table aria-label="change selection table">
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
                 <TableCell>Name Submitted</TableCell>
                 <TableCell>Name Matched</TableCell>
                 <TableCell>Source</TableCell>
