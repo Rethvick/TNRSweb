@@ -63,25 +63,27 @@ export function OptionsBox({
             </Select>
           </FormControl>
         </Box>
-        <Box p={2} pt={0}>
-          <FormLabel component="legend">Sources</FormLabel>
-          <FormGroup row>
-            {sourcesState?.map((s) => {
-              return (
-                <FormControlLabel
-                  key={s.name}
-                  control={
-                    <Switch
-                      onClick={() => handleChangeSources(s.name)}
-                      checked={s.enabled}
-                    />
-                  }
-                  label={s.name.toUpperCase()}
-                />
-              );
-            })}
-          </FormGroup>
-        </Box>
+        {queryType === "resolve" && (
+          <Box p={2} pt={0}>
+            <FormLabel component="legend">Sources</FormLabel>
+            <FormGroup row>
+              {sourcesState?.map((s) => {
+                return (
+                  <FormControlLabel
+                    key={s.name}
+                    control={
+                      <Switch
+                        onClick={() => handleChangeSources(s.name)}
+                        checked={s.enabled}
+                      />
+                    }
+                    label={s.name.toUpperCase()}
+                  />
+                );
+              })}
+            </FormGroup>
+          </Box>
+        )}
       </Box>
     </Paper>
   );
