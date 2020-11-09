@@ -36,8 +36,6 @@ function IndexApp({ sourcesAvailable }) {
   // function to query data from the api
   // FIXME: move this function to a separate file
   const queryNames = (names) => {
-    // show spinner
-    setLoadingStatus(true);
 
     // names from the search box
     const queryNames = names
@@ -57,6 +55,8 @@ function IndexApp({ sourcesAvailable }) {
 
     setResult([]);
     setParsedNames([]);
+    // show spinner
+    setLoadingStatus(true);
 
     if (queryType === "resolve") {
       // query object sent to the api
