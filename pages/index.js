@@ -30,12 +30,12 @@ function IndexApp({ sourcesAvailable }) {
   const [sourcesQuery, setSourcesQuery] = useState(sourcesAvailable.join(","));
   // keep a status for when the system is loading
   const [loadingStatus, setLoadingStatus] = useState(false);
+  // resolve or parse
+  const [queryType, setQueryType] = useState("resolve");
 
   // function to query data from the api
   // FIXME: move this function to a separate file
   const queryNames = (names) => {
-    // show spinner
-    setLoadingStatus(true);
 
     // names from the search box
     const queryNames = names
@@ -53,110 +53,112 @@ function IndexApp({ sourcesAvailable }) {
       return;
     }
 
-    // query object sent to the api
-    const queryObject = {
-      opts: {
-        // sources coming from the options box
-        sources: sourcesQuery,
-        class: "tropicos",
-        mode: "resolve",
-        matches: "all",
-      },
-      data: [],
-    };
+    setResult([]);
+    setParsedNames([]);
+    // show spinner
+    setLoadingStatus(true);
 
-    // queryNames coming from the searchbox
-    queryObject.data = queryNames;
-
-    // sending the request to the API
-    axios
-      .post("http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php", queryObject, {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then(
-        (response) => {
-          // group data using
-          // Author_matched + Name_matched + Overall_score + Accepted_name
-          let groupedData = _.chain(response.data)
-            //for each ID returned
-            .groupBy("ID")
-            .map((idGroup) => {
-              // group by selected properties
-              return (
-                _.chain(idGroup)
-                  .groupBy((row) => {
-                    return (
-                      row.Canonical_author +
-                      row.Name_matched +
-                      row.Overall_score +
-                      row.Accepted_name +
-                      row.Taxonomic_status +
-                      row.Accepted_name +
-                      row.Accepted_name_author
-                    );
-                  })
-                  // consolidate Source, Name_matched_url and Accepted_name_url
-                  .map((eqRow) => {
-                    let head = eqRow[0];
-                    let tail = eqRow.slice(1);
-                    tail.forEach((row) => {
-                      head.Source = head.Source + "," + row.Source;
-                      head.Name_matched_url =
-                        head.Name_matched_url + ";" + row.Name_matched_url;
-                      head.Accepted_name_url =
-                        head.Accepted_name_url + ";" + row.Accepted_name_url;
-                    });
-                    // return only one row per group
-                    return head;
-                  })
-                  .value()
-              );
-            })
-            // flatten to remove groupById
-            .flatten()
-            .value();
-          // use the column 'Overall_score_order' to create the column selected
-          let responseSelected = groupedData.map((row, idx) => {
-            return {
-              ...row,
-              ...{ selected: row.Overall_score_order == 1, unique_id: idx },
-            };
-          });
-          // update state
-          setResult(responseSelected);
-          // hide spinner
-          setLoadingStatus(false);
+    if (queryType === "resolve") {
+      // query object sent to the api
+      const queryObject = {
+        opts: {
+          // sources coming from the options box
+          sources: sourcesQuery,
+          class: "tropicos",
+          mode: "resolve",
+          matches: "all",
         },
-        () => {
-          alert("Error fetching data from API");
-        }
-      );
+        data: [],
+      };
 
+      // queryNames coming from the searchbox
+      queryObject.data = queryNames;
+
+      // sending the request to the API
+      axios
+        .post(apiEndPoint, queryObject, {
+          headers: { "Content-Type": "application/json" },
+        })
+        .then(
+          (response) => {
+            // group data using
+            // Author_matched + Name_matched + Overall_score + Accepted_name
+            let groupedData = _.chain(response.data)
+              //for each ID returned
+              .groupBy("ID")
+              .map((idGroup) => {
+                // group by selected properties
+                return (
+                  _.chain(idGroup)
+                    .groupBy((row) => {
+                      return (
+                        row.Canonical_author +
+                        row.Name_matched +
+                        row.Overall_score +
+                        row.Accepted_name +
+                        row.Taxonomic_status +
+                        row.Accepted_name +
+                        row.Accepted_name_author
+                      );
+                    })
+                    // consolidate Source, Name_matched_url and Accepted_name_url
+                    .map((eqRow) => {
+                      let head = eqRow[0];
+                      let tail = eqRow.slice(1);
+                      tail.forEach((row) => {
+                        head.Source = head.Source + "," + row.Source;
+                        head.Name_matched_url =
+                          head.Name_matched_url + ";" + row.Name_matched_url;
+                        head.Accepted_name_url =
+                          head.Accepted_name_url + ";" + row.Accepted_name_url;
+                      });
+                      // return only one row per group
+                      return head;
+                    })
+                    .value()
+                );
+              })
+              // flatten to remove groupById
+              .flatten()
+              .value();
+            // use the column 'Overall_score_order' to create the column selected
+            let responseSelected = groupedData.map((row, idx) => {
+              return {
+                ...row,
+                ...{ selected: row.Overall_score_order == 1, unique_id: idx },
+              };
+            });
+            // update state
+            setResult(responseSelected);
+            // hide spinner
+            setLoadingStatus(false);
+          },
+          () => {
+            alert("Error fetching data from API");
+          }
+        );
+    }
+
+    if (queryType === "parse") {
       const parseObject = {
         opts: {
           mode: "parse",
         },
         data: [],
       };
-    
+
       // queryNames coming from the searchbox
       parseObject.data = queryNames;
-    
       axios
-          .post("http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php", parseObject, {
-            headers: { "Content-Type": "application/json" },
-          })
-          .then(
-            (response) => {
-              setParsedNames(response.data);
-            }
-          );
+        .post(apiEndPoint, parseObject, {
+          headers: { "Content-Type": "application/json" },
+        })
+        .then((response) => {
+          setParsedNames(response.data);
+        });
+      setLoadingStatus(false);
+    }
   };
-
-  
-
-
-
 
   // function to generate the download file
   const downloadResultsHandler = (fileName, fileFormat, matchesToDownload) => {
@@ -207,6 +209,8 @@ function IndexApp({ sourcesAvailable }) {
                 </Grid>
                 <Grid lg={6} xs={12} item>
                   <OptionsBox
+                    queryType={queryType}
+                    onChangeQueryType={(queryType) => setQueryType(queryType)}
                     sourcesAvailable={sourcesAvailable}
                     onChangeSources={(sources) => setSourcesQuery(sources)}
                   />
@@ -223,9 +227,13 @@ function IndexApp({ sourcesAvailable }) {
                         tableData={result}
                         onChangeSelectedRow={changeSelectedRowHandler}
                       />
-                      <ParseTable
-                      tableData={parsedNames}
-                      />
+                    </Paper>
+                  </Grid>
+                )}
+                {parsedNames.length > 0 && (
+                  <Grid lg={12} xs={12} item>
+                    <Paper>
+                      <ParseTable tableData={parsedNames} />
                     </Paper>
                   </Grid>
                 )}
