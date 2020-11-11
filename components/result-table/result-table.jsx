@@ -3,9 +3,7 @@ import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 
 import {
-  Warning as WarningIcon,
   WarningTwoTone as WarningTwoToneIcon,
-  Link as LinkIcon,
 } from "@material-ui/icons";
 // import { useStyles } from "./result-table.style";
 //
@@ -21,119 +19,16 @@ import {
   TableCell,
   TableBody,
   Link,
-  Switch,
-  Popover,
-  Typography,
 } from "@material-ui/core";
+
 import { Table } from "react-bootstrap";
 
+import { WarningsPopover } from './warnings'
+import { SelectRowDialog } from './select-row'
+import { mkSourceLinks, mkAcceptedNameLinks} from './links'
+import { roundScore } from '../../src/actions'
+
 // import Popup from "../Popup/Popup.jsx";
-
-// receives a row and generate the links to the sources
-const mkSourceLinks = (row) => {
-  let sources = row.Source.split(",");
-  let links = row.Name_matched_url.split(";");
-  //
-  return _.zip(sources, links).map(
-    (pair) =>
-      pair[1] && (
-        <Link key={row.unique_id + pair[0]} href={pair[1]} target="_blank">
-          {" "}
-          {pair[0].toUpperCase()}
-        </Link>
-      )
-  );
-};
-
-// receives a row and generate the links to the sources
-const mkAcceptedNameLinks = (row) => {
-  let links = row.Accepted_name_url.split(";");
-  //
-  return links.map(
-    (link) =>
-      link && (
-        <Link key={row.unique_id + link} href={link} target="_blank">
-          <LinkIcon />
-        </Link>
-      )
-  );
-};
-
-const roundScore = (value) => {
-  let decimalPlaces = 2;
-  let round = Number(
-    Math.round(parseFloat(value + "e" + decimalPlaces)) + "e-" + decimalPlaces
-  ).toFixed(decimalPlaces);
-
-  // if round is equal to one leave it as it is
-  if (round === "1.00") {
-    return round;
-  }
-  // if it less than one, strip the 0
-  else {
-    return round.slice(1, 4);
-  }
-};
-
-// FIXME: move to a separate file
-// shows the dialog to allow the user to select a diff row
-function SelectRowDialog(props) {
-  //
-  const { onClose, open, rows, handleChangeSelectedRow } = props;
-  //
-  //
-  return (
-    <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">
-      <DialogTitle id="dtitle">Change selected name</DialogTitle>
-      <Box m={4} mt={0}>
-        <TableContainer>
-          <Table aria-label="change selection table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Select</TableCell>
-                <TableCell>Name Matched</TableCell>
-                <TableCell>Source</TableCell>
-                <TableCell>Overall Score</TableCell>
-                <TableCell>Author Matched</TableCell>
-                <TableCell>Author Score</TableCell>
-                <TableCell>Accepted Name</TableCell>
-                <TableCell>Unmatched Terms</TableCell>
-                <TableCell>Taxonomic Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.unique_id}>
-                  <TableCell>
-                    <Switch
-                      checked={row.selected}
-                      onChange={() => handleChangeSelectedRow(row)}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    {row.Name_matched + " " + row.Canonical_author}
-                  </TableCell>
-                  <TableCell>{mkSourceLinks(row)}</TableCell>
-                  <TableCell>{roundScore(row.Overall_score)}</TableCell>
-                  <TableCell>{row.Author_matched}</TableCell>
-                  <TableCell>{row.Author_score}</TableCell>
-                  <TableCell>
-                    {row.Accepted_name + " " + row.Accepted_name_author}
-                  </TableCell>
-                  <TableCell>{row.Unmatched_terms}</TableCell>
-                  <TableCell>{row.Taxonomic_status}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Button variant="contained" color="primary" onClick={onClose}>
-          Close
-        </Button>
-      </Box>
-    </Dialog>
-  );
-}
 
 // FIXME: move to a separate file
 // shows the dialog with details of each row
@@ -205,53 +100,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
 }));
-
-export default function WarningsPopover(props) {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const classes = useStyles();
-  return (
-    <div>
-      <Typography
-        onMouseEnter={handlePopoverOpen}
-        onMouseLeave={handlePopoverClose}
-      >
-        <WarningIcon />
-      </Typography>
-      <Popover
-        id="mouse-over-popover"
-        className={classes.popover}
-        classes={{
-          paper: classes.paper,
-        }}
-        open={open}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "center",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "center",
-          horizontal: "left",
-        }}
-        onClose={handlePopoverClose}
-        disableRestoreFocus
-      >
-        <Typography>{props.warnings}</Typography>
-      </Popover>
-    </div>
-  );
-}
-
 // TODO: receive a call back function to set the id
 export function ResultTable({ tableData, onChangeSelectedRow }) {
   //const classes = useStyles();
