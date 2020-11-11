@@ -8,10 +8,16 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText
 } from "@material-ui/core";
 
 export function BestMatchSettingsPopper() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -20,7 +26,7 @@ export function BestMatchSettingsPopper() {
   const open = Boolean(anchorEl);
 
   return (
-    <div>
+    <>
       <Button variant="contained" type="button" onClick={handleClick}>
         Best Match Settings
       </Button>
@@ -30,6 +36,7 @@ export function BestMatchSettingsPopper() {
             <FormControl>
               <FormGroup>
                 <FormControlLabel
+                  onClick={() => setDialogOpen(true)}
                   control={<Checkbox />}
                   label="Sort by Higher Taxonomy"
                 />
@@ -42,6 +49,23 @@ export function BestMatchSettingsPopper() {
           </Box>
         </Paper>
       </Popper>
-    </div>
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <DialogTitle>{"Action Required"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            All your previous changes will be overridden, are you sure you want
+            to continue?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)} color="primary" autoFocus>
+            Yes
+          </Button>
+          <Button onClick={() => setDialogOpen(false)} color="primary">
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
