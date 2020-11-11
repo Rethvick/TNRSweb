@@ -21,6 +21,41 @@ import { Grid, Box, Container, Paper } from "@material-ui/core";
 
 const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
 
+const translateWarningCode = (code) => {
+  switch(parseInt(code)) {
+    case(1):
+      return '[Partial]'
+    case(2):
+      return '[Ambiguous]'
+    case(4):
+      return '[HigherTaxa]'
+    case(8):
+      return '[Overall]'
+    case(3):
+      return '[Partial] [Ambiguous]'
+    case(5):
+      return '[Partial] [HigherTaxa]'
+    case(9):
+      return '[Partial] [Overall]'
+    case(6):
+      return '[Ambiguous] [HigherTaxa]'
+    case(10):
+      return '[Ambiguous] [Overall]'
+    case(12):
+      return '[HigherTaxa] [Overall]'
+    case(7):
+      return '[Partial] [Ambiguous] [HigherTaxa]'
+    case(11):	
+      return '[Partial] [Ambiguous] [Overall]'
+    case(13):
+      return '[Partial] [HigherTaxa] [Overall]'
+    case(14):
+      return '[Ambiguous] [HigherTaxa] [Overall]'
+    case(15):
+      return '[Partial] [Ambiguous] [HigherTaxa] [Overall]'
+  }
+}
+
 function IndexApp({ sourcesAvailable }) {
   // state where we keep the results that come from the API
   const [result, setResult] = useState([]);
@@ -81,6 +116,7 @@ function IndexApp({ sourcesAvailable }) {
         })
         .then(
           (response) => {
+            console.log(response.data)
             // group data using
             // Author_matched + Name_matched + Overall_score + Accepted_name
             let groupedData = _.chain(response.data)
@@ -103,15 +139,24 @@ function IndexApp({ sourcesAvailable }) {
                     })
                     // consolidate Source, Name_matched_url and Accepted_name_url
                     .map((eqRow) => {
+                      let sources = []
+                      let accepted_urls = []
+                      let matched_urls = []
+                      //
                       let head = eqRow[0];
-                      let tail = eqRow.slice(1);
-                      tail.forEach((row) => {
-                        head.Source = head.Source + "," + row.Source;
-                        head.Name_matched_url =
-                          head.Name_matched_url + ";" + row.Name_matched_url;
-                        head.Accepted_name_url =
-                          head.Accepted_name_url + ";" + row.Accepted_name_url;
+                      //let tail = eqRow.slice(1);
+                      eqRow.forEach((row) => {
+                        // 
+                        if(sources.includes(row.Source) === false){
+                          sources.push(row.Source)
+                          matched_urls.push(row.Name_matched_url)
+                          accepted_urls.push(row.Accepted_name_url)
+                        }
                       });
+                      // 
+                      head.Source = sources.join(',')
+                      head.Name_matched_url = matched_urls.join(';')
+                      head.Accepted_name_url = accepted_urls.join(';')
                       // return only one row per group
                       return head;
                     })
@@ -123,6 +168,7 @@ function IndexApp({ sourcesAvailable }) {
               .value();
             // use the column 'Overall_score_order' to create the column selected
             let responseSelected = groupedData.map((row, idx) => {
+              row.Warnings = translateWarningCode(row.Warnings)
               return {
                 ...row,
                 ...{ selected: row.Overall_score_order == 1, unique_id: idx },
