@@ -15,6 +15,7 @@ import {
   DownloadResults,
   generateDownloadFile,
   ParseTable,
+  BestMatchSettingsPopper
 } from "../components/";
 
 import { Grid, Box, Container, Paper } from "@material-ui/core";
@@ -264,7 +265,8 @@ function IndexApp({ sourcesAvailable }) {
                 {result.length > 0 && (
                   <Grid lg={12} xs={12} item>
                     <Paper>
-                      <Box ml={2} pt={2}>
+                      <Box ml={2} pt={2} display='flex'>
+                        <BestMatchSettingsPopper />
                         <DownloadResults
                           onClickDownload={downloadResultsHandler}
                         />
