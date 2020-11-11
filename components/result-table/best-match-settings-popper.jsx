@@ -40,10 +40,14 @@ export function BestMatchSettingsPopper({
             <FormControl>
               <FormGroup>
                 <FormControlLabel
-                  onClick={() => setDialogOpen(true)}
+                  onClick={() => {
+                    if (bestMatchingSetting !== "higher-taxonomy-order") {
+                      setDialogOpen(true);
+                    }
+                  }}
                   control={
                     <Checkbox
-                      checked={bestMatchingSetting === "higher-taxonomy-oder"}
+                      checked={bestMatchingSetting === "higher-taxonomy-order"}
                     />
                   }
                   label="Sort by Higher Taxonomy"
