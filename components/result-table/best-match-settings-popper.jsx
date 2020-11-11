@@ -12,12 +12,16 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  DialogContentText
+  DialogContentText,
 } from "@material-ui/core";
 
-export function BestMatchSettingsPopper() {
+export function BestMatchSettingsPopper({
+  onClickSortHigherTaxa,
+  bestMatchingSetting,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [hiTaxonomyEnabled, setHiTaxonomyEnabled] = React.useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -37,12 +41,12 @@ export function BestMatchSettingsPopper() {
               <FormGroup>
                 <FormControlLabel
                   onClick={() => setDialogOpen(true)}
-                  control={<Checkbox />}
+                  control={
+                    <Checkbox
+                      checked={bestMatchingSetting === "higher-taxonomy-oder"}
+                    />
+                  }
                   label="Sort by Higher Taxonomy"
-                />
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label="Sort by Overall Score"
                 />
               </FormGroup>
             </FormControl>
@@ -58,7 +62,15 @@ export function BestMatchSettingsPopper() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialogOpen(false)} color="primary" autoFocus>
+          <Button
+            onClick={() => {
+              setDialogOpen(false);
+              setAnchorEl(null);
+              onClickSortHigherTaxa();
+            }}
+            color="primary"
+            autoFocus
+          >
             Yes
           </Button>
           <Button onClick={() => setDialogOpen(false)} color="primary">
