@@ -1,5 +1,6 @@
 import { useState } from "react";
 import _ from "lodash";
+import { makeStyles } from "@material-ui/core/styles";
 // import { useStyles } from "./result-table.style";
 //
 //
@@ -15,6 +16,8 @@ import {
   TableBody,
   Link,
   Switch,
+  Popover,
+  Typography,
 } from "@material-ui/core";
 import { Table } from "react-bootstrap";
 
@@ -40,13 +43,15 @@ const mkSourceLinks = (row) => {
 const mkAcceptedNameLinks = (row) => {
   let links = row.Accepted_name_url.split(";");
   //
-  return links.map((link) => 
-    link && (
-    <Link key={row.unique_id + link} href={link} target="_blank">
-      {" "}
-      [+]
-    </Link>
-  ));
+  return links.map(
+    (link) =>
+      link && (
+        <Link key={row.unique_id + link} href={link} target="_blank">
+          {" "}
+          [+]
+        </Link>
+      )
+  );
 };
 
 const roundScore = (value) => {
@@ -136,26 +141,26 @@ function DetailsDialog(props) {
 
   // delete unecessary fields
   const deleteFields = [
-    'selected',
-    'unique_id',
-    'ID',
-    'Canonical_author',
-    'Name_matched_url',
-    'Name_matched_lsid',
-    'Accepted_name_url',
-    'Overall_score_order',
-    'Highertaxa_score_order',
-    'Accepted_name_lsid',
-    'Accepted_name_id',
-    'Accepted_name_rank',
-    'Family_submitted',
-    'Specific_epithet_submitted',
-    'Genus_submitted',
-    'Author_submitted',
-    'Name_matched_id'
+    "selected",
+    "unique_id",
+    "ID",
+    "Canonical_author",
+    "Name_matched_url",
+    "Name_matched_lsid",
+    "Accepted_name_url",
+    "Overall_score_order",
+    "Highertaxa_score_order",
+    "Accepted_name_lsid",
+    "Accepted_name_id",
+    "Accepted_name_rank",
+    "Family_submitted",
+    "Specific_epithet_submitted",
+    "Genus_submitted",
+    "Author_submitted",
+    "Name_matched_id",
   ];
 
-  deleteFields.forEach(field => delete dataToDisplay[field]);
+  deleteFields.forEach((field) => delete dataToDisplay[field]);
 
   return (
     <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">
@@ -184,6 +189,61 @@ function DetailsDialog(props) {
         </Button>
       </Box>
     </Dialog>
+  );
+}
+
+const useStyles = makeStyles((theme) => ({
+  popover: {
+    pointerEvents: "none",
+  },
+  paper: {
+    padding: theme.spacing(1),
+  },
+}));
+
+export default function WarningsPopover(props) {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const classes = useStyles();
+  return (
+    <div>
+      <Typography
+        onMouseEnter={handlePopoverOpen}
+        onMouseLeave={handlePopoverClose}
+      >
+        W
+      </Typography>
+      <Popover
+        id="mouse-over-popover"
+        className={classes.popover}
+        classes={{
+          paper: classes.paper,
+        }}
+        open={open}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "center",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "center",
+          horizontal: "left",
+        }}
+        onClose={handlePopoverClose}
+        disableRestoreFocus
+      >
+        <Typography>{props.warnings}</Typography>
+      </Popover>
+    </div>
   );
 }
 
@@ -220,6 +280,9 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
     let rowData = getRowData(row.ID);
     return (
       <TableRow key={row.unique_id}>
+        <TableCell>
+          {row.Warnings && <WarningsPopover warnings={row.Warnings} />}
+        </TableCell>
         <TableCell>{row.Name_submitted} </TableCell>
         <TableCell>
           {row.Name_matched + " " + row.Accepted_name_author}{" "}
@@ -266,6 +329,7 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
           <Table aria-label="change selection table">
             <TableHead>
               <TableRow>
+                <TableCell>W</TableCell>
                 <TableCell>Name Submitted</TableCell>
                 <TableCell>Name Matched</TableCell>
                 <TableCell>Source</TableCell>
