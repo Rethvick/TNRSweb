@@ -1,6 +1,12 @@
 import { useState } from "react";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
+
+import {
+  Warning as WarningIcon,
+  WarningTwoTone as WarningTwoToneIcon,
+  Link as LinkIcon,
+} from "@material-ui/icons";
 // import { useStyles } from "./result-table.style";
 //
 //
@@ -47,8 +53,7 @@ const mkAcceptedNameLinks = (row) => {
     (link) =>
       link && (
         <Link key={row.unique_id + link} href={link} target="_blank">
-          {" "}
-          [+]
+          <LinkIcon />
         </Link>
       )
   );
@@ -220,7 +225,7 @@ export default function WarningsPopover(props) {
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
       >
-        W
+        <WarningIcon />
       </Typography>
       <Popover
         id="mouse-over-popover"
@@ -303,6 +308,7 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
         <TableCell>{row.Taxonomic_status}</TableCell>
         <TableCell>
           {row.Accepted_name + " " + row.Accepted_name_author}
+          {" "}
           {mkAcceptedNameLinks(row)}
         </TableCell>
         <TableCell>
@@ -329,7 +335,9 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
           <Table aria-label="change selection table">
             <TableHead>
               <TableRow>
-                <TableCell>W</TableCell>
+                <TableCell>
+                  <WarningTwoToneIcon />
+                </TableCell>
                 <TableCell>Name Submitted</TableCell>
                 <TableCell>Name Matched</TableCell>
                 <TableCell>Source</TableCell>
