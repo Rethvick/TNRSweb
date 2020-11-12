@@ -22,8 +22,8 @@ import { translateWarningCode, sortByHigherTaxonomy } from "../src/actions";
 
 import { Grid, Box, Container, Paper } from "@material-ui/core";
 
-//const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
-const apiEndPoint = "http://localhost:8080/";
+const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
+//const apiEndPoint = "http://localhost:8080/";
 
 function IndexApp({ sourcesAvailable }) {
   // state where we keep the results that come from the API
@@ -86,7 +86,6 @@ function IndexApp({ sourcesAvailable }) {
         })
         .then(
           (response) => {
-            console.log(response.data);
             // group data using
             // Author_matched + Name_matched + Overall_score + Accepted_name
             let groupedData = _.chain(response.data)
@@ -146,8 +145,6 @@ function IndexApp({ sourcesAvailable }) {
             });
             // update state
             setResult(responseSelected);
-            // debug
-            console.log(responseSelected);
             // hide spinner
             setLoadingStatus(false);
           },
