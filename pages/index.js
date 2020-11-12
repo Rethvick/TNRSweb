@@ -22,7 +22,8 @@ import { translateWarningCode, sortByHigherTaxonomy } from "../src/actions";
 
 import { Grid, Box, Container, Paper } from "@material-ui/core";
 
-const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
+//const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
+const apiEndPoint = "http://localhost:8080/";
 
 function IndexApp({ sourcesAvailable }) {
   // state where we keep the results that come from the API
