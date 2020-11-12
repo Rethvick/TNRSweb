@@ -85,7 +85,7 @@ export function WarningsPopover(props) {
           <Typography variant="subtitle2">Information</Typography>
           <Box my={1}>
             {shortText2LongText(props.warnings).map((message) => (
-              <Typography>{message}</Typography>
+              <Typography>- {message}</Typography>
             ))}
           </Box>
           <Typography variant="caption">
