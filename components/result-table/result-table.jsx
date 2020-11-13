@@ -11,6 +11,7 @@ import {
   TableCell,
   TableBody,
   Table,
+  TablePagination,
   Link,
 } from "@material-ui/core";
 
@@ -38,7 +39,19 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
   const [dataPopUpOpen, setDataPopUpOpen] = useState(false);
   const [popUpRows, setPopUpRows] = useState([]);
   const [popUpDetails, setPopUpDetails] = useState({});
-
+  //
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  //
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  //
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+  //
   const handleClickClose = () => {
     setPopUpOpen(false);
     setDataPopUpOpen(false);
@@ -110,8 +123,21 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
                 <TableCell>Details</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>{tableDataSelected.map(renderRow)}</TableBody>
+            <TableBody>
+              {tableDataSelected
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map(renderRow)}
+            </TableBody>
           </Table>
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={tableDataSelected.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
         </TableContainer>
       </Box>
 
