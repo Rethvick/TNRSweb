@@ -15,11 +15,15 @@ import {
   DownloadResults,
   generateDownloadFile,
   ParseTable,
+  BestMatchSettingsPopper,
 } from "../components/";
+
+import { translateWarningCode, sortByHigherTaxonomy } from "../src/actions";
 
 import { Grid, Box, Container, Paper } from "@material-ui/core";
 
 const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
+//const apiEndPoint = "http://localhost:8080/";
 
 function IndexApp({ sourcesAvailable }) {
   // state where we keep the results that come from the API
@@ -32,11 +36,12 @@ function IndexApp({ sourcesAvailable }) {
   const [loadingStatus, setLoadingStatus] = useState(false);
   // resolve or parse
   const [queryType, setQueryType] = useState("resolve");
+  // 
+  const [bestMatchingSetting, setBestMatchingSetting] = useState("overall-score");
 
   // function to query data from the api
   // FIXME: move this function to a separate file
   const queryNames = (names) => {
-
     // names from the search box
     const queryNames = names
       // break lines
@@ -52,12 +57,12 @@ function IndexApp({ sourcesAvailable }) {
     if (names.length == 0) {
       return;
     }
-
+    // 
     setResult([]);
     setParsedNames([]);
     // show spinner
     setLoadingStatus(true);
-
+    //
     if (queryType === "resolve") {
       // query object sent to the api
       const queryObject = {
@@ -103,15 +108,24 @@ function IndexApp({ sourcesAvailable }) {
                     })
                     // consolidate Source, Name_matched_url and Accepted_name_url
                     .map((eqRow) => {
+                      let sources = [];
+                      let accepted_urls = [];
+                      let matched_urls = [];
+                      //
                       let head = eqRow[0];
-                      let tail = eqRow.slice(1);
-                      tail.forEach((row) => {
-                        head.Source = head.Source + "," + row.Source;
-                        head.Name_matched_url =
-                          head.Name_matched_url + ";" + row.Name_matched_url;
-                        head.Accepted_name_url =
-                          head.Accepted_name_url + ";" + row.Accepted_name_url;
+                      //let tail = eqRow.slice(1);
+                      eqRow.forEach((row) => {
+                        //
+                        if (sources.includes(row.Source) === false) {
+                          sources.push(row.Source);
+                          matched_urls.push(row.Name_matched_url);
+                          accepted_urls.push(row.Accepted_name_url);
+                        }
                       });
+                      //
+                      head.Source = sources.join(",");
+                      head.Name_matched_url = matched_urls.join(";");
+                      head.Accepted_name_url = accepted_urls.join(";");
                       // return only one row per group
                       return head;
                     })
@@ -123,6 +137,7 @@ function IndexApp({ sourcesAvailable }) {
               .value();
             // use the column 'Overall_score_order' to create the column selected
             let responseSelected = groupedData.map((row, idx) => {
+              row.Warnings = translateWarningCode(row.Warnings);
               return {
                 ...row,
                 ...{ selected: row.Overall_score_order == 1, unique_id: idx },
@@ -177,7 +192,14 @@ function IndexApp({ sourcesAvailable }) {
         return row;
       }
     });
+    setBestMatchingSetting("custom")
     setResult(new_results);
+  };
+
+  const sortByHigherTaxonomyHandler = () => {
+    let sortedData = sortByHigherTaxonomy(result);
+    setBestMatchingSetting("higher-taxonomy-order")
+    setResult(sortedData);
   };
 
   //
@@ -218,7 +240,11 @@ function IndexApp({ sourcesAvailable }) {
                 {result.length > 0 && (
                   <Grid lg={12} xs={12} item>
                     <Paper>
-                      <Box ml={2} pt={2}>
+                      <Box ml={2} pt={2} display="flex">
+                        <BestMatchSettingsPopper
+                          bestMatchingSetting={bestMatchingSetting}
+                          onClickSortHigherTaxa={sortByHigherTaxonomyHandler}
+                        />
                         <DownloadResults
                           onClickDownload={downloadResultsHandler}
                         />
