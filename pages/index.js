@@ -147,6 +147,8 @@ function IndexApp({ sourcesAvailable }) {
             setResult(responseSelected);
             // hide spinner
             setLoadingStatus(false);
+            // reset best matching settings
+            setBestMatchingSetting("overall-score")
           },
           () => {
             alert("Error fetching data from API");
