@@ -82,7 +82,7 @@ export function WarningsPopover(props) {
         disableRestoreFocus
       >
         <Box p={2}>
-          <Typography variant="subtitle2">Information</Typography>
+          <Typography variant="subtitle2">Warning</Typography>
           <Box my={1}>
             {shortText2LongText(props.warnings).map((message) => (
               <Typography>- {message}</Typography>
