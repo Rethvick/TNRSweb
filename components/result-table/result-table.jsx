@@ -33,7 +33,7 @@ import { roundScore } from "../../src/actions";
 
 function TablePaginationActions(props) {
   const { count, page, rowsPerPage, onChangePage } = props;
-  const [inputPage, setInputPage] = useState(page);
+  const [inputPage, setInputPage] = useState(page+1);
 
   const handleFirstPageButtonClick = (event) => {
     onChangePage(event, 0);
@@ -199,7 +199,7 @@ export function ResultTable({ tableData, onChangeSelectedRow }) {
 
   return (
     <>
-      <Box m={2} mt={0}>
+      <Box mx={2}>
         <TableContainer>
           <Table>
             <TableHead>

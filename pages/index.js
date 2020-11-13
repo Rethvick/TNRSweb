@@ -249,10 +249,12 @@ function IndexApp({ sourcesAvailable }) {
                           onClickDownload={downloadResultsHandler}
                         />
                       </Box>
+                      <Box pb={1}>
                       <ResultTable
                         tableData={result}
                         onChangeSelectedRow={changeSelectedRowHandler}
                       />
+                      </Box>
                     </Paper>
                   </Grid>
                 )}
