@@ -147,6 +147,8 @@ function IndexApp({ sourcesAvailable }) {
             setResult(responseSelected);
             // hide spinner
             setLoadingStatus(false);
+            // reset best matching settings
+            setBestMatchingSetting("overall-score")
           },
           () => {
             alert("Error fetching data from API");
@@ -249,10 +251,12 @@ function IndexApp({ sourcesAvailable }) {
                           onClickDownload={downloadResultsHandler}
                         />
                       </Box>
+                      <Box pb={1}>
                       <ResultTable
                         tableData={result}
                         onChangeSelectedRow={changeSelectedRowHandler}
                       />
+                      </Box>
                     </Paper>
                   </Grid>
                 )}
