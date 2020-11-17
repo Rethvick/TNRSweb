@@ -263,7 +263,9 @@ function IndexApp({ sourcesAvailable }) {
                 {parsedNames.length > 0 && (
                   <Grid lg={12} xs={12} item>
                     <Paper>
+                      <Box pb={1}>
                       <ParseTable tableData={parsedNames} />
+                      </Box>
                     </Paper>
                   </Grid>
                 )}

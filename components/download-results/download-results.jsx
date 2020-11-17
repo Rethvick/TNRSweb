@@ -30,7 +30,7 @@ export function DownloadResults(props) {
 
   const handleClose = () => {
     setOpen(false);
-  };
+  };  
 
   return (
     <div>
