@@ -30,13 +30,10 @@ export function DownloadResults(props) {
 
   const handleClose = () => {
     setOpen(false);
-  };
+  };  
 
   return (
-    <div>
-      <Button variant="outlined" color="secondary">
-        Download Settings
-      </Button>
+    <>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Download Data
       </Button>
@@ -104,7 +101,7 @@ export function DownloadResults(props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 }
 
