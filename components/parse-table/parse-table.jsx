@@ -22,22 +22,20 @@ import {
   TableBody,
   TableSortLabel,
   Link,
-  Switch,
   IconButton,
-  TextField
+  TextField,
+  Table,
 } from "@material-ui/core";
-import { Table } from "react-bootstrap";
 
 // shows the dialog with details of each row
 function ParsedNamesDialog(props) {
-
   const { onClose, open, row } = props;
   // make a copy of the object being displayed
   let dataToDisplay = { ...row };
 
   // delete rows
   delete dataToDisplay.ID;
-  
+
   return (
     <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">
       <DialogTitle id="dtitle">Details of the selected name</DialogTitle>
@@ -70,7 +68,7 @@ function ParsedNamesDialog(props) {
 
 function TablePaginationActions(props) {
   const { count, page, rowsPerPage, onChangePage } = props;
-  const [inputPage, setInputPage] = useState(page+1);
+  const [inputPage, setInputPage] = useState(page + 1);
 
   const handleFirstPageButtonClick = (event) => {
     onChangePage(event, 0);
@@ -122,9 +120,9 @@ function TablePaginationActions(props) {
                 setInputPage(1);
               } else if (inputPage > maxPage) {
                 onChangePage(e, maxPage);
-                setInputPage(maxPage+1);
+                setInputPage(maxPage + 1);
               } else {
-                onChangePage(e, inputPage-1);
+                onChangePage(e, inputPage - 1);
               }
             }
           }}
@@ -154,9 +152,9 @@ function TablePaginationActions(props) {
 }
 
 // TODO: receive a call back function to set the id
-export function ParseTable({tableData}) {
-
-   // states
+export function ParseTable({ tableData }) {
+  // states
+  // FIXME: this is not being used, we should remove
   const [popUpOpen, setPopUpOpen] = useState(false);
   const [dataPopUpOpen, setDataPopUpOpen] = useState(false);
   const [popUpDetails, setPopUpDetails] = useState({});
@@ -164,8 +162,8 @@ export function ParseTable({tableData}) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   //For enhanced table head
-  const [orderBy, setOrderBy] = useState('');
-  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState("");
+  const [order, setOrder] = useState("asc");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -186,11 +184,12 @@ export function ParseTable({tableData}) {
   };
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
+  // FIXME: move these functions to a separate container
   function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
       return -1;
@@ -202,7 +201,7 @@ export function ParseTable({tableData}) {
   }
 
   function getComparator(order, orderBy) {
-    return order === 'desc'
+    return order === "desc"
       ? (a, b) => descendingComparator(a, b, orderBy)
       : (a, b) => -descendingComparator(a, b, orderBy);
   }
@@ -215,8 +214,7 @@ export function ParseTable({tableData}) {
       return a[1] - b[1];
     });
     return stabilizedThis.map((el) => el[0]);
-  };
-
+  }
 
   const renderRow = (row) => {
     let rowData = getRowData(row.ID);
@@ -246,26 +244,16 @@ export function ParseTable({tableData}) {
 
   return (
     <>
-      <Box m={2} mt={0}>
+      <Box m={2} mb={0}>
         <TableContainer>
           <Table aria-label="change selection table">
-            {/* <TableHead>
-              <TableRow>
-                <TableCell>Name Submitted</TableCell>
-                <TableCell>Taxon Name</TableCell>
-                <TableCell>Author</TableCell>
-                <TableCell>Unmatched terms</TableCell>
-                <TableCell>Details</TableCell>
-              </TableRow>
-            </TableHead> */}
-
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-            {stableSort(tableData, getComparator(order, orderBy))
+              {stableSort(tableData, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(renderRow)}
             </TableBody>
@@ -293,56 +281,56 @@ export function ParseTable({tableData}) {
 }
 
 function EnhancedTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
 
   return (
     <TableHead>
-            <TableRow>
-              <TableCell>
-                  <TableSortLabel
-                    active={orderBy === "Name_submitted"}
-                    direction={orderBy === "Name_submitted" ? order : 'asc'}
-                    onClick={createSortHandler("Name_submitted")}
-                  >
-                    Name Submitted
-                  </TableSortLabel>
-              </TableCell>
+      <TableRow>
+        <TableCell>
+          <TableSortLabel
+            active={orderBy === "Name_submitted"}
+            direction={orderBy === "Name_submitted" ? order : "asc"}
+            onClick={createSortHandler("Name_submitted")}
+          >
+            Name Submitted
+          </TableSortLabel>
+        </TableCell>
 
-              <TableCell>
-                  <TableSortLabel
-                    active={orderBy === "Genus"}
-                    direction={orderBy === "Genus" ? order : 'asc'}
-                    onClick={createSortHandler("Genus")}
-                  >
-                    Taxon Name
-                  </TableSortLabel>
-              </TableCell>
+        <TableCell>
+          <TableSortLabel
+            active={orderBy === "Genus"}
+            direction={orderBy === "Genus" ? order : "asc"}
+            onClick={createSortHandler("Genus")}
+          >
+            Taxon Name
+          </TableSortLabel>
+        </TableCell>
 
-              <TableCell>
-                  <TableSortLabel
-                    active={orderBy === "Author"}
-                    direction={orderBy === "Author" ? order : 'asc'}
-                    onClick={createSortHandler("Author")}
-                  >
-                    Source
-                  </TableSortLabel>
-              </TableCell>
+        <TableCell>
+          <TableSortLabel
+            active={orderBy === "Author"}
+            direction={orderBy === "Author" ? order : "asc"}
+            onClick={createSortHandler("Author")}
+          >
+            Source
+          </TableSortLabel>
+        </TableCell>
 
-              <TableCell>
-                  <TableSortLabel
-                    active={orderBy === "Unmatched_terms"}
-                    direction={orderBy === "Unmatched_terms" ? order : 'asc'}
-                    onClick={createSortHandler("Unmatched_terms")}
-                  >
-                    Unmatched Terms
-                  </TableSortLabel>
-              </TableCell>
-                            
-              <TableCell>Details</TableCell>
-            </TableRow>
+        <TableCell>
+          <TableSortLabel
+            active={orderBy === "Unmatched_terms"}
+            direction={orderBy === "Unmatched_terms" ? order : "asc"}
+            onClick={createSortHandler("Unmatched_terms")}
+          >
+            Unmatched Terms
+          </TableSortLabel>
+        </TableCell>
+
+        <TableCell>Details</TableCell>
+      </TableRow>
     </TableHead>
   );
 }
