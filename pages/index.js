@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import Head from "next/head";
 import axios from "axios";
@@ -9,7 +9,7 @@ import _ from "lodash";
 import {
   SearchBox,
   OptionsBox,
-  ResultTable,
+  ResolveTable,
   Footer,
   TopBar,
   DownloadResults,
@@ -252,7 +252,7 @@ function IndexApp({ sourcesAvailable }) {
                         />
                       </Box>
                       <Box pb={1}>
-                      <ResultTable
+                      <ResolveTable
                         tableData={result}
                         onChangeSelectedRow={changeSelectedRowHandler}
                       />

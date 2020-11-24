@@ -118,7 +118,7 @@ function TablePaginationActions(props) {
   );
 }
 
-export function ResultTable({ tableData, onChangeSelectedRow }) {
+export function ResolveTable({ tableData, onChangeSelectedRow }) {
   // filter table data where selected == true
   let tableDataSelected = tableData.filter((row) => row.selected == true);
   // get all rows with a particular ID
