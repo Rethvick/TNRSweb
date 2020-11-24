@@ -28,19 +28,24 @@ export function TopBar() {
     <AppBar position="static">
       <Container>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>TNRS</Typography>
-            <Button color="inherit" href="/">
-              Home
-            </Button>
-            <Button color="inherit" href="/sources">
-              Sources
-            </Button>
-            <Button color="inherit" href="/about">
-              About
-            </Button>
-            <Button color="inherit" href="/warnings">
-              Warnings
-            </Button>
+          <Box mr={1}>
+            <Typography variant="h6">TNRS</Typography>
+          </Box>
+          <Typography variant="overline" className={classes.title}>
+            Alpha
+          </Typography>
+          <Button color="inherit" href="/">
+            Home
+          </Button>
+          <Button color="inherit" href="/sources">
+            Sources
+          </Button>
+          <Button color="inherit" href="/about">
+            About
+          </Button>
+          <Button color="inherit" href="/warnings">
+            Warnings
+          </Button>
         </Toolbar>
       </Container>
     </AppBar>
