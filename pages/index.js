@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import Head from "next/head";
 import axios from "axios";
@@ -9,7 +9,7 @@ import _ from "lodash";
 import {
   SearchBox,
   OptionsBox,
-  ResultTable,
+  ResolveTable,
   Footer,
   TopBar,
   DownloadResults,
@@ -25,19 +25,23 @@ import { Grid, Box, Container, Paper } from "@material-ui/core";
 const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
 //const apiEndPoint = "http://localhost:8080/";
 
-function IndexApp({ sourcesAvailable }) {
+function IndexApp({ sourcesAvailable, familiesAvailable }) {
   // state where we keep the results that come from the API
   const [result, setResult] = useState([]);
   // state where we store the parsed names
   const [parsedNames, setParsedNames] = useState([]);
   // we keep the sources selected by the user here
   const [sourcesQuery, setSourcesQuery] = useState(sourcesAvailable.join(","));
+  // use the first family available 
+  const [familyQuery, setFamilyQuery] = useState(familiesAvailable[0].ID);
   // keep a status for when the system is loading
   const [loadingStatus, setLoadingStatus] = useState(false);
   // resolve or parse
   const [queryType, setQueryType] = useState("resolve");
-  // 
-  const [bestMatchingSetting, setBestMatchingSetting] = useState("overall-score");
+  //
+  const [bestMatchingSetting, setBestMatchingSetting] = useState(
+    "overall-score"
+  );
 
   // function to query data from the api
   // FIXME: move this function to a separate file
@@ -57,7 +61,7 @@ function IndexApp({ sourcesAvailable }) {
     if (names.length == 0) {
       return;
     }
-    // 
+    //
     setResult([]);
     setParsedNames([]);
     // show spinner
@@ -148,7 +152,7 @@ function IndexApp({ sourcesAvailable }) {
             // hide spinner
             setLoadingStatus(false);
             // reset best matching settings
-            setBestMatchingSetting("overall-score")
+            setBestMatchingSetting("overall-score");
           },
           () => {
             alert("Error fetching data from API");
@@ -194,13 +198,13 @@ function IndexApp({ sourcesAvailable }) {
         return row;
       }
     });
-    setBestMatchingSetting("custom")
+    setBestMatchingSetting("custom");
     setResult(new_results);
   };
 
   const sortByHigherTaxonomyHandler = () => {
     let sortedData = sortByHigherTaxonomy(result);
-    setBestMatchingSetting("higher-taxonomy-order")
+    setBestMatchingSetting("higher-taxonomy-order");
     setResult(sortedData);
   };
 
@@ -236,6 +240,9 @@ function IndexApp({ sourcesAvailable }) {
                     queryType={queryType}
                     onChangeQueryType={(queryType) => setQueryType(queryType)}
                     sourcesAvailable={sourcesAvailable}
+                    familiesAvailable={familiesAvailable}
+                    familyQuery={familyQuery}
+                    onChangeFamily={(family) => setFamilyQuery(family)}
                     onChangeSources={(sources) => setSourcesQuery(sources)}
                   />
                 </Grid>
@@ -252,10 +259,10 @@ function IndexApp({ sourcesAvailable }) {
                         />
                       </Box>
                       <Box pb={1}>
-                      <ResultTable
-                        tableData={result}
-                        onChangeSelectedRow={changeSelectedRowHandler}
-                      />
+                        <ResolveTable
+                          tableData={result}
+                          onChangeSelectedRow={changeSelectedRowHandler}
+                        />
                       </Box>
                     </Paper>
                   </Grid>
@@ -264,7 +271,7 @@ function IndexApp({ sourcesAvailable }) {
                   <Grid lg={12} xs={12} item>
                     <Paper>
                       <Box pb={1}>
-                      <ParseTable tableData={parsedNames} />
+                        <ParseTable tableData={parsedNames} />
                       </Box>
                     </Paper>
                   </Grid>
@@ -283,14 +290,14 @@ function IndexApp({ sourcesAvailable }) {
 
 const loadSources = async () => {
   // query source
-  let querySources = {
+  let query = {
     opts: {
       mode: "sources",
     },
   };
   // axios
   return await axios
-    .post(apiEndPoint, querySources, {
+    .post(apiEndPoint, query, {
       headers: { "Content-Type": "application/json" },
     })
     .then(
@@ -298,9 +305,7 @@ const loadSources = async () => {
         // get source names
         let sourceNames = response.data.map((s) => s.sourceName);
         //
-        //let sourcesString = sourceNames.join(',')
         return sourceNames;
-        //setSources(sourceNames);
       },
       () => {
         alert("There was an error while retrieving the sources");
@@ -308,10 +313,33 @@ const loadSources = async () => {
     );
 };
 
+const loadFamilyClassifications = async () => {
+  // query source
+  let query = {
+    opts: {
+      mode: "classifications",
+    },
+  };
+  // axios
+  return await axios
+    .post(apiEndPoint, query, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then(
+      (response) => {
+        return response.data;
+      },
+      () => {
+        alert("There was an error while retrieving the classifications");
+      }
+    );
+};
+
 // loading sources
 IndexApp.getInitialProps = async () => {
   let sources = await loadSources();
-  return { sourcesAvailable: sources };
+  let families = await loadFamilyClassifications();
+  return { sourcesAvailable: sources, familiesAvailable: families };
 };
 
 export default IndexApp;
