@@ -19,7 +19,6 @@ import {
   Table,
   TablePagination,
   TableSortLabel,
-  FormControlLabel,
   Link,
   IconButton,
   TextField,
@@ -35,7 +34,7 @@ import { roundScore } from "../../src/actions";
 
 function TablePaginationActions(props) {
   const { count, page, rowsPerPage, onChangePage } = props;
-  const [inputPage, setInputPage] = useState(page+1);
+  const [inputPage, setInputPage] = useState(page + 1);
 
   const handleFirstPageButtonClick = (event) => {
     onChangePage(event, 0);
@@ -87,9 +86,9 @@ function TablePaginationActions(props) {
                 setInputPage(1);
               } else if (inputPage > maxPage) {
                 onChangePage(e, maxPage);
-                setInputPage(maxPage+1);
+                setInputPage(maxPage + 1);
               } else {
-                onChangePage(e, inputPage-1);
+                onChangePage(e, inputPage - 1);
               }
             }
           }}
@@ -139,8 +138,8 @@ export function ResolveTable({ tableData, onChangeSelectedRow }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   //For enhanced table head
-  const [orderBy, setOrderBy] = useState('');
-  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState("");
+  const [order, setOrder] = useState("asc");
   //
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -157,8 +156,8 @@ export function ResolveTable({ tableData, onChangeSelectedRow }) {
   };
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -173,7 +172,7 @@ export function ResolveTable({ tableData, onChangeSelectedRow }) {
   }
 
   function getComparator(order, orderBy) {
-    return order === 'desc'
+    return order === "desc"
       ? (a, b) => descendingComparator(a, b, orderBy)
       : (a, b) => -descendingComparator(a, b, orderBy);
   }
@@ -186,8 +185,7 @@ export function ResolveTable({ tableData, onChangeSelectedRow }) {
       return a[1] - b[1];
     });
     return stabilizedThis.map((el) => el[0]);
-  };
-
+  }
 
   const renderRow = (row) => {
     let allRows = getRows(row.ID);
@@ -283,79 +281,86 @@ export function ResolveTable({ tableData, onChangeSelectedRow }) {
 }
 
 function EnhancedTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const { order, orderBy, onRequestSort } = props;
+
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
 
   return (
     <TableHead>
-            <TableRow>
-              <TableCell>
-                <WarningTwoToneIcon />
-              </TableCell>
-              <TableCell>
-                  <TableSortLabel
-                    active={orderBy === "Name_submitted"}
-                    direction={orderBy === "Name_submitted" ? order : 'asc'}
-                    onClick={createSortHandler("Name_submitted")}
-                  >
-                    Name Submitted
-                  </TableSortLabel>
-              </TableCell>
+      <TableRow>
+        <TableCell>
+          <TableSortLabel
+            active={orderBy === "Warnings"}
+            direction={orderBy === "Warnings" ? order : "asc"}
+            onClick={createSortHandler("Warnings")}
+          >
+            <WarningTwoToneIcon />
+          </TableSortLabel>
+        </TableCell>
+        <TableCell>
+          <TableSortLabel
+            active={orderBy === "Name_submitted"}
+            direction={orderBy === "Name_submitted" ? order : "asc"}
+            onClick={createSortHandler("Name_submitted")}
+          >
+            Name Submitted
+          </TableSortLabel>
+        </TableCell>
 
-              <TableCell>
-                  <TableSortLabel
-                    active={orderBy === "Name_macthed"}
-                    direction={orderBy === "Name_matched" ? order : 'asc'}
-                    onClick={createSortHandler("Name_matched")}
-                  >
-                    Name Matched
-                  </TableSortLabel>
-              </TableCell>
+        <TableCell>
+          <TableSortLabel
+            active={orderBy === "Name_matched"}
+            direction={orderBy === "Name_matched" ? order : "asc"}
+            onClick={createSortHandler("Name_matched")}
+          >
+            Name Matched
+          </TableSortLabel>
+        </TableCell>
 
-              <TableCell>
-                  <TableSortLabel
-                    active={orderBy === "Source"}
-                    direction={orderBy === "Source" ? order : 'asc'}
-                    onClick={createSortHandler("Source")}
-                  >
-                    Source
-                  </TableSortLabel>
-              </TableCell>
+        <TableCell>
+          <TableSortLabel
+            active={orderBy === "Source"}
+            direction={orderBy === "Source" ? order : "asc"}
+            onClick={createSortHandler("Source")}
+          >
+            Source
+          </TableSortLabel>
+        </TableCell>
 
-              <TableCell>
-                  <TableSortLabel
-                    active={orderBy === "Overall_score"}
-                    direction={orderBy === "Overall_score" ? order : 'asc'}
-                    onClick={createSortHandler("Overall_score")}
-                  >
-                    Overall Score
-                  </TableSortLabel>
-              </TableCell>
-              
-              <TableCell>
-                  <TableSortLabel
-                    active={orderBy === "Taxonomic_status"}
-                    direction={orderBy === "Taxonomic_status" ? order : 'asc'}
-                    onClick={createSortHandler("Taxonomic_status")}
-                  >
-                    Taxonomic Status
-                  </TableSortLabel>
-              </TableCell>
+        <TableCell>
+          <TableSortLabel
+            active={orderBy === "Overall_score"}
+            direction={orderBy === "Overall_score" ? order : "asc"}
+            onClick={createSortHandler("Overall_score")}
+          >
+            Overall Score
+          </TableSortLabel>
+        </TableCell>
 
-              <TableCell>
-                  <TableSortLabel
-                    active={orderBy === "Accepted_name"}
-                    direction={orderBy === "Accepted_name" ? order : 'asc'}
-                    onClick={createSortHandler("Accepted_name")}
-                  >
-                    Accepted Name
-                  </TableSortLabel>
-              </TableCell>
+        <TableCell>
+          <TableSortLabel
+            active={orderBy === "Taxonomic_status"}
+            direction={orderBy === "Taxonomic_status" ? order : "asc"}
+            onClick={createSortHandler("Taxonomic_status")}
+          >
+            Taxonomic Status
+          </TableSortLabel>
+        </TableCell>
 
-              <TableCell>Details</TableCell>
-            </TableRow>
+        <TableCell>
+          <TableSortLabel
+            active={orderBy === "Accepted_name"}
+            direction={orderBy === "Accepted_name" ? order : "asc"}
+            onClick={createSortHandler("Accepted_name")}
+          >
+            Accepted Name
+          </TableSortLabel>
+        </TableCell>
+
+        <TableCell>Details</TableCell>
+      </TableRow>
     </TableHead>
   );
 }

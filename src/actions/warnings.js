@@ -30,6 +30,8 @@ export const translateWarningCode = (code) => {
       return "[Ambiguous] [HigherTaxa] [Overall]";
     case 15:
       return "[Partial] [Ambiguous] [HigherTaxa] [Overall]";
+    default:
+      return ""
   }
 };
 
@@ -44,6 +46,8 @@ export const shortText2LongText = (text) => {
         return "Better higher taxonomic match available";
       case "[Overall]":
         return "Better overall match available";
+      default:
+        return ""
     }
   });
 };

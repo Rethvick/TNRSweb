@@ -36,8 +36,10 @@ function IndexApp({ sourcesAvailable }) {
   const [loadingStatus, setLoadingStatus] = useState(false);
   // resolve or parse
   const [queryType, setQueryType] = useState("resolve");
-  // 
-  const [bestMatchingSetting, setBestMatchingSetting] = useState("overall-score");
+  //
+  const [bestMatchingSetting, setBestMatchingSetting] = useState(
+    "overall-score"
+  );
 
   // function to query data from the api
   // FIXME: move this function to a separate file
@@ -57,7 +59,7 @@ function IndexApp({ sourcesAvailable }) {
     if (names.length == 0) {
       return;
     }
-    // 
+    //
     setResult([]);
     setParsedNames([]);
     // show spinner
@@ -86,6 +88,7 @@ function IndexApp({ sourcesAvailable }) {
         })
         .then(
           (response) => {
+            console.log(response.data)
             // group data using
             // Author_matched + Name_matched + Overall_score + Accepted_name
             let groupedData = _.chain(response.data)
@@ -148,7 +151,7 @@ function IndexApp({ sourcesAvailable }) {
             // hide spinner
             setLoadingStatus(false);
             // reset best matching settings
-            setBestMatchingSetting("overall-score")
+            setBestMatchingSetting("overall-score");
           },
           () => {
             alert("Error fetching data from API");
@@ -194,13 +197,13 @@ function IndexApp({ sourcesAvailable }) {
         return row;
       }
     });
-    setBestMatchingSetting("custom")
+    setBestMatchingSetting("custom");
     setResult(new_results);
   };
 
   const sortByHigherTaxonomyHandler = () => {
     let sortedData = sortByHigherTaxonomy(result);
-    setBestMatchingSetting("higher-taxonomy-order")
+    setBestMatchingSetting("higher-taxonomy-order");
     setResult(sortedData);
   };
 
@@ -252,10 +255,10 @@ function IndexApp({ sourcesAvailable }) {
                         />
                       </Box>
                       <Box pb={1}>
-                      <ResolveTable
-                        tableData={result}
-                        onChangeSelectedRow={changeSelectedRowHandler}
-                      />
+                        <ResolveTable
+                          tableData={result}
+                          onChangeSelectedRow={changeSelectedRowHandler}
+                        />
                       </Box>
                     </Paper>
                   </Grid>
@@ -264,7 +267,7 @@ function IndexApp({ sourcesAvailable }) {
                   <Grid lg={12} xs={12} item>
                     <Paper>
                       <Box pb={1}>
-                      <ParseTable tableData={parsedNames} />
+                        <ParseTable tableData={parsedNames} />
                       </Box>
                     </Paper>
                   </Grid>
