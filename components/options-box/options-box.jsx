@@ -18,6 +18,8 @@ export function OptionsBox({
   onChangeQueryType,
   sourcesAvailable,
   onChangeSources,
+  familiesAvailable,
+  onChangeFamily,
 }) {
   const classes = useStyles();
 
@@ -48,11 +50,9 @@ export function OptionsBox({
 
   return (
     <Paper className={classes.paper}>
-      <Box py={2}>
-        <Box p={2}>
-          <Box mb={1}>
-            <InputLabel>Processing Mode</InputLabel>
-          </Box>
+      <Box p={2}>
+        <Box>
+          <InputLabel>Processing Mode</InputLabel>
           <FormControl variant="outlined" fullWidth>
             <Select
               value={queryType}
@@ -64,25 +64,39 @@ export function OptionsBox({
           </FormControl>
         </Box>
         {queryType === "resolve" && (
-          <Box p={2} pt={0}>
-            <FormLabel component="legend">Sources</FormLabel>
-            <FormGroup row>
-              {sourcesState?.map((s) => {
-                return (
-                  <FormControlLabel
-                    key={s.name}
-                    control={
-                      <Switch
-                        onClick={() => handleChangeSources(s.name)}
-                        checked={s.enabled}
-                      />
-                    }
-                    label={s.name.toUpperCase()}
-                  />
-                );
-              })}
-            </FormGroup>
-          </Box>
+          <>
+            <Box pt={1} >
+              <InputLabel>Family Classification</InputLabel>
+              <FormControl variant="outlined" fullWidth>
+                <Select value={1} onChange={(e) => onChangeFamily(e.target.value)}>
+                  {familiesAvailable.map((f) => (
+                    <MenuItem key={f.sourceID} value={f.sourceID}>
+                      {f.sourceName.toUpperCase()}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            <Box pt={1} >
+              <FormLabel component="legend">Sources</FormLabel>
+              <FormGroup row>
+                {sourcesState?.map((s) => {
+                  return (
+                    <FormControlLabel
+                      key={s.name}
+                      control={
+                        <Switch
+                          onClick={() => handleChangeSources(s.name)}
+                          checked={s.enabled}
+                        />
+                      }
+                      label={s.name.toUpperCase()}
+                    />
+                  );
+                })}
+              </FormGroup>
+            </Box>
+          </>
         )}
       </Box>
     </Paper>
