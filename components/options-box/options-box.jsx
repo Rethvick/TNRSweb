@@ -65,7 +65,7 @@ export function OptionsBox({
         </Box>
         {queryType === "resolve" && (
           <>
-            <Box pt={1} >
+            <Box pt={2} >
               <InputLabel>Family Classification</InputLabel>
               <FormControl variant="outlined" fullWidth>
                 <Select value={1} onChange={(e) => onChangeFamily(e.target.value)}>
@@ -77,7 +77,7 @@ export function OptionsBox({
                 </Select>
               </FormControl>
             </Box>
-            <Box pt={1} >
+            <Box pt={2} >
               <FormLabel component="legend">Sources</FormLabel>
               <FormGroup row>
                 {sourcesState?.map((s) => {
