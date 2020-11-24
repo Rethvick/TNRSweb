@@ -43,7 +43,6 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     "overall-score"
   );
 
-  console.log(familiesAvailable);
   // function to query data from the api
   // FIXME: move this function to a separate file
   const queryNames = (names) => {
@@ -91,7 +90,6 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         })
         .then(
           (response) => {
-            console.log(response.data);
             // group data using
             // Author_matched + Name_matched + Overall_score + Accepted_name
             let groupedData = _.chain(response.data)
