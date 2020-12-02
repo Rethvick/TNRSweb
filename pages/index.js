@@ -32,7 +32,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   const [parsedNames, setParsedNames] = useState([]);
   // we keep the sources selected by the user here
   const [sourcesQuery, setSourcesQuery] = useState(sourcesAvailable.join(","));
-  // use the first family available 
+  // use the first family available
   const [familyQuery, setFamilyQuery] = useState(familiesAvailable[0].ID);
   // keep a status for when the system is loading
   const [loadingStatus, setLoadingStatus] = useState(false);
@@ -73,7 +73,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         opts: {
           // sources coming from the options box
           sources: sourcesQuery,
-          class: "tropicos",
+          class: familyQuery,
           mode: "resolve",
           matches: "all",
         },
