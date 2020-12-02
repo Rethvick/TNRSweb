@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Popper,
+  Popover,
   Button,
   Box,
   Paper,
@@ -15,13 +15,10 @@ import {
   DialogContentText,
 } from "@material-ui/core";
 
-export function BestMatchSettingsPopper({
-  onClickSortHigherTaxa,
-  bestMatchingSetting,
-}) {
+export function BestMatchSettingsPopper({ onClickSort, bestMatchingSetting }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [hiTaxonomyEnabled, setHiTaxonomyEnabled] = React.useState(false);
+  const [dialogSort, setDialogSort] = React.useState(bestMatchingSetting);
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -34,29 +31,58 @@ export function BestMatchSettingsPopper({
       <Button variant="contained" type="button" onClick={handleClick}>
         Best Match Settings
       </Button>
-      <Popper open={open} anchorEl={anchorEl} placement="bottom-start">
+      <Popover
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+      >
         <Paper elevation={3}>
           <Box pt={1} pl={2} pb={0}>
             <FormControl>
               <FormGroup>
                 <FormControlLabel
                   onClick={() => {
-                    if (bestMatchingSetting !== "higher-taxonomy-order") {
+                    if (bestMatchingSetting !== "Highertaxa_score_order") {
                       setDialogOpen(true);
+                      setDialogSort('Highertaxa_score_order')
                     }
                   }}
                   control={
                     <Checkbox
-                      checked={bestMatchingSetting === "higher-taxonomy-order"}
+                      checked={
+                        bestMatchingSetting === "Highertaxa_score_order"
+                      }
                     />
                   }
                   label="Sort by Higher Taxonomy"
+                />
+                <FormControlLabel
+                  onClick={() => {
+                    if (bestMatchingSetting !== "Overall_score_order") {
+                      setDialogOpen(true);
+                      setDialogSort('Overall_score_order')
+                    }
+                  }}
+                  control={
+                    <Checkbox
+                      checked={bestMatchingSetting === "Overall_score_order"}
+                    />
+                  }
+                  label="Sort by Overall Score"
                 />
               </FormGroup>
             </FormControl>
           </Box>
         </Paper>
-      </Popper>
+      </Popover>
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <DialogTitle>{"Action Required"}</DialogTitle>
         <DialogContent>
@@ -69,8 +95,7 @@ export function BestMatchSettingsPopper({
           <Button
             onClick={() => {
               setDialogOpen(false);
-              setAnchorEl(null);
-              onClickSortHigherTaxa();
+              onClickSort(dialogSort);
             }}
             color="primary"
             autoFocus

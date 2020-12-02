@@ -18,7 +18,7 @@ import {
   BestMatchSettingsPopper,
 } from "../components/";
 
-import { translateWarningCode, sortByHigherTaxonomy } from "../src/actions";
+import { translateWarningCode, sortByColumn } from "../src/actions";
 
 import { Grid, Box, Container, Paper } from "@material-ui/core";
 
@@ -90,6 +90,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         })
         .then(
           (response) => {
+            console.log(response.data)
             // group data using
             // Author_matched + Name_matched + Overall_score + Accepted_name
             let groupedData = _.chain(response.data)
@@ -202,9 +203,9 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     setResult(new_results);
   };
 
-  const sortByHigherTaxonomyHandler = () => {
-    let sortedData = sortByHigherTaxonomy(result);
-    setBestMatchingSetting("higher-taxonomy-order");
+  const sortByColumnHandler = (column) => {
+    let sortedData = sortByColumn(result, column);
+    setBestMatchingSetting(column);
     setResult(sortedData);
   };
 
@@ -252,7 +253,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                       <Box ml={2} pt={2} display="flex">
                         <BestMatchSettingsPopper
                           bestMatchingSetting={bestMatchingSetting}
-                          onClickSortHigherTaxa={sortByHigherTaxonomyHandler}
+                          onClickSort={sortByColumnHandler}
                         />
                         <DownloadResults
                           onClickDownload={downloadResultsHandler}
