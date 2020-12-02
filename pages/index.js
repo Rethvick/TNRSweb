@@ -39,9 +39,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   // resolve or parse
   const [queryType, setQueryType] = useState("resolve");
   //
-  const [bestMatchingSetting, setBestMatchingSetting] = useState(
-    "overall-score"
-  );
+  const [bestMatchingSetting, setBestMatchingSetting] = useState();
 
   // function to query data from the api
   // FIXME: move this function to a separate file
@@ -153,7 +151,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
             // hide spinner
             setLoadingStatus(false);
             // reset best matching settings
-            setBestMatchingSetting("overall-score");
+            setBestMatchingSetting("Overall_score_order");
           },
           () => {
             alert("Error fetching data from API");
