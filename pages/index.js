@@ -192,7 +192,6 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         return row;
       }
     });
-    setBestMatchingSetting("custom");
     setResult(new_results);
   };
 
