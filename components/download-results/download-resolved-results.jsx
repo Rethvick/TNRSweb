@@ -18,7 +18,7 @@ import {
 import { Parser } from "json2csv";
 import { saveAs } from "file-saver";
 
-export function DownloadResults(props) {
+export function DownloadResolvedResults({ data }) {
   const [open, setOpen] = useState(false);
   const [fileName, setFileName] = useState("tnrs_result");
   const [fileFormat, setFileFormat] = useState("csv");
@@ -30,7 +30,7 @@ export function DownloadResults(props) {
 
   const handleClose = () => {
     setOpen(false);
-  };  
+  };
 
   return (
     <>
@@ -93,7 +93,12 @@ export function DownloadResults(props) {
           </Button>
           <Button
             onClick={() =>
-              props.onClickDownload(fileName, fileFormat, matchesToDownload)
+              generateDownloadFile(
+                data,
+                fileName,
+                fileFormat,
+                matchesToDownload
+              )
             }
             color="primary"
           >
@@ -105,7 +110,7 @@ export function DownloadResults(props) {
   );
 }
 
-export const generateDownloadFile = (
+const generateDownloadFile = (
   data,
   fileName,
   fileFormat,

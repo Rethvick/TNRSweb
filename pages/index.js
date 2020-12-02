@@ -12,8 +12,8 @@ import {
   ResolveTable,
   Footer,
   TopBar,
-  DownloadResults,
-  generateDownloadFile,
+  DownloadResolvedResults,
+  DownloadParsedResults,
   ParseTable,
   BestMatchSettingsPopper,
 } from "../components/";
@@ -179,10 +179,6 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     }
   };
 
-  // function to generate the download file
-  const downloadResultsHandler = (fileName, fileFormat, matchesToDownload) => {
-    generateDownloadFile(result, fileName, fileFormat, matchesToDownload);
-  };
 
   const changeSelectedRowHandler = (rowToSelect) => {
     let new_results = result.map((row) => {
@@ -252,8 +248,8 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                           bestMatchingSetting={bestMatchingSetting}
                           onClickSort={sortByColumnHandler}
                         />
-                        <DownloadResults
-                          onClickDownload={downloadResultsHandler}
+                        <DownloadResolvedResults
+                          data={result}
                         />
                       </Box>
                       <Box pb={1}>
@@ -268,6 +264,11 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                 {parsedNames.length > 0 && (
                   <Grid lg={12} xs={12} item>
                     <Paper>
+                      <Box ml={2} pt={2} display="flex">
+                        <DownloadParsedResults
+                          data={parsedNames}
+                        />
+                      </Box>
                       <Box pb={1}>
                         <ParseTable tableData={parsedNames} />
                       </Box>
