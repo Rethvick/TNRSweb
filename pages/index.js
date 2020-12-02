@@ -88,7 +88,6 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         })
         .then(
           (response) => {
-            console.log(response.data)
             // group data using
             // Author_matched + Name_matched + Overall_score + Accepted_name
             let groupedData = _.chain(response.data)

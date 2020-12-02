@@ -155,7 +155,6 @@ function TablePaginationActions(props) {
 export function ParseTable({ tableData }) {
   // states
   // FIXME: this is not being used, we should remove
-  const [popUpOpen, setPopUpOpen] = useState(false);
   const [dataPopUpOpen, setDataPopUpOpen] = useState(false);
   const [popUpDetails, setPopUpDetails] = useState({});
   const [page, setPage] = useState(0);
@@ -175,7 +174,6 @@ export function ParseTable({ tableData }) {
   };
 
   const handleClickClose = () => {
-    setPopUpOpen(false);
     setDataPopUpOpen(false);
   };
 
@@ -222,7 +220,19 @@ export function ParseTable({ tableData }) {
     return (
       <TableRow key={row.ID}>
         <TableCell>{row.Name_submitted} </TableCell>
-        <TableCell>{row.Genus}</TableCell>
+        <TableCell>
+          {row.Genus +
+            " " +
+            row.Specific_epithet +
+            " " +
+            row.Infraspecific_rank +
+            " " +
+            row.Infraspecific_epithet +
+            " " +
+            row.Infraspecific_rank_2 +
+            " " +
+            row.Infraspecific_epithet_2}
+        </TableCell>
         <TableCell>{row.Author}</TableCell>
         <TableCell>{row.Unmatched_terms}</TableCell>
         <TableCell>
@@ -311,11 +321,11 @@ function EnhancedTableHead(props) {
 
         <TableCell>
           <TableSortLabel
-            active={orderBy === "Author"}
+            active={orderBy === ""}
             direction={orderBy === "Author" ? order : "asc"}
             onClick={createSortHandler("Author")}
           >
-            Source
+            Author
           </TableSortLabel>
         </TableCell>
 
