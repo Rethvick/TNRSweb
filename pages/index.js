@@ -12,13 +12,13 @@ import {
   ResolveTable,
   Footer,
   TopBar,
-  DownloadResults,
-  generateDownloadFile,
+  DownloadResolvedResults,
+  DownloadParsedResults,
   ParseTable,
   BestMatchSettingsPopper,
 } from "../components/";
 
-import { translateWarningCode, sortByHigherTaxonomy } from "../src/actions";
+import { translateWarningCode, sortByColumn } from "../src/actions";
 
 import { Grid, Box, Container, Paper } from "@material-ui/core";
 
@@ -32,16 +32,14 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   const [parsedNames, setParsedNames] = useState([]);
   // we keep the sources selected by the user here
   const [sourcesQuery, setSourcesQuery] = useState(sourcesAvailable.join(","));
-  // use the first family available 
+  // use the first family available
   const [familyQuery, setFamilyQuery] = useState(familiesAvailable[0].ID);
   // keep a status for when the system is loading
   const [loadingStatus, setLoadingStatus] = useState(false);
   // resolve or parse
   const [queryType, setQueryType] = useState("resolve");
   //
-  const [bestMatchingSetting, setBestMatchingSetting] = useState(
-    "overall-score"
-  );
+  const [bestMatchingSetting, setBestMatchingSetting] = useState();
 
   // function to query data from the api
   // FIXME: move this function to a separate file
@@ -73,7 +71,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         opts: {
           // sources coming from the options box
           sources: sourcesQuery,
-          class: "tropicos",
+          class: familyQuery,
           mode: "resolve",
           matches: "all",
         },
@@ -152,7 +150,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
             // hide spinner
             setLoadingStatus(false);
             // reset best matching settings
-            setBestMatchingSetting("overall-score");
+            setBestMatchingSetting("Overall_score_order");
           },
           () => {
             alert("Error fetching data from API");
@@ -181,10 +179,6 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     }
   };
 
-  // function to generate the download file
-  const downloadResultsHandler = (fileName, fileFormat, matchesToDownload) => {
-    generateDownloadFile(result, fileName, fileFormat, matchesToDownload);
-  };
 
   const changeSelectedRowHandler = (rowToSelect) => {
     let new_results = result.map((row) => {
@@ -202,9 +196,9 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     setResult(new_results);
   };
 
-  const sortByHigherTaxonomyHandler = () => {
-    let sortedData = sortByHigherTaxonomy(result);
-    setBestMatchingSetting("higher-taxonomy-order");
+  const sortByColumnHandler = (column) => {
+    let sortedData = sortByColumn(result, column);
+    setBestMatchingSetting(column);
     setResult(sortedData);
   };
 
@@ -252,10 +246,10 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                       <Box ml={2} pt={2} display="flex">
                         <BestMatchSettingsPopper
                           bestMatchingSetting={bestMatchingSetting}
-                          onClickSortHigherTaxa={sortByHigherTaxonomyHandler}
+                          onClickSort={sortByColumnHandler}
                         />
-                        <DownloadResults
-                          onClickDownload={downloadResultsHandler}
+                        <DownloadResolvedResults
+                          data={result}
                         />
                       </Box>
                       <Box pb={1}>
@@ -270,6 +264,11 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                 {parsedNames.length > 0 && (
                   <Grid lg={12} xs={12} item>
                     <Paper>
+                      <Box ml={2} pt={2} display="flex">
+                        <DownloadParsedResults
+                          data={parsedNames}
+                        />
+                      </Box>
                       <Box pb={1}>
                         <ParseTable tableData={parsedNames} />
                       </Box>
