@@ -1,3 +1,3 @@
 export * from './warnings'
-export * from './higher-taxonomy-order'
+export * from './sort-by-column'
 export * from './round-score'
