@@ -321,7 +321,7 @@ function EnhancedTableHead(props) {
 
         <TableCell>
           <TableSortLabel
-            active={orderBy === ""}
+            active={orderBy === "Author"}
             direction={orderBy === "Author" ? order : "asc"}
             onClick={createSortHandler("Author")}
           >
