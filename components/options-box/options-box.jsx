@@ -19,6 +19,7 @@ export function OptionsBox({
   sourcesAvailable,
   onChangeSources,
   familiesAvailable,
+  familyQuery,
   onChangeFamily,
 }) {
   const classes = useStyles();
@@ -65,19 +66,22 @@ export function OptionsBox({
         </Box>
         {queryType === "resolve" && (
           <>
-            <Box pt={2} >
+            <Box pt={2}>
               <InputLabel>Family Classification</InputLabel>
               <FormControl variant="outlined" fullWidth>
-                <Select value={1} onChange={(e) => onChangeFamily(e.target.value)}>
+                <Select
+                  value={familyQuery}
+                  onChange={(e) => onChangeFamily(e.target.value)}
+                >
                   {familiesAvailable.map((f) => (
-                    <MenuItem key={f.sourceID} value={f.sourceID}>
+                    <MenuItem key={f.sourceName} value={f.sourceName}>
                       {f.sourceName.toUpperCase()}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
             </Box>
-            <Box pt={2} >
+            <Box pt={2}>
               <FormLabel component="legend">Sources</FormLabel>
               <FormGroup row>
                 {sourcesState?.map((s) => {
