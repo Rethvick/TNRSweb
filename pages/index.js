@@ -16,6 +16,7 @@ import {
   DownloadParsedResults,
   ParseTable,
   BestMatchSettingsPopper,
+  DownloadSettings,
 } from "../components/";
 
 import { translateWarningCode, sortByColumn } from "../src/actions";
@@ -33,13 +34,17 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   // we keep the sources selected by the user here
   const [sourcesQuery, setSourcesQuery] = useState(sourcesAvailable.join(","));
   // use the first family available
-  const [familyQuery, setFamilyQuery] = useState(familiesAvailable[0].ID);
+  const [familyQuery, setFamilyQuery] = useState(
+    familiesAvailable[0].sourceName
+  );
   // keep a status for when the system is loading
   const [loadingStatus, setLoadingStatus] = useState(false);
   // resolve or parse
   const [queryType, setQueryType] = useState("resolve");
   //
   const [bestMatchingSetting, setBestMatchingSetting] = useState();
+  //
+  const [queryTimeTracker, setQueryTime] = useState({ start: null, end: null });
 
   // function to query data from the api
   // FIXME: move this function to a separate file
@@ -66,6 +71,8 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     setLoadingStatus(true);
     //
     if (queryType === "resolve") {
+      // store the start time of the query
+      let start = Date();
       // query object sent to the api
       const queryObject = {
         opts: {
@@ -151,6 +158,8 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
             setLoadingStatus(false);
             // reset best matching settings
             setBestMatchingSetting("Overall_score_order");
+            // store end time
+            setQueryTime({ start: start, end: Date() });
           },
           () => {
             alert("Error fetching data from API");
@@ -178,7 +187,6 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
       setLoadingStatus(false);
     }
   };
-
 
   const changeSelectedRowHandler = (rowToSelect) => {
     let new_results = result.map((row) => {
@@ -247,8 +255,16 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                           bestMatchingSetting={bestMatchingSetting}
                           onClickSort={sortByColumnHandler}
                         />
-                        <DownloadResolvedResults
-                          data={result}
+                        <DownloadResolvedResults data={result} />
+                        <DownloadSettings
+                          settings={{
+                            time: queryTimeTracker,
+                            higherTaxonomy:
+                              bestMatchingSetting == "Highertaxa_score_order",
+                            familyClassification: familyQuery,
+                            sourcesSelected: sourcesQuery,
+                            jobType: queryType,
+                          }}
                         />
                       </Box>
                       <Box pb={1}>
@@ -264,9 +280,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                   <Grid lg={12} xs={12} item>
                     <Paper>
                       <Box ml={2} pt={2} display="flex">
-                        <DownloadParsedResults
-                          data={parsedNames}
-                        />
+                        <DownloadParsedResults data={parsedNames} />
                       </Box>
                       <Box pb={1}>
                         <ParseTable tableData={parsedNames} />
