@@ -8,6 +8,8 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
+  Radio,
+  RadioGroup,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -22,6 +24,11 @@ export function BestMatchSettingsPopper({ onClickSort, bestMatchingSetting }) {
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const handleChangeSortOrder = (e) => {
+    setDialogSort(e.target.value);
+    setDialogOpen(true);
   };
 
   const open = Boolean(anchorEl);
@@ -48,36 +55,20 @@ export function BestMatchSettingsPopper({ onClickSort, bestMatchingSetting }) {
           <Box pt={1} pl={2} pb={0}>
             <FormControl>
               <FormGroup>
-                <FormControlLabel
-                  onClick={() => {
-                    if (bestMatchingSetting !== "Highertaxa_score_order") {
-                      setDialogOpen(true);
-                      setDialogSort('Highertaxa_score_order')
-                    }
-                  }}
-                  control={
-                    <Checkbox
-                      checked={
-                        bestMatchingSetting === "Highertaxa_score_order"
-                      }
+                <FormControl>
+                  <RadioGroup value={bestMatchingSetting} onChange={handleChangeSortOrder}>
+                    <FormControlLabel
+                      value="Highertaxa_score_order"
+                      control={<Radio />}
+                      label="Sort by Higher Taxonomy"
                     />
-                  }
-                  label="Sort by Higher Taxonomy"
-                />
-                <FormControlLabel
-                  onClick={() => {
-                    if (bestMatchingSetting !== "Overall_score_order") {
-                      setDialogOpen(true);
-                      setDialogSort('Overall_score_order')
-                    }
-                  }}
-                  control={
-                    <Checkbox
-                      checked={bestMatchingSetting === "Overall_score_order"}
+                    <FormControlLabel
+                      value="Overall_score_order"
+                      control={<Radio />}
+                      label="Sort by Overall Score"
                     />
-                  }
-                  label="Sort by Overall Score"
-                />
+                  </RadioGroup>
+                </FormControl>
               </FormGroup>
             </FormControl>
           </Box>
