@@ -6,6 +6,7 @@
     "@material-ui/core": "latest",
     "@material-ui/icons": "^4.9.1",
     "axios": "^0.20.0",
+    "bibtex": "^0.9.0",
     "bootstrap": "^4.5.2",
     "clsx": "latest",
     "file-saver": "^2.0.2",
