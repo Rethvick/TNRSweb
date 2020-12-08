@@ -10,7 +10,6 @@ import Box from '@material-ui/core/Box';
 import { Link } from '@material-ui/core';
 import axios from "axios";
 import { useState } from "react";
-import { FormatBold } from "@material-ui/icons";
 
 import { parseBibFile } from "bibtex";
 
@@ -359,7 +358,7 @@ function AboutApp() {
             Literature cited
             </Typography>
             
-            <Typography variant="body2">g>
+            <Typography variant="body2">
               <List>
                 <ListItem>
                   <Typography variant="body2">
