@@ -58,14 +58,14 @@ export function BestMatchSettingsPopper({ onClickSort, bestMatchingSetting }) {
                 <FormControl>
                   <RadioGroup value={bestMatchingSetting} onChange={handleChangeSortOrder}>
                     <FormControlLabel
-                      value="Highertaxa_score_order"
-                      control={<Radio />}
-                      label="Sort by Higher Taxonomy"
-                    />
-                    <FormControlLabel
                       value="Overall_score_order"
                       control={<Radio />}
                       label="Sort by Overall Score"
+                    />
+                    <FormControlLabel
+                      value="Highertaxa_score_order"
+                      control={<Radio />}
+                      label="Sort by Higher Taxonomy"
                     />
                   </RadioGroup>
                 </FormControl>
@@ -85,6 +85,7 @@ export function BestMatchSettingsPopper({ onClickSort, bestMatchingSetting }) {
         <DialogActions>
           <Button
             onClick={() => {
+              setAnchorEl(null)
               setDialogOpen(false);
               onClickSort(dialogSort);
             }}
