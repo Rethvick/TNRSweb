@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  homeLink: {
+    textDecoration: "none !important",
+  },
 }));
 
 export function TopBar() {
@@ -32,7 +35,12 @@ export function TopBar() {
         <Toolbar>
           <Box mr={1}>
             <Link href="/" passHref>
-              <Typography component="a" color="inherit" variant="h6">
+              <Typography
+                className={classes.homeLink}
+                component="a"
+                color="inherit"
+                variant="h6"
+              >
                 TNRS
               </Typography>
             </Link>
