@@ -154,7 +154,7 @@ function AboutApp() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-      <Typography variant="h3" align="justify" display="block" gutterBottom="True">Warnings</Typography>
+      <Typography variant="h4" align="justify" display="block" gutterBottom="True">Warnings</Typography>
 
       <Typography variant="body1" align="justify" display="block" gutterBottom="True">Refer to the 
       following table for a detailed explanation of warnings for the name 

@@ -43,8 +43,8 @@ export function TopBar() {
           <Button color="inherit" href="/about">
             About
           </Button>
-          <Button color="inherit" href="/warnings">
-            Warnings
+          <Button color="inherit" href="/instructions">
+            Instructions
           </Button>
         </Toolbar>
       </Container>
