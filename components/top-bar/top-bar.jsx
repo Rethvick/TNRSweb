@@ -1,5 +1,7 @@
 //import { useStyles } from "./top-bar.style";
 
+import Link from "next/link";
+
 import {
   Box,
   AppBar,
@@ -20,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  homeLink: {
+    textDecoration: "none !important",
+  },
 }));
 
 export function TopBar() {
@@ -29,23 +34,40 @@ export function TopBar() {
       <Container>
         <Toolbar>
           <Box mr={1}>
-            <Typography variant="h6">TNRS</Typography>
+            <Link href="/" passHref>
+              <Typography
+                className={classes.homeLink}
+                component="a"
+                color="inherit"
+                variant="h6"
+              >
+                TNRS
+              </Typography>
+            </Link>
           </Box>
           <Typography variant="overline" className={classes.title}>
             Alpha
           </Typography>
-          <Button color="inherit" href="/">
-            Home
-          </Button>
-          <Button color="inherit" href="/sources">
-            Sources
-          </Button>
-          <Button color="inherit" href="/about">
-            About
-          </Button>
-          <Button color="inherit" href="/warnings">
-            Warnings
-          </Button>
+          <Link href="/" passHref>
+            <Button component="a" color="inherit">
+              Home
+            </Button>
+          </Link>
+          <Link href="/sources" passHref>
+            <Button component="a" color="inherit">
+              Sources
+            </Button>
+          </Link>
+          <Link href="/about" passHref>
+            <Button component="a" color="inherit">
+              About
+            </Button>
+          </Link>
+          <Link href="/warnings" passHref>
+            <Button component="a" color="inherit">
+              Warnings
+            </Button>
+          </Link>
         </Toolbar>
       </Container>
     </AppBar>
