@@ -16,7 +16,7 @@ import { Link } from "@material-ui/core";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
+const apiEndPoint = "https://tnrsapi.xyz/tnrs_api.php";
 
 const loadSources = async () => {
   const query = {
@@ -228,7 +228,7 @@ function AboutApp({ sourcesAvailable, citationsAvailable }) {
                       height="130"
                       width="auto"
                       image={
-                        "http://vegbiendev.nceas.ucsb.edu:8975/" + s.logo_path
+                        "https://tnrsapi.xyz/" + s.logo_path
                       }
                     />
                   </div>

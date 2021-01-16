@@ -23,7 +23,7 @@ import { translateWarningCode, sortByColumn } from "../src/actions";
 
 import { Grid, Box, Container, Paper } from "@material-ui/core";
 
-const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
+const apiEndPoint = "https://tnrsapi.xyz/tnrs_api.php";
 //const apiEndPoint = "http://localhost:8080/";
 
 function IndexApp({ sourcesAvailable, familiesAvailable }) {

@@ -19,7 +19,7 @@ import { useState } from "react";
 
 import { parseBibFile } from "bibtex";
 
-const apiEndPoint = "http://vegbiendev.nceas.ucsb.edu:8975/tnrs_api.php";
+const apiEndPoint = "https://tnrsapi.xyz/tnrs_api.php";
 
 const loadCollab = async () => {
   const query = {
@@ -539,7 +539,7 @@ function AboutApp({ collaboratorsAvailable }) {
                       height="200"
                       width="auto"
                       image={
-                        "http://vegbiendev.nceas.ucsb.edu:8975/" + c.logo_path
+                        "https://tnrsapi.xyz/" + c.logo_path
                       }
                     />
                   </div>

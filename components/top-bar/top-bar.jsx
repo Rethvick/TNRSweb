@@ -63,11 +63,6 @@ export function TopBar() {
               About
             </Button>
           </Link>
-          <Link href="/warnings" passHref>
-            <Button component="a" color="inherit">
-              Warnings
-            </Button>
-          </Link>
         </Toolbar>
       </Container>
     </AppBar>
