@@ -1,23 +1,17 @@
 import { Layout } from "../components";
 import Head from "next/head";
 
-import { Typography, Avatar, makeStyles } from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import { Link } from "@material-ui/core";
 import axios from "axios";
-import { useState } from "react";
-
-import { parseBibFile } from "bibtex";
 
 const apiEndPoint = "https://tnrsapi.xyz/tnrs_api.php";
 
@@ -49,15 +43,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    // flex: 1,
-    // flexGrow: 1
   },
   root: {
-    // border: `1px solid ${theme.palette.secondary[400]}`,
-    // padding: theme.spacing(2),
-    // borderRadius: "2px",
-    // maxWidth: 200,
-    // display: "flex",
     flexGrow: 1,
     display: "flex",
     flexDirection: "column",
@@ -92,16 +79,6 @@ const useStyles = makeStyles((theme) => ({
 function AboutApp({ collaboratorsAvailable }) {
   const classes = useStyles();
 
-  // const [collaborators, setCollaborators] = useState([]);
-
-  // const handleCollab = async () => {
-  //   let loadedCollaborators = await loadCollab();
-  //   setCollaborators(loadedCollaborators);
-  //   console.log(loadedCollaborators);
-  //   return loadedCollaborators;
-  // };
-
-  // handleCollab();
 
   return (
     <>
@@ -531,16 +508,13 @@ function AboutApp({ collaboratorsAvailable }) {
                   justify="space-between"
                   xs
                 >
-
                   <div>
                     <CardMedia
                       className={classes.image}
                       component="img"
                       height="200"
                       width="auto"
-                      image={
-                        "https://tnrsapi.xyz/" + c.logo_path
-                      }
+                      image={"https://tnrsapi.xyz/" + c.logo_path}
                     />
                   </div>
 
@@ -570,7 +544,6 @@ function AboutApp({ collaboratorsAvailable }) {
                       </Button>
                     </CardActions>
                   </div>
-
                 </Grid>
               ))}
             </Grid>
