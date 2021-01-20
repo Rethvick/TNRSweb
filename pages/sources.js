@@ -7,14 +7,12 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
-import { Link } from "@material-ui/core";
 import axios from "axios";
-import { useState, useEffect } from "react";
+const Cite = require("citation-js");
 
 const apiEndPoint = "https://tnrsapi.xyz/tnrs_api.php";
 
@@ -72,10 +70,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   root: {
-    // border: `1px solid ${theme.palette.secondary[400]}`,
-    // padding: theme.spacing(2),
-    // borderRadius: "2px",
-    // maxWidth: 200,
     flexGrow: 1,
     display: "flex",
     flexDirection: "column",
@@ -88,7 +82,6 @@ const useStyles = makeStyles((theme) => ({
   image: {
     padding: theme.spacing(3),
     objectFit: "cover",
-    // width: "100%"
     flex: 1,
     flexGrow: 1,
   },
@@ -101,20 +94,28 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    // alignSelf: "center",
-    // bottom: 0,
-    // flex: 1
   },
 }));
 
-function AboutApp({ sourcesAvailable, citationsAvailable }) {
+function SourcesApp({ sourcesAvailable, citationsAvailable }) {
+  console.log(citationsAvailable[2].citation);
+  //const c = Cite("@misc{TNRS, publisher = {The iPlant Collaborative}, title = {{Taxonomic Name Resolution Service. Version 5.0.2}}, url = {http://tnrs.iplantcollaborative.org/}, urldate = {Accessed <date_of_access>}, note = {TNRS website} }")
+  const c = Cite(citationsAvailable[3].citation);
+  console.log(c);
+
+  let a = c.format("bibliography", {
+    format: "html",
+    template: "apa",
+    lang: "en-US",
+  });
+  console.log(a);
+
   const classes = useStyles();
 
   return (
     <>
       <Head>
         <title>TNRS - Sources</title>
-
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
@@ -140,7 +141,6 @@ function AboutApp({ sourcesAvailable, citationsAvailable }) {
         </Typography>
         <Grid item xs={12}>
           <List className="contents">
-            {/* <ListItem button component="a" href="#tnrsupdated">TNRS database updated</ListItem> */}
             <ListItem button component="a" href="#currentsources">
               Current taxonomic sources
             </ListItem>
@@ -161,46 +161,6 @@ function AboutApp({ sourcesAvailable, citationsAvailable }) {
             </ListItem>
           </List>
         </Grid>
-
-        {/* <div id="tnrsupdated">
-        <Typography variant="h5" gutterBottom="True" align="justify">
-        TNRS database updated 24 Jul 2020
-        </Typography>
-        <Typography variant="body1" align="justify" gutterBottom="True">
-        The TNRS database was updated to version 4.1 on 24 Jul 2020. Relative to the previous version (4.1) the main differences are as follows:
-        </Typography>
-
-        <List>
-          <ListItem>
-            <Typography variant="body2">1. <strong>Tropicos updated </strong> (content accessed 30 May 2020)</Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="body2">2. <strong>USDA Plants updated </strong> (content accessed 3 July 2020)</Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="body2">
-              3. 
-              <strong>Sources GCC and ILDIS are now included in TPL and 
-              no longer listed as separate sources. 
-              </strong> In TNRS 4.0, these sources were served separately from The 
-              Plant List. This resulted in invalid/illegitimate names 
-              being exposed as the best match when querying source TPL 
-              for taxon names in families Asteraceae and Fabaceae. 
-              Retaining these sources in TPL in TNRS v4.1 now faithfully 
-              represents the taxonomic content of TPL 1.1.
-            </Typography>
-          </ListItem>
-          <ListItem>
-          <Typography variant="body2">
-              4. 
-              <strong>NCBI no longer included as taxonomic source. 
-              </strong> Changes to the taxonomic model and content of NCBI Taxomomy have rendered 
-              it incompatible with the strict nomenclatural model of the TNRS. This 
-              source has been removed from the TNRS to avoid introducing anomalies
-            </Typography>
-          </ListItem>
-        </List>
-      </div> */}
 
         <div id="currentsources">
           <Typography variant="h5" gutterBottom="True" align="justify">
@@ -227,9 +187,7 @@ function AboutApp({ sourcesAvailable, citationsAvailable }) {
                       component="img"
                       height="130"
                       width="auto"
-                      image={
-                        "https://tnrsapi.xyz/" + s.logo_path
-                      }
+                      image={"https://tnrsapi.xyz/" + s.logo_path}
                     />
                   </div>
 
@@ -373,27 +331,62 @@ function AboutApp({ sourcesAvailable, citationsAvailable }) {
             Literature cited
           </Typography>
 
-          {citationsAvailable.map((c) => (
-            <div className={classes.citation}>
-              <Typography variant="body1" gutterBottom={true} align="justify">
-                <strong>{c.source.toUpperCase()}</strong>
-              </Typography>
-              <Typography variant="body2" gutterBottom={true} align="justify">
-                {c.citation}
-              </Typography>
-              <br />
-            </div>
-          ))}
+          {citationsAvailable.map((citation) => {
+            let parsed = new Cite(citation.citation);
+            return (
+              <div className={classes.citation}>
+                <Typography variant="body1" gutterBottom={true} align="justify">
+                  <strong>{citation.source.toUpperCase()}</strong>
+                </Typography>
+                <Typography variant="body2" gutterBottom={true} align="justify">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: parsed.format("bibliography", {
+                        format: "html",
+                        template: "apa",
+                        lang: "en-US",
+                      }),
+                    }}
+                  ></div>
+                </Typography>
+                <br />
+              </div>
+            );
+          })}
         </div>
       </Layout>
     </>
   );
 }
 
-AboutApp.getInitialProps = async () => {
+SourcesApp.getInitialProps = async () => {
   let sources = await loadSources();
-  let citations = await loadCitations();
+  //let citations = await loadCitations();
+  //
+  let citations = [
+    {
+      source: "TNRS",
+      citation:
+        "@misc{TNRS, publisher = {{The iPlant Collaborative}}, title = {{Taxonomic Name Resolution Service. Version 5.0.2}}, url = {http://tnrs.iplantcollaborative.org/}, urldate = {Accessed <date_of_access>}, note = {TNRS website} }",
+    },
+    {
+      source: "Tropicos",
+      citation:
+        "@misc{Tropicos, address = {St. Louis, Missouri, USA}, publisher = {Missouri Botanical Garden}, title = {{Tropicos.org}}, url = {http://www.tropicos.org}, urldate = {Accessed 30 May 2020}, note = {Tropicos web database} }",
+    },
+    {
+      source: "TPL",
+      citation:
+        "@misc{TPL, title = {{The Plant List. Version 1.1}}, url = {http://www.theplantlist.org}, urldate = {2020-06-26}, year = {2013}, note = {The Plant List web database} }",
+    },
+    {
+      source: "USDA",
+      citation:
+        "@misc{USDA-NRCS, address = {Greensboro, North Carolina, USA}, author = {USDA-NRCS}, publisher = {National Plant Data Team}, title = {{The PLANTS Database}}, url = {http://plants.usda.gov}, urldate = {3 July 2020}, note = {USDA Plants web database} }",
+    },
+  ];
+
   return { sourcesAvailable: sources, citationsAvailable: citations };
 };
 
-export default AboutApp;
+export default SourcesApp;
