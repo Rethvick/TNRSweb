@@ -1,5 +1,6 @@
 import { Layout } from "../components";
 import Head from "next/head";
+import { useState } from "react";
 
 import { Typography, makeStyles } from "@material-ui/core";
 import List from "@material-ui/core/List";
@@ -12,6 +13,15 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import TextField from "@material-ui/core/TextField";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Link from "@material-ui/core/Link";
+
 const Cite = require("citation-js");
 
 const apiEndPoint = "https://tnrsapi.xyz/tnrs_api.php";
@@ -97,19 +107,57 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function BibTexDialog({ displayText }) {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <Button component={Link} onClick={handleClickOpen}>
+        [bibtex]
+      </Button>
+      <Dialog
+        maxWidth={"md"}
+        fullWidth
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"BibTeX entry"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {displayText.split("\n").map((line, index) => {
+              if ((index > 0) & (line != "}")) {
+                line = "\xa0\xa0\xa0\xa0" + line;
+              }
+              return (
+                <span>
+                  {line}
+                  <br />
+                </span>
+              );
+            })}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
+
 function SourcesApp({ sourcesAvailable, citationsAvailable }) {
-  console.log(citationsAvailable[2].citation);
-  //const c = Cite("@misc{TNRS, publisher = {The iPlant Collaborative}, title = {{Taxonomic Name Resolution Service. Version 5.0.2}}, url = {http://tnrs.iplantcollaborative.org/}, urldate = {Accessed <date_of_access>}, note = {TNRS website} }")
-  const c = Cite(citationsAvailable[3].citation);
-  console.log(c);
-
-  let a = c.format("bibliography", {
-    format: "html",
-    template: "apa",
-    lang: "en-US",
-  });
-  console.log(a);
-
   const classes = useStyles();
 
   return (
@@ -349,6 +397,7 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
                     }}
                   ></div>
                 </Typography>
+                <BibTexDialog displayText={citation.citation} />
                 <br />
               </div>
             );
@@ -361,30 +410,7 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
 
 SourcesApp.getInitialProps = async () => {
   let sources = await loadSources();
-  //let citations = await loadCitations();
-  //
-  let citations = [
-    {
-      source: "TNRS",
-      citation:
-        "@misc{TNRS, publisher = {{The iPlant Collaborative}}, title = {{Taxonomic Name Resolution Service. Version 5.0.2}}, url = {http://tnrs.iplantcollaborative.org/}, urldate = {Accessed <date_of_access>}, note = {TNRS website} }",
-    },
-    {
-      source: "Tropicos",
-      citation:
-        "@misc{Tropicos, address = {St. Louis, Missouri, USA}, publisher = {Missouri Botanical Garden}, title = {{Tropicos.org}}, url = {http://www.tropicos.org}, urldate = {Accessed 30 May 2020}, note = {Tropicos web database} }",
-    },
-    {
-      source: "TPL",
-      citation:
-        "@misc{TPL, title = {{The Plant List. Version 1.1}}, url = {http://www.theplantlist.org}, urldate = {2020-06-26}, year = {2013}, note = {The Plant List web database} }",
-    },
-    {
-      source: "USDA",
-      citation:
-        "@misc{USDA-NRCS, address = {Greensboro, North Carolina, USA}, author = {USDA-NRCS}, publisher = {National Plant Data Team}, title = {{The PLANTS Database}}, url = {http://plants.usda.gov}, urldate = {3 July 2020}, note = {USDA Plants web database} }",
-    },
-  ];
+  let citations = await loadCitations();
 
   return { sourcesAvailable: sources, citationsAvailable: citations };
 };
