@@ -48,13 +48,7 @@ export function DetailsDialog(props) {
       <DialogTitle id="dtitle">Details of the selected name</DialogTitle>
       <Box m={4} mt={0}>
         <TableContainer>
-          <Table aria-label="change selection table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Key</TableCell>
-                <TableCell>Value</TableCell>
-              </TableRow>
-            </TableHead>
+          <Table size='small'>
             <TableBody>
               {Object.entries(dataToDisplay).map(([key, value], idx) => (
                 <TableRow key={idx}>
