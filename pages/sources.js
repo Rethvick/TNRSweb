@@ -1,5 +1,6 @@
 import { Layout } from "../components";
 import Head from "next/head";
+import { useState } from "react";
 
 import { Typography, makeStyles } from "@material-ui/core";
 import List from "@material-ui/core/List";
@@ -7,14 +8,21 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
-import { Link } from "@material-ui/core";
 import axios from "axios";
-import { useState, useEffect } from "react";
+
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import TextField from "@material-ui/core/TextField";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Link from "@material-ui/core/Link";
+
+const Cite = require("citation-js");
 
 const apiEndPoint = "https://tnrsapi.xyz/tnrs_api.php";
 
@@ -72,10 +80,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   root: {
-    // border: `1px solid ${theme.palette.secondary[400]}`,
-    // padding: theme.spacing(2),
-    // borderRadius: "2px",
-    // maxWidth: 200,
     flexGrow: 1,
     display: "flex",
     flexDirection: "column",
@@ -88,7 +92,6 @@ const useStyles = makeStyles((theme) => ({
   image: {
     padding: theme.spacing(3),
     objectFit: "cover",
-    // width: "100%"
     flex: 1,
     flexGrow: 1,
   },
@@ -101,20 +104,66 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    // alignSelf: "center",
-    // bottom: 0,
-    // flex: 1
   },
 }));
 
-function AboutApp({ sourcesAvailable, citationsAvailable }) {
+function BibTexDialog({ displayText }) {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <Button component={Link} onClick={handleClickOpen}>
+        [bibtex]
+      </Button>
+      <Dialog
+        maxWidth={"md"}
+        fullWidth
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"BibTeX entry"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {displayText.split("\n").map((line, index) => {
+              if ((index > 0) & (line != "}")) {
+                line = "\xa0\xa0\xa0\xa0" + line;
+              }
+              return (
+                <span>
+                  {line}
+                  <br />
+                </span>
+              );
+            })}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
+
+function SourcesApp({ sourcesAvailable, citationsAvailable }) {
   const classes = useStyles();
 
   return (
     <>
       <Head>
         <title>TNRS - Sources</title>
-
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
@@ -140,7 +189,6 @@ function AboutApp({ sourcesAvailable, citationsAvailable }) {
         </Typography>
         <Grid item xs={12}>
           <List className="contents">
-            {/* <ListItem button component="a" href="#tnrsupdated">TNRS database updated</ListItem> */}
             <ListItem button component="a" href="#currentsources">
               Current taxonomic sources
             </ListItem>
@@ -161,46 +209,6 @@ function AboutApp({ sourcesAvailable, citationsAvailable }) {
             </ListItem>
           </List>
         </Grid>
-
-        {/* <div id="tnrsupdated">
-        <Typography variant="h5" gutterBottom="True" align="justify">
-        TNRS database updated 24 Jul 2020
-        </Typography>
-        <Typography variant="body1" align="justify" gutterBottom="True">
-        The TNRS database was updated to version 4.1 on 24 Jul 2020. Relative to the previous version (4.1) the main differences are as follows:
-        </Typography>
-
-        <List>
-          <ListItem>
-            <Typography variant="body2">1. <strong>Tropicos updated </strong> (content accessed 30 May 2020)</Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="body2">2. <strong>USDA Plants updated </strong> (content accessed 3 July 2020)</Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="body2">
-              3. 
-              <strong>Sources GCC and ILDIS are now included in TPL and 
-              no longer listed as separate sources. 
-              </strong> In TNRS 4.0, these sources were served separately from The 
-              Plant List. This resulted in invalid/illegitimate names 
-              being exposed as the best match when querying source TPL 
-              for taxon names in families Asteraceae and Fabaceae. 
-              Retaining these sources in TPL in TNRS v4.1 now faithfully 
-              represents the taxonomic content of TPL 1.1.
-            </Typography>
-          </ListItem>
-          <ListItem>
-          <Typography variant="body2">
-              4. 
-              <strong>NCBI no longer included as taxonomic source. 
-              </strong> Changes to the taxonomic model and content of NCBI Taxomomy have rendered 
-              it incompatible with the strict nomenclatural model of the TNRS. This 
-              source has been removed from the TNRS to avoid introducing anomalies
-            </Typography>
-          </ListItem>
-        </List>
-      </div> */}
 
         <div id="currentsources">
           <Typography variant="h5" gutterBottom="True" align="justify">
@@ -227,9 +235,7 @@ function AboutApp({ sourcesAvailable, citationsAvailable }) {
                       component="img"
                       height="130"
                       width="auto"
-                      image={
-                        "https://tnrsapi.xyz/" + s.logo_path
-                      }
+                      image={"https://tnrsapi.xyz/" + s.logo_path}
                     />
                   </div>
 
@@ -373,27 +379,40 @@ function AboutApp({ sourcesAvailable, citationsAvailable }) {
             Literature cited
           </Typography>
 
-          {citationsAvailable.map((c) => (
-            <div className={classes.citation}>
-              <Typography variant="body1" gutterBottom={true} align="justify">
-                <strong>{c.source.toUpperCase()}</strong>
-              </Typography>
-              <Typography variant="body2" gutterBottom={true} align="justify">
-                {c.citation}
-              </Typography>
-              <br />
-            </div>
-          ))}
+          {citationsAvailable.map((citation) => {
+            let parsed = new Cite(citation.citation);
+            return (
+              <div className={classes.citation}>
+                <Typography variant="body1" gutterBottom={true} align="justify">
+                  <strong>{citation.source.toUpperCase()}</strong>
+                </Typography>
+                <Typography variant="body2" gutterBottom={true} align="justify">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: parsed.format("bibliography", {
+                        format: "html",
+                        template: "apa",
+                        lang: "en-US",
+                      }),
+                    }}
+                  ></div>
+                </Typography>
+                <BibTexDialog displayText={citation.citation} />
+                <br />
+              </div>
+            );
+          })}
         </div>
       </Layout>
     </>
   );
 }
 
-AboutApp.getInitialProps = async () => {
+SourcesApp.getInitialProps = async () => {
   let sources = await loadSources();
   let citations = await loadCitations();
+
   return { sourcesAvailable: sources, citationsAvailable: citations };
 };
 
-export default AboutApp;
+export default SourcesApp;
