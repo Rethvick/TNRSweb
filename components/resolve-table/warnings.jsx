@@ -60,7 +60,7 @@ export function WarningsPopover(props) {
         onMouseLeave={handlePopoverClose}
         onClick={handleDialogOpen}
       >
-        <WarningIcon />
+        <WarningIcon fontSize='small' />
       </Box>
       <Popover
         id="mouse-over-popover"

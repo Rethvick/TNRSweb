@@ -27,44 +27,7 @@ import {
   Table,
 } from "@material-ui/core";
 
-// shows the dialog with details of each row
-function ParsedNamesDialog(props) {
-  const { onClose, open, row } = props;
-  // make a copy of the object being displayed
-  let dataToDisplay = { ...row };
-
-  // delete rows
-  delete dataToDisplay.ID;
-
-  return (
-    <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">
-      <DialogTitle id="dtitle">Details of the selected name</DialogTitle>
-      <Box m={4} mt={0}>
-        <TableContainer>
-          <Table aria-label="change selection table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Key</TableCell>
-                <TableCell>Value</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {Object.entries(dataToDisplay).map(([key, value], idx) => (
-                <TableRow key={idx}>
-                  <TableCell>{key}</TableCell>
-                  <TableCell>{value}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Button variant="contained" color="primary" onClick={onClose}>
-          Close
-        </Button>
-      </Box>
-    </Dialog>
-  );
-}
+import DetailsDialog from './parse-details-dialog'
 
 function TablePaginationActions(props) {
   const { count, page, rowsPerPage, onChangePage } = props;
@@ -256,7 +219,7 @@ export function ParseTable({ tableData }) {
     <>
       <Box m={2} mb={0}>
         <TableContainer>
-          <Table aria-label="change selection table">
+          <Table size='small'>
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -281,7 +244,7 @@ export function ParseTable({ tableData }) {
         </TableContainer>
       </Box>
 
-      <ParsedNamesDialog
+      <DetailsDialog
         open={dataPopUpOpen}
         onClose={handleClickClose}
         row={popUpDetails}

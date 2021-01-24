@@ -54,12 +54,12 @@ export function TopBar() {
             </Button>
           </Link>
           <Link href="/sources" passHref>
-            <Button component="a" color="inherit">
+            <Button size='small' component="a" color="inherit">
               Sources
             </Button>
           </Link>
           <Link href="/about" passHref>
-            <Button component="a" color="inherit">
+            <Button size='small' component="a" color="inherit">
               About
             </Button>
           </Link>

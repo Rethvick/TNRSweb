@@ -26,7 +26,7 @@ import {
 
 import { WarningsPopover } from "./warnings";
 import { SelectRowDialog } from "./select-row";
-import { DetailsDialog } from "./details-dialog";
+import { DetailsDialog } from "./resolve-details-dialog";
 import { mkSourceLinks, mkAcceptedNameLinks } from "./links";
 import { roundScore } from "../../src/actions";
 
@@ -238,7 +238,7 @@ export function ResolveTable({ tableData, onChangeSelectedRow }) {
     <>
       <Box mx={2}>
         <TableContainer>
-          <Table>
+          <Table size='small'>
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -296,7 +296,7 @@ function EnhancedTableHead(props) {
             direction={orderBy === "Warnings" ? order : "asc"}
             onClick={createSortHandler("Warnings")}
           >
-            <WarningTwoToneIcon />
+            <WarningTwoToneIcon fontSize='small'/>
           </TableSortLabel>
         </TableCell>
         <TableCell>
