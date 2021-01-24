@@ -31,7 +31,7 @@ export const mkAcceptedNameLinks = (row) => {
       pair[1] && (
         <Link key={row.unique_id + pair[0]} href={pair[1]} target="_blank">
           <Tooltip title={pair[0].toUpperCase()} placement='left' arrow >
-          <LinkIcon />
+          <LinkIcon fontSize='small' />
           </Tooltip>
         </Link>
       )

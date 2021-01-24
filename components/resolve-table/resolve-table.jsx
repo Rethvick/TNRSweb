@@ -296,7 +296,7 @@ function EnhancedTableHead(props) {
             direction={orderBy === "Warnings" ? order : "asc"}
             onClick={createSortHandler("Warnings")}
           >
-            <WarningTwoToneIcon />
+            <WarningTwoToneIcon fontSize='small'/>
           </TableSortLabel>
         </TableCell>
         <TableCell>

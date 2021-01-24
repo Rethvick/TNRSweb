@@ -44,8 +44,8 @@ export function DetailsDialog(props) {
   deleteFields.forEach((field) => delete dataToDisplay[field]);
 
   return (
-    <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">
-      <DialogTitle id="dtitle">Details of the selected name</DialogTitle>
+    <Dialog open={open} maxWidth="lg">
+      <DialogTitle>Name submited: {dataToDisplay.Name_submitted}</DialogTitle>
       <Box m={4} mt={0}>
         <TableContainer>
           <Table size='small'>
