@@ -18,7 +18,6 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import TextField from "@material-ui/core/TextField";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Link from "@material-ui/core/Link";
 
@@ -90,8 +89,8 @@ const useStyles = makeStyles((theme) => ({
     height: "15px",
   },
   image: {
-    padding: theme.spacing(3),
-    objectFit: "cover",
+    padding: theme.spacing(2),
+    objectFit: "none",
     flex: 1,
     flexGrow: 1,
   },
