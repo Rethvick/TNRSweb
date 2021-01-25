@@ -56,8 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     padding: theme.spacing(0),
-    objectFit: "cover",
-    // width: "100%"
+    objectFit: "none",
     flex: 1,
     flexGrow: 1,
   },
