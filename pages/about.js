@@ -100,13 +100,13 @@ function AboutApp({ collaboratorsAvailable }) {
         <Grid item xs={12}>
           <List className="contents">
             <ListItem button component="a" href="#whattnrs">
-              What is TNRS?
+              What is the TNRS?
             </ListItem>
             <ListItem button component="a" href="#whytnrs">
               Why do we need a TNRS?
             </ListItem>
             <ListItem button component="a" href="#wheretnrs">
-              Where does TNRS get its synonymy
+              Where does the TNRS get its taxonomy?
             </ListItem>
             <ListItem button component="a" href="#howtnrs">
               How does the TNRS work?
@@ -198,29 +198,41 @@ function AboutApp({ collaboratorsAvailable }) {
 
         <div id="wheretnrs">
           <Typography variant="h5" gutterBottom="True" align="justify">
-            Where does the TNRS get its synonymy?
+            Where does the TNRS get its taxonomy?
           </Typography>
 
           <Typography variant="body2" gutterBottom="True" align="justify">
-            Synonymy is the conversion of out-of-date (synonymous) names to
-            accepted names. Such conversions are not always simple; taxonomists
-            can differ in their opinion as to which of a series of names is the
-            correct one. Where possible, the TNRS presents a single best
-            accepted name, as determined by the selected source(s) according to
-            source specific data. In the case of Tropicos, a computed acceptance
-            algorithm is used to provide a variety of decision criteria,
-            including date of publication and acceptance within exper-curated
-            project checklists, as the basis for choosing among conflicting
-            taxonomic opinions. Computed acceptance is a machine-based decision
-            process, and users of the TNRS should bear in mind the following
-            caveat provided by Tropicos:
+            The TNRS resolves names by consulting one or more 
+            publicly-available, expert-curated taxonomic databases. Thus, the
+            TNRS does not provide its own opinions, but simply speeds up the 
+            process of researching the status of taxonomic names according to
+            the authoritative sources. Although the TNRS allows users to choose
+            which taxonomic sources they consult, in the end, the opinions 
+            provided are those of the selected sources, not the TNRS. 
             <br />
             <br />
-            Computed acceptance is an automated evaluation of acceptance using
-            Tropicos digital flora projects, homotypic synonymy, and heterotypic
-            synonymy. This is NOT a human-curated, peer-reviewed checklist. Its
-            quality is driven by our algorithm and the accuracy and availability
-            of the data in the Tropicos system.
+            Some of the names matched by the TNRS may be synonyms, depending on
+            the source consulted. A synonym is a name that was published
+            but is no longer considered correct, for any one of a variety of 	
+            reasons. For example, if a different name for the same species
+            was published earlier in a different country, then the earlier 
+            name must be used (i.e., it is the accepted name) and the later 
+            name is a synonym. In some cases, researchers may discover that 
+            a species once believed to be endemic to a single country is 
+            the same as a much more widespread species. In this case, the older
+            name again becomes the accepted name and the later name a synonym.
+            <br />
+            <br />
+            Taxonomists sometimes differ in their opinions as to which 
+            name should be accepted. 
+            In many cases, taxonomic sources such as Tropicos 
+            are able to choose among these opinions, labeling one name as 
+            accepted and the other names as synonyms. In some cases, no decision
+            can as yet be made, in which case the status of name matched is 
+            unknown. The TNRS labels such names 'No opinion' and does not
+            provide an accepted name. In such cases, it is up to the user to
+            research the name further to determined if it should be used, and if
+            not, which name should be used instead as the accepted name.
           </Typography>
           <br />
         </div>
@@ -347,149 +359,77 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
 
           <Typography variant="body2" gutterBottom="True" align="justify">
-            TNRS was developed by the iPlant Collaborative Tree of Life Project,
-            in collaboration with the{" "}
-            <Link href="http://www.mobot.org/">Missouri Botanical Garden</Link>{" "}
-            and the{" "}
+            The TNRS is a project of the {" "}
             <Link href="http://bien.nceas.ucsb.edu/bien/">
               Botanical Information and Ecology Network
-            </Link>
-            .
-            <br />
-            <br />
-            Numerous members of the taxonomic and informatics community provided
-            advice , access to data, and source code.
+            </Link>. The original iPlant TNRS was developed in collaboration with
+            The iPlant Collaborative (now 
+            {" "}<Link href="http://www.cyverse.org/">Cyverse</Link>{" "}) 
+            and the {" "}<Link href="http://www.mobot.org/">Missouri Botanical 
+            Garden</Link>. Numerous members of the taxonomic and informatics 
+            community provided advice, access to data, and source code.
           </Typography>
 
           <Typography variant="h6" gutterBottom="True" align="justify">
-            Project direction and development
+            Project conception and direction
+          </Typography>
+          <Typography variant="body2" gutterBottom="True" align="justify">
+			  Brad Boyle<br />
+			  Brian Enquist<br />
           </Typography>
 
-          <List>
-            <ListItem>Brad Boyle</ListItem>
-            <ListItem>Brian Enquist</ListItem>
-            <ListItem>Juan Antonio Raygoza Garay</ListItem>
-            <ListItem>Nicole Hopkins</ListItem>
-            <ListItem>Zhenyuan Lu</ListItem>
-            <ListItem>Naim Matasci</ListItem>
-            <ListItem>Martha Narro</ListItem>
-            <ListItem>Shannon Oliver</ListItem>
-            <ListItem>William Piel</ListItem>
-            <ListItem>Jill Yarmchuk</ListItem>
-            <ListItem>iPlant staff</ListItem>
-          </List>
+          <Typography variant="h6" gutterBottom="True" align="justify">
+            Application development
+          </Typography>
+          <Typography variant="body2" gutterBottom="True" align="justify">
+			  Brad Boyle (TNRS database and API)<br />
+			  Naim Matasci (TNRS batch and parallel extensions)<br />
+			  Dmitry Mozzherin (GNI Name Parser)<br />
+			  Tony Rees (Taxamatch)<br />
+			  Michael Giddens (Taxamatch PHP port)<br />
+			  George C. Barbosa (web user interface)<br />
+			  Rohith Kumar Sajja (web user interface)<br />
+          </Typography>
+
+          <Typography variant="h6" gutterBottom="True" align="justify">
+            Project direction and development - iPlant TNRS
+          </Typography>
+         <Typography variant="body2" gutterBottom="True" align="justify">
+			  Brad Boyle (TNRS database)<br />
+			  Brian Enquist<br />
+			  Juan Antonio Raygoza Garay (original web user interface)<br />
+			  Nicole Hopkins<br />
+			  Zhenyuan Lu (algorithm development)<br />
+			  Naim Matasci (algorithm development, original API)<br />
+			  Martha Narro<br />
+			  Shannon Oliver<br />
+			  William Piel<br />
+			  Jill Yarmchuk<br />
+			  iPlant staff<br />
+          </Typography>
 
           <Typography variant="h6" gutterBottom="True" align="justify">
             Collaborators
           </Typography>
+          <Typography variant="body2" gutterBottom="True" align="justify">
+			Bob Magill (<Link href="http://www.mobot.org/">Missouri Botanical Garden</Link>)<br />
+			Chris Freeland (<Link href="http://www.mobot.org/">Missouri Botanical Garden</Link>)<br />
+			Chuck Miller (<Link href="http://www.mobot.org/">Missouri Botanical Garden</Link>)<br />
+			Peter Jorgensen (<Link href="http://www.mobot.org/">Missouri Botanical Garden</Link>)<br />
+			Amy Zanne (<Link href="http://www.umsl.edu/">University of Missouri, St. Louis</Link>)<br />
+			Peter Stevens (<Link href="http://www.mobot.org/">Missouri Botanical Garden</Link>)<br />
+			Jay Paige (<Link href="http://www.mobot.org/">Missouri Botanical Garden</Link>)<br />
+			Bob Peet (<Link href="http://www.unc.edu/">University of North Carolina at Chapel Hill</Link>)<br />
+			Paul Morris (<Link href="http://www.harvard.edu/">Harvard University</Link>)<br />
+			Alan Paton (<Link href="http://www.kew.org/">Kew Royal Botanic Gardens</Link>{" "} and the {" "}<Link href="http://www.kew.org/science/directory/projects/IPNI.html">International Plant Names Index</Link>)<br />
+			Tony Rees (<Link href="http://www.csiro.au/">Commonwealth Scientific and Industrial Research Organisation</Link>)<br />
+			Michael Giddens (<Link href="http://www.silverbiology.com/">www.silverbiology.com</Link>)<br />
+			Dmitry Mozzherin (<Link href="http://www.gbif.org/">Global Biodiversity Information Facility</Link>)<br />
+			David Remsen (<Link href="http://www.gbif.org/">Global Biodiversity Information Facility</Link>)<br />
+			David Patterson (<Link href="http://www.eol.org/">Encyclopedia of Life</Link>)<br />
+			Cam Webb (<Link href="http://www.harvard.edu/">Harvard University</Link>)<br />          </Typography>
 
-          <List>
-            <ListItem>
-              Bob Magill (
-              <Link href="http://www.mobot.org/">
-                Missouri Botanical Garden
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              Chris Freeland (
-              <Link href="http://www.mobot.org/">
-                Missouri Botanical Garden
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              Chuck Miller (
-              <Link href="http://www.mobot.org/">
-                Missouri Botanical Garden
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              Peter Jorgensen (
-              <Link href="http://www.mobot.org/">
-                Missouri Botanical Garden
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              Amy Zanne (
-              <Link href="http://www.umsl.edu/">
-                University of Missouri, St. Louis
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              Peter Stevens (
-              <Link href="http://www.mobot.org/">
-                Missouri Botanical Garden
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              Jay Paige (
-              <Link href="http://www.mobot.org/">
-                Missouri Botanical Garden
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              Bob Peet (
-              <Link href="http://www.unc.edu/">
-                University of North Carolina at Chapel Hill
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              Paul Morris (
-              <Link href="http://www.harvard.edu/">Harvard University</Link>)
-            </ListItem>
-            <ListItem>
-              Alan Paton (
-              <Link href="http://www.kew.org/">Kew Royal Botanic Gardens</Link>{" "}
-              and their{" "}
-              <Link href="http://www.kew.org/science/directory/projects/IPNI.html">
-                International Plant Names Index
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              Tony Rees (
-              <Link href="http://www.csiro.au/">
-                Commonwealth Scientific and Industrial Research Organisation
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              Michael Giddens (
-              <Link href="http://www.silverbiology.com/">
-                www.silverbiology.com
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              Dmitry Mozzherin (
-              <Link href="http://www.gbif.org/">
-                Global Biodiversity Information Facility
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              David Remsen (
-              <Link href="http://www.gbif.org/">
-                Global Biodiversity Information Facility
-              </Link>
-              )
-            </ListItem>
-            <ListItem>
-              David Patterson (
-              <Link href="http://www.eol.org/">Encyclopedia of Life</Link>)
-            </ListItem>
-            <ListItem>
-              Cam Webb (
-              <Link href="http://www.harvard.edu/">Harvard University</Link>)
-            </ListItem>
-          </List>
+
 
           <Typography variant="h6" gutterBottom="True" align="justify">
             Institutions
@@ -569,57 +509,13 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
 
           <Typography variant="body2" gutterBottom="True" align="justify">
-            The TNRS API is in the early stages of development. Currently it
-            consists of a single service to which a list of names is submitted.
+            The original TNRS API was a basic application, entirely separate  from the original TNRS web interface. Consequently, many features available via the TNRS web interface were not available via the API. 
             <br />
             <br />
-            Use GET to call to the matchNames service, found at:
-            http://tnrs.iplantc.org/tnrsm-svc/matchNames
+            However, the TNRS API is now a full-featured application built directly on top of the upgraded TNRS search engine. As the TNRS API functions handles all traffic between external applications and the TNRS search engine, all features available via the web interface are also available via the TNRS API. In addition, because the API is accessed programmatically, it can be used to process very large batches of names (exceeding the current limit of 5000 names) much more rapidly by looping through large name lists in batches of 5000. The TNRS API can also be used by third-party developers to access TNRS content and search capabilities into their applications. 
             <br />
             <br />
-            Easy ways to submit names to the service include entering a query in
-            your web browser or using the Linux curl tool.
-            <br />
-            <br />
-            Two parameters are required:
-            <br />
-            <List>
-              <ListItem>
-                <Typography variant="body2">
-                  <strong>retrieve </strong> specifies whether to retrieve all
-                  matches for the names submitted. There are currently two
-                  options: retrieve=best etrieves only the single best match for
-                  each name submitted; retrieve=all retrieves all matches.
-                </Typography>
-              </ListItem>
-              <ListItem>
-                <Typography variant="body2">
-                  {" "}
-                  <strong>names </strong> is followed by a comma separated list
-                  of names being submitted. Spaces in names must be url-encoded.{" "}
-                </Typography>
-              </ListItem>
-            </List>
-            <br />
-            Here is a short example in which the best matches are requested for
-            four names:
-            <br />
-            http://tnrs.iplantc.org/tnrsm-svc/matchNames?
-            <br />
-            retrieve=best&names=zea%20mays,acacia,solanum,saltea
-            <br />
-            <br />
-            An example call to the API using R can be found in
-            <Link href="http://tnrs.iplantcollaborative.org/tnrs_example.R">
-              this document
-            </Link>
-            .
-            <br />
-            <br />
-            Output is currently returned in JSON format. The service will be
-            expanded soon to support output in XML and CSV as well. In addition,
-            parameters will be added soon to specify output format, encoding,
-            and compression of the results.
+            For more information on the TNRS API and detailed instructions and examples of how to access the API in languages such as R and PHP, see documentation on the <Link href="https://github.com/ojalaquellueva/TNRSapi">TNRS API GitHub repository</Link>
           </Typography>
         </div>
 
