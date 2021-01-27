@@ -2,7 +2,7 @@
 
 ## How to contribute
 
-This project is written in JavaScript and use a Node intepreter.
+This project is written in JavaScript and uses [Node.js](https://nodejs.org/en/) intepreter.
 The first step to contribute is to install node in your machine.
 
 You can find help to install node [here](https://nodejs.dev/learn/how-to-install-nodejs).
