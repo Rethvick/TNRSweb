@@ -23,8 +23,7 @@ import { translateWarningCode, sortByColumn } from "../src/actions";
 
 import { Grid, Box, Container, Paper } from "@material-ui/core";
 
-const apiEndPoint = "https://tnrsapi.xyz/tnrs_api.php";
-//const apiEndPoint = "http://localhost:8080/";
+const apiEndPoint = process.env.apiEndPoint;
 
 function IndexApp({ sourcesAvailable, familiesAvailable }) {
   // state where we keep the results that come from the API

@@ -13,7 +13,8 @@ import Button from "@material-ui/core/Button";
 import { Link } from "@material-ui/core";
 import axios from "axios";
 
-const apiEndPoint = "https://tnrsapi.xyz/tnrs_api.php";
+const apiServer = process.env.apiServer;
+const apiEndPoint = process.env.apiEndPoint;
 
 const loadCollab = async () => {
   const query = {
@@ -77,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
 
 function AboutApp({ collaboratorsAvailable }) {
   const classes = useStyles();
-
 
   return (
     <>
@@ -513,7 +513,7 @@ function AboutApp({ collaboratorsAvailable }) {
                       component="img"
                       height="200"
                       width="auto"
-                      image={"https://tnrsapi.xyz/" + c.logo_path}
+                      image={apiServer + c.logo_path}
                     />
                   </div>
 

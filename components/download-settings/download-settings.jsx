@@ -3,7 +3,7 @@ import { Button } from "@material-ui/core";
 import axios from "axios";
 import { saveAs } from "file-saver";
 
-const apiEndPoint = "https://tnrsapi.xyz/tnrs_api.php";
+const apiEndPoint = process.env.apiEndPoint
 
 const getTNRSVer = () => {
   let query = {
