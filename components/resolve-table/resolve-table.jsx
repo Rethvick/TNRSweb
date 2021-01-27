@@ -30,93 +30,6 @@ import { DetailsDialog } from "./resolve-details-dialog";
 import { mkSourceLinks, mkAcceptedNameLinks } from "./links";
 import { roundScore } from "../../src/actions";
 
-// import Popup from "../Popup/Popup.jsx";
-
-function TablePaginationActions(props) {
-  const { count, page, rowsPerPage, onChangePage } = props;
-  const [inputPage, setInputPage] = useState(page + 1);
-
-  const handleFirstPageButtonClick = (event) => {
-    onChangePage(event, 0);
-    setInputPage(1);
-  };
-
-  const handleBackButtonClick = (event) => {
-    onChangePage(event, page - 1);
-    setInputPage(page);
-  };
-
-  const handleNextButtonClick = (event) => {
-    onChangePage(event, page + 1);
-    setInputPage(page + 2);
-  };
-
-  const handleLastPageButtonClick = (event) => {
-    onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-    setInputPage(Math.max(0, Math.ceil(count / rowsPerPage)));
-  };
-
-  return (
-    <>
-      <Box display="flex">
-        <IconButton
-          onClick={handleFirstPageButtonClick}
-          disabled={page === 0}
-          aria-label="first page"
-        >
-          <FirstPageIcon />
-        </IconButton>
-        <IconButton
-          onClick={handleBackButtonClick}
-          disabled={page === 0}
-          aria-label="previous page"
-        >
-          <KeyboardArrowLeft />
-        </IconButton>
-      </Box>
-      <Box width={150}>
-        <TextField
-          value={inputPage}
-          onKeyDown={(e) => {
-            // when the user presses enter key=13
-            if (e.keyCode === 13) {
-              let maxPage = Math.max(0, Math.ceil(count / rowsPerPage) - 1);
-              if (inputPage < 1) {
-                onChangePage(e, 0);
-                setInputPage(1);
-              } else if (inputPage > maxPage) {
-                onChangePage(e, maxPage);
-                setInputPage(maxPage + 1);
-              } else {
-                onChangePage(e, inputPage - 1);
-              }
-            }
-          }}
-          onChange={(e) => setInputPage(e.target.value)}
-          variant="outlined"
-          size="small"
-        />
-      </Box>
-      <Box display="flex">
-        <IconButton
-          onClick={handleNextButtonClick}
-          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-          aria-label="next page"
-        >
-          <KeyboardArrowRight />
-        </IconButton>
-        <IconButton
-          onClick={handleLastPageButtonClick}
-          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-          aria-label="last page"
-        >
-          <LastPageIcon />
-        </IconButton>
-      </Box>
-    </>
-  );
-}
-
 export function ResolveTable({ tableData, onChangeSelectedRow }) {
   // filter table data where selected == true
   let tableDataSelected = tableData.filter((row) => row.selected == true);
@@ -238,13 +151,12 @@ export function ResolveTable({ tableData, onChangeSelectedRow }) {
     <>
       <Box mx={2}>
         <TableContainer>
-          <Table size='small'>
+          <Table size="small">
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
             />
-
             <TableBody>
               {stableSort(tableDataSelected, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -280,6 +192,90 @@ export function ResolveTable({ tableData, onChangeSelectedRow }) {
   );
 }
 
+function TablePaginationActions(props) {
+  const { count, page, rowsPerPage, onChangePage } = props;
+  const [inputPage, setInputPage] = useState(page + 1);
+
+  const handleFirstPageButtonClick = (event) => {
+    onChangePage(event, 0);
+    setInputPage(1);
+  };
+
+  const handleBackButtonClick = (event) => {
+    onChangePage(event, page - 1);
+    setInputPage(page);
+  };
+
+  const handleNextButtonClick = (event) => {
+    onChangePage(event, page + 1);
+    setInputPage(page + 2);
+  };
+
+  const handleLastPageButtonClick = (event) => {
+    onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+    setInputPage(Math.max(0, Math.ceil(count / rowsPerPage)));
+  };
+
+  return (
+    <>
+      <Box display="flex">
+        <IconButton
+          onClick={handleFirstPageButtonClick}
+          disabled={page === 0}
+          aria-label="first page"
+        >
+          <FirstPageIcon />
+        </IconButton>
+        <IconButton
+          onClick={handleBackButtonClick}
+          disabled={page === 0}
+          aria-label="previous page"
+        >
+          <KeyboardArrowLeft />
+        </IconButton>
+      </Box>
+      <Box width={150}>
+        <TextField
+          value={inputPage}
+          onKeyDown={(e) => {
+            // when the user presses enter key=13
+            if (e.keyCode === 13) {
+              let maxPage = Math.max(0, Math.ceil(count / rowsPerPage) - 1);
+              if (inputPage < 1) {
+                onChangePage(e, 0);
+                setInputPage(1);
+              } else if (inputPage > maxPage) {
+                onChangePage(e, maxPage);
+                setInputPage(maxPage + 1);
+              } else {
+                onChangePage(e, inputPage - 1);
+              }
+            }
+          }}
+          onChange={(e) => setInputPage(e.target.value)}
+          variant="outlined"
+          size="small"
+        />
+      </Box>
+      <Box display="flex">
+        <IconButton
+          onClick={handleNextButtonClick}
+          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+          aria-label="next page"
+        >
+          <KeyboardArrowRight />
+        </IconButton>
+        <IconButton
+          onClick={handleLastPageButtonClick}
+          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+          aria-label="last page"
+        >
+          <LastPageIcon />
+        </IconButton>
+      </Box>
+    </>
+  );
+}
 function EnhancedTableHead(props) {
   const { order, orderBy, onRequestSort } = props;
 
@@ -296,9 +292,10 @@ function EnhancedTableHead(props) {
             direction={orderBy === "Warnings" ? order : "asc"}
             onClick={createSortHandler("Warnings")}
           >
-            <WarningTwoToneIcon fontSize='small'/>
+            <WarningTwoToneIcon fontSize="small" />
           </TableSortLabel>
         </TableCell>
+
         <TableCell>
           <TableSortLabel
             active={orderBy === "Name_submitted"}

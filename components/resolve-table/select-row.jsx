@@ -1,4 +1,3 @@
-
 import {
   Box,
   Dialog,
@@ -13,15 +12,17 @@ import {
   Switch,
 } from "@material-ui/core";
 
-import { mkSourceLinks } from './links'
-import { roundScore } from '../../src/actions'
+import { mkSourceLinks } from "./links";
+import { roundScore } from "../../src/actions";
 
-// FIXME: move to a separate file
 // shows the dialog to allow the user to select a diff row
 export function SelectRowDialog(props) {
   //
   const { onClose, open, rows, handleChangeSelectedRow } = props;
-  //
+  // function to sort by default best match order
+  const sortByMatchOrder = (a, b) => {
+    return b['Overall_score'] - a['Overall_score']
+  }
   //
   return (
     <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">
@@ -43,7 +44,7 @@ export function SelectRowDialog(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {rows.sort(sortByMatchOrder).map((row) => (
                 <TableRow key={row.unique_id}>
                   <TableCell>
                     <Switch
@@ -75,4 +76,3 @@ export function SelectRowDialog(props) {
     </Dialog>
   );
 }
-
