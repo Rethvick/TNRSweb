@@ -23,7 +23,8 @@ import Link from "@material-ui/core/Link";
 
 const Cite = require("citation-js");
 
-const apiEndPoint = "https://tnrsapi.xyz/tnrs_api.php";
+const apiServer = process.env.apiServer
+const apiEndPoint = process.env.apiEndPoint
 
 const loadSources = async () => {
   const query = {
@@ -234,7 +235,7 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
                       component="img"
                       height="130"
                       width="auto"
-                      image={"https://tnrsapi.xyz/" + s.logo_path}
+                      image={apiServer + s.logo_path}
                     />
                   </div>
 
