@@ -48,6 +48,9 @@ export function TopBar() {
           <Typography variant="overline" className={classes.title}>
             Alpha
           </Typography>
+          <Typography variant="overline" className={classes.title}>
+            Taxonomic Name Resolution Service v5.0
+          </Typography>
           <Link href="/" passHref>
             <Button component="a" color="inherit">
               Home

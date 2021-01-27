@@ -380,7 +380,17 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
           </Typography>
 
           {citationsAvailable.map((citation) => {
+            // parse data
             let parsed = new Cite(citation.citation);
+            // get today's data
+            let options = { year: 'numeric', month: 'short', day: 'numeric' };
+            let today  = new Date();
+            // fill accessed_date
+            var accessed_date = ', ' + parsed.data[0].note?.replace('<date_of_access>', today.toLocaleDateString("en-US", options))
+            // check if note was empty
+            if(accessed_date == ', undefined'){
+              accessed_date = ''
+            }
             return (
               <div className={classes.citation}>
                 <Typography variant="body1" gutterBottom={true} align="justify">
@@ -393,7 +403,9 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
                         format: "html",
                         template: "apa",
                         lang: "en-US",
-                      }),
+                      // remove part of the html that contains the closing div tag
+                      // and add the accessed date
+                      }).slice(0, -13) + accessed_date + '</div>',
                     }}
                   ></div>
                 </Typography>
