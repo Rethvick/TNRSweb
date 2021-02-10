@@ -309,6 +309,8 @@ function AboutApp({ collaboratorsAvailable }) {
                 </Typography>
               </ListItem>
             </List>
+            <p>These steps are illustrated in the figure below:</p>
+			<p><img src="URL_TNRS_WORLFLOW" /></p>
           </Typography>
         </div>
 

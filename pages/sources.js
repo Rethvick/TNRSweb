@@ -175,47 +175,14 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
         >
           Sources
         </Typography>
-        <Typography variant="body2" align="justify" gutterBottom="True">
-          The goal of TNRS is to provide the end user the ability to resolve
-          their list of names against a number of sources. The team of
-          developers at TNRS makes no attempt to determine the authority of the
-          names, rather we provide the information that is available from these
-          sources in a centralized location for matching of submitted names.
-          Should you encounter issues with names that are lacking, please
-          contact the source curators directly.
-        </Typography>
-        <Typography variant="h5" align="justify">
-          Table of Contents
-        </Typography>
-        <Grid item xs={12}>
-          <List className="contents">
-            <ListItem button component="a" href="#currentsources">
-              Current taxonomic sources
-            </ListItem>
-            <ListItem button component="a" href="#becomingprovider">
-              Becoming a data provider
-            </ListItem>
-            <ListItem button component="a" href="#whoshouldjoin">
-              Who should become a data provider for the TNRS?
-            </ListItem>
-            <ListItem button component="a" href="#howtoshare">
-              How do I share my taxonomy?
-            </ListItem>
-            <ListItem button component="a" href="#exportformat">
-              TNRS Simple Darwin Core export format
-            </ListItem>
-            <ListItem button component="a" href="#literaturecited">
-              Literature cited
-            </ListItem>
-          </List>
-        </Grid>
 
         <div id="currentsources">
           <Typography variant="h5" gutterBottom="True" align="justify">
-            Taxonomic Sources
+            Taxonomic data providers
           </Typography>
           <Typography variant="body2" gutterBottom="True" align="justify">
-            The following sources have been included in the TNRS v4.1 database:
+            TNRS version 5.0 consults the following 
+            sources of nomenclatural and taxonomic information:
           </Typography>
 
           <div className={classes.root}>
@@ -233,7 +200,7 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
                     <CardMedia
                       className={classes.image}
                       component="img"
-                      height="130"
+                      height="75"
                       width="auto"
                       image={apiServer + s.logo_path}
                     />
@@ -271,109 +238,24 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
             </Grid>
           </div>
         </div>
+        <br /><br />
 
-        <br />
-        <br />
-
-        <div id="becomingprovider">
+        <div id="reporterrors">
           <Typography variant="h5" gutterBottom="True" align="justify">
-            Becoming a data provider
+           Reporting errors
           </Typography>
+        <Typography variant="body2" align="justify" gutterBottom="True">
+			Please contact us at{" "}
+	<a href="mailto:support@tnrs.biendata.org">support@tnrs.biendata.org</a>
+          if you encounter errors or have questions regarding taxonomic opinions 
+          transmitted by the TNRS. However, unless the error is due to a bug 
+          in the TNRS, we will generally recommend you contact our
+          taxonomic data providers directly. 
+        </Typography>
+        
         </div>
 
-        <div id="whoshouldjoin">
-          <ListItem>
-            <ListItemText
-              primary={
-                <Typography variant="body1" align="justify">
-                  Who should become a data provider for the TNRS?
-                </Typography>
-              }
-            ></ListItemText>
-          </ListItem>
-
-          <ListItem>
-            <ListItemText
-              primary={
-                <Typography variant="body2" align="justify">
-                  Curators of databases of high quality plant taxonomy (taxonomy
-                  for any group of organisms goverened by the ICN, or
-                  International Code of Nomenclature for algae, fungi, and
-                  plants) are encouraged to make their names and synonymy
-                  available via the TNRS. Doing so will make it easier for
-                  researchers to standardize their names according to your
-                  taxonomy. We welcome both synonymized regional checklists
-                  (such as USDA Plants) and monographic treatments of species
-                  within families or other higher taxa (for example, the Global
-                  Compositae Checklist). Potential data providers should begin
-                  by contacting our support staff at{" "}
-                  <a href="mailto:support@cyverse.com">support@cyverse.com</a>.
-                </Typography>
-              }
-            ></ListItemText>
-          </ListItem>
-        </div>
-
-        <div id="howtoshare">
-          <ListItem>
-            <ListItemText
-              primary={
-                <Typography variant="body1" align="justify">
-                  How do I share my taxonomy?
-                </Typography>
-              }
-            ></ListItemText>
-          </ListItem>
-
-          <ListItem>
-            <ListItemText
-              primary={
-                <Typography variant="body2" align="justify">
-                  TNRS staff will work with you to develop the most effective
-                  method of sharing your taxonomic information. Exposing your
-                  data via the TNRS requires that we import your names and
-                  synonymy to a local database optimized for rapid access by our
-                  name resolution search engine. Although we can perform
-                  one-time imports, for actively curated database, regularly
-                  schedule ingests using a web service or live database link are
-                  the best way to ensure up-to-date representation of your data.
-                </Typography>
-              }
-            ></ListItemText>
-          </ListItem>
-        </div>
-
-        <div id="exportformat">
-          <ListItem>
-            <ListItemText
-              primary={
-                <Typography variant="body1" align="justify">
-                  TNRS Simple Darwin Core export format
-                </Typography>
-              }
-            ></ListItemText>
-          </ListItem>
-
-          <ListItem>
-            <ListItemText
-              primary={
-                <Typography variant="body2" align="justify">
-                  The simplest way to share your taxonomic information with the
-                  TNRS is as an export structured according to the TNRS Simple
-                  Darwin Core format. Taxonomic data formatted in this way can
-                  be added immediately to the TNRS database using our existing
-                  Darwin Core import utility. Detailed instructions on how to
-                  prepare you data in this format are provided in the document{" "}
-                  <a href="http://tnrs.iplantcollaborative.org/tnrs_dwc_template_instructions.txt">
-                    TNRS Simplified Darwin Core format
-                  </a>
-                  .
-                </Typography>
-              }
-            ></ListItemText>
-          </ListItem>
-        </div>
-
+{/*
         <div id="literaturecited">
           <Typography variant="h5" gutterBottom="True" align="justify">
             Literature cited
@@ -415,6 +297,7 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
             );
           })}
         </div>
+*/}
       </Layout>
     </>
   );
