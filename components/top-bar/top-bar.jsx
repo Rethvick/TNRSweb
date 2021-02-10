@@ -10,6 +10,7 @@ import {
   Typography,
   Button,
   makeStyles,
+  Hidden
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,21 +49,23 @@ export function TopBar() {
           <Typography variant="overline" className={classes.title}>
             Alpha
           </Typography>
-          <Typography variant="overline" className={classes.title}>
-            Taxonomic Name Resolution Service v5.0
-          </Typography>
+          <Hidden xsDown >
+            <Typography variant="overline" className={classes.title}>
+              Taxonomic Name Resolution Service v5.0
+            </Typography>
+          </Hidden>
           <Link href="/" passHref>
             <Button component="a" color="inherit">
               Home
             </Button>
           </Link>
           <Link href="/sources" passHref>
-            <Button size='small' component="a" color="inherit">
+            <Button size="small" component="a" color="inherit">
               Sources
             </Button>
           </Link>
           <Link href="/about" passHref>
-            <Button size='small' component="a" color="inherit">
+            <Button size="small" component="a" color="inherit">
               About
             </Button>
           </Link>
