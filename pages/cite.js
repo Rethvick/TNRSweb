@@ -155,6 +155,7 @@ function HowCiteApp({ citationsAvailable }) {
           also <a href="/sources">Sources</a>).
         </Typography>
 
+        {/*
         <div id="literaturecited">
           <Typography variant="h5" gutterBottom="True" align="justify">
             Literature cited
@@ -164,13 +165,18 @@ function HowCiteApp({ citationsAvailable }) {
             // parse data
             let parsed = new Cite(citation.citation);
             // get today's data
-            let options = { year: 'numeric', month: 'short', day: 'numeric' };
-            let today  = new Date();
+            let options = { year: "numeric", month: "short", day: "numeric" };
+            let today = new Date();
             // fill accessed_date
-            var accessed_date = ', ' + parsed.data[0].note?.replace('<date_of_access>', today.toLocaleDateString("en-US", options))
+            var accessed_date =
+              ", " +
+              parsed.data[0].note?.replace(
+                "<date_of_access>",
+                today.toLocaleDateString("en-US", options)
+              );
             // check if note was empty
-            if(accessed_date == ', undefined'){
-              accessed_date = ''
+            if (accessed_date == ", undefined") {
+              accessed_date = "";
             }
             return (
               <div>
@@ -180,13 +186,18 @@ function HowCiteApp({ citationsAvailable }) {
                 <Typography variant="body2" gutterBottom={true} align="justify">
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: parsed.format("bibliography", {
-                        format: "html",
-                        template: "apa",
-                        lang: "en-US",
-                      // remove part of the html that contains the closing div tag
-                      // and add the accessed date
-                      }).slice(0, -13) + accessed_date + '</div>',
+                      __html:
+                        parsed
+                          .format("bibliography", {
+                            format: "html",
+                            template: "apa",
+                            lang: "en-US",
+                            // remove part of the html that contains the closing div tag
+                            // and add the accessed date
+                          })
+                          .slice(0, -13) +
+                        accessed_date +
+                        "</div>",
                     }}
                   ></div>
                 </Typography>
@@ -196,6 +207,7 @@ function HowCiteApp({ citationsAvailable }) {
             );
           })}
         </div>
+        */}
       </Layout>
     </>
   );
