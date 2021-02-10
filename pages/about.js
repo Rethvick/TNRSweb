@@ -11,6 +11,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+import Link from 'next/link'
 
 const apiServer = process.env.apiServer;
 const apiEndPoint = process.env.apiEndPoint;
@@ -101,8 +102,6 @@ function AboutApp({ collaboratorsAvailable }) {
         <Typography variant="body2" gutterBottom align="justify">
           <a href="#whattnrs">What is the TNRS?</a>
           <br />
-          <a href="#whytnrs">Why do we need a TNRS?</a>
-          <br />
           <a href="#wheretnrs">Where does the TNRS get its taxonomy?</a>
           <br />
           <a href="#howtnrs">How does the TNRS work?</a>
@@ -137,79 +136,6 @@ function AboutApp({ collaboratorsAvailable }) {
             names that cannot be resolved automatically, the TNRS present a list
             of possibilities and provides tools for researching and selecting
             the preferred name.
-          </Typography>
-
-          <br />
-        </div>
-
-        <div id="whytnrs">
-          <Typography variant="h5" gutterBottom align="justify">
-            Why do we need a TNRS?
-          </Typography>
-
-          <Typography variant="body2" gutterBottom align="justify">
-            Taxonomic standardization is a major challenge for virtually every
-            field of plant biology. Ecological studies encompassing large
-            numbers of species, conservation decisions based on data from
-            multiple sources, molecular analyses linking sequence data to
-            organisms all require accurate species names, and the correct
-            matching of names among data sets.
-            <br />
-            <br />
-            Misspelled or out-of-date, synonymous names can be a major source of
-            error. Large, collaborative databases such as{" "}
-            <a href="http://www.gbif.org/" target="_blank">
-              GBIF
-            </a>
-            ,{" "}
-            <a
-              href="http://splink.cria.org.br/index?&setlang=en"
-              target="_blank"
-            >
-              SpeciesLink
-            </a>
-            ,{" "}
-            <a href="http://www.vegbank.org/" target="_blank">
-              VegBank
-            </a>
-            ,{" "}
-            <a href="http://traitnet.ecoinformatics.org/" target="_blank">
-              TrailNet
-            </a>
-            , and{" "}
-            <a href="http://www.ncbi.nlm.nih.gov/genbank/" target="_blank">
-              GenBank
-            </a>{" "}
-            are plagued by taxonomic problems, with up to 30% of names unmatched
-            to any published name. Even among published names, 5% to 20% are
-            synonymous. Despite the growing availability of digitized sources of
-            names (
-            <a href="http://www.ipni.org/" target="_blank">
-              IPNI
-            </a>
-            ,{" "}
-            <a href="http://www.globalnames.org/" target="_blank">
-              Global Names
-            </a>
-            ,{" "}
-            <a href="http://www.tropicos.org/" target="_blank">
-              Tropicos
-            </a>
-            ,{" "}
-            <a href="http://www.ubio.org/" target="_blank">
-              uBio
-            </a>
-            ) and taxonomic opinion (
-            <a href="http://www.tropicos.org/" target="_blank">
-              Tropicos
-            </a>
-            ,{" "}
-            <a href="http://www.theplantlist.org/" target="_blank">
-              The Plant List
-            </a>
-            ), taxonomic standardization remains an error-prone and largely
-            manual process. The need for an automated name resolution service
-            has never been greater.
           </Typography>
 
           <br />
@@ -325,8 +251,7 @@ function AboutApp({ collaboratorsAvailable }) {
               new TNRS API
             </a>{" "}
             is a full-featured application built directly on top of the upgraded{" "}
-            <a
-              href="https://github.com/ojalaquellueva/TNRSbatch"
+            <a href="https://github.com/ojalaquellueva/TNRSbatch"
               target="_blank"
             >
               TNRS 5.0 search engine
@@ -385,8 +310,7 @@ function AboutApp({ collaboratorsAvailable }) {
 
           <Typography variant="body2" gutterBottom align="justify">
             TNRS Search Engine:{" "}
-            <a
-              href="https://github.com/ojalaquellueva/TNRSbatch"
+            <a href="https://github.com/ojalaquellueva/TNRSbatch"
               target="_blank"
             >
               https://github.com/ojalaquellueva/TNRSbatch
@@ -398,8 +322,7 @@ function AboutApp({ collaboratorsAvailable }) {
             </a>
             <br />
             TNRS name parser:{" "}
-            <a
-              href="https://github.com/GlobalNamesArchitecture/biodiversity"
+            <a href="https://github.com/GlobalNamesArchitecture/biodiversity"
               target="_blank"
             >
               https://github.com/GlobalNamesArchitecture/biodiversity
@@ -431,23 +354,20 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
 
           <Typography variant="body2" gutterBottom align="justify">
-            <a
-              href="http://www.cmar.csiro.au/datacentre/taxamatch.htm"
+            <a href="http://www.cmar.csiro.au/datacentre/taxamatch.htm"
               target="_blank"
             >
               Original Taxamatch Algorithm
             </a>
             . Developed by{" "}
-            <a
-              href="https://en.wikipedia.org/wiki/Tony_Rees_(scientist)"
+            <a href="https://en.wikipedia.org/wiki/Tony_Rees_(scientist)"
               target="_blank"
             >
               Tony Rees
             </a>
             .
             <br />
-            <a
-              href="http://www.silverbiology.com/products/taxamatch/"
+            <a href="http://www.silverbiology.com/products/taxamatch/"
               target="_blank"
             >
               Taxamatch PHP Web Service
@@ -459,15 +379,13 @@ function AboutApp({ collaboratorsAvailable }) {
             </a>
             .
             <br />
-            <a
-              href="https://github.com/GlobalNamesArchitecture/biodiversity"
+            <a href="https://github.com/GlobalNamesArchitecture/biodiversity"
               target="_blank"
             >
               Global Names Biodiversity Parser (Ruby version)
             </a>
             . Developed by{" "}
-            <a
-              href="https://www.researchgate.net/profile/Dmitry_Mozzherin"
+            <a href="https://www.researchgate.net/profile/Dmitry_Mozzherin"
               target="_blank"
             >
               Dmitry Mozzherin
@@ -530,8 +448,7 @@ function AboutApp({ collaboratorsAvailable }) {
               API
             </a>{" "}
             and{" "}
-            <a
-              href="https://github.com/ojalaquellueva/TNRSbatch"
+            <a href="https://github.com/ojalaquellueva/TNRSbatch"
               target="_blank"
             >
               TNRS batch/parallelization update
@@ -545,8 +462,7 @@ function AboutApp({ collaboratorsAvailable }) {
             )
             <br />
             Dmitry Mozzherin (
-            <a
-              href="https://github.com/GlobalNamesArchitecture/biodiversity"
+            <a href="https://github.com/GlobalNamesArchitecture/biodiversity"
               target="_blank"
             >
               Name parser
@@ -554,8 +470,7 @@ function AboutApp({ collaboratorsAvailable }) {
             )
             <br />
             Tony Rees (
-            <a
-              href="http://www.cmar.csiro.au/datacentre/taxamatch.htm"
+            <a href="http://www.cmar.csiro.au/datacentre/taxamatch.htm"
               target="_blank"
             >
               Fuzzy matching module
@@ -563,8 +478,7 @@ function AboutApp({ collaboratorsAvailable }) {
             )
             <br />
             Michael Giddens (
-            <a
-              href="http://www.silverbiology.com/products/taxamatch/"
+            <a href="http://www.silverbiology.com/products/taxamatch/"
               target="_blank"
             >
               Taxamatch PHP adaptation
@@ -587,8 +501,7 @@ function AboutApp({ collaboratorsAvailable }) {
 
           <Typography variant="h6" gutterBottom align="justify">
             Project direction and development - Original{" "}
-            <a
-              href="https://github.com/iPlantCollaborativeOpenSource/TNRS"
+            <a href="https://github.com/iPlantCollaborativeOpenSource/TNRS"
               target="_blank"
             >
               iPlant TNRS
@@ -607,15 +520,13 @@ function AboutApp({ collaboratorsAvailable }) {
             <br />
             Juan Antonio Raygoza Garay
             <br />
-            <a
-              href="https://www.researchgate.net/profile/Dmitry_Mozzherin"
+            <a href="https://www.researchgate.net/profile/Dmitry_Mozzherin"
               target="_blank"
             >
               Dmitry Mozzherin
             </a>
             <br />
-            <a
-              href="https://en.wikipedia.org/wiki/Tony_Rees_(scientist)"
+            <a href="https://en.wikipedia.org/wiki/Tony_Rees_(scientist)"
               target="_blank"
             >
               Tony Rees
@@ -692,8 +603,7 @@ function AboutApp({ collaboratorsAvailable }) {
               Kew Royal Botanic Gardens
             </a>{" "}
             and the{" "}
-            <a
-              href="http://www.kew.org/science/directory/projects/IPNI.html"
+            <a href="http://www.kew.org/science/directory/projects/IPNI.html"
               target="_blank"
             >
               International Plant Names Index
