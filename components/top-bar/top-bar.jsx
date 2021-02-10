@@ -10,7 +10,7 @@ import {
   Typography,
   Button,
   makeStyles,
-  Hidden
+  Hidden,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -60,17 +60,37 @@ export function TopBar() {
             </Button>
           </Link>
           <Link href="/sources" passHref>
-            <Button size="small" component="a" color="inherit">
+            <Button size='small' component="a" color="inherit">
               Sources
             </Button>
           </Link>
+           <Link href="/instructions" passHref>
+            <Button size='small' component="a" color="inherit">
+              Instructions
+            </Button>
+          </Link>
           <Link href="/about" passHref>
-            <Button size="small" component="a" color="inherit">
+            <Button size='small' component="a" color="inherit">
               About
             </Button>
           </Link>
-        </Toolbar>
+          <Link href="/contribute" passHref>
+            <Button size='small' component="a" color="inherit">
+              Contribute
+            </Button>
+          </Link>
+         <Link href="/cite" passHref>
+            <Button size='small' component="a" color="inherit">
+              Cite
+            </Button>
+          </Link>
+       </Toolbar>
       </Container>
     </AppBar>
   );
 }
+
+
+
+
+

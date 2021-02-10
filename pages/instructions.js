@@ -1,192 +1,282 @@
 import { Layout } from "../components";
 import Head from "next/head";
 
-import {
-  Box,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Table,
-  TableSortLabel,
-  Link,
-  IconButton,
-  TextField,
-  Typography,
-  Paper
-} from "@material-ui/core";
-import { WarningSharp } from "@material-ui/icons";
+import { Typography, makeStyles } from "@material-ui/core";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Button from "@material-ui/core/Button";
+import axios from "axios";
+import Link from 'next/link'
 
-/*
-Convert Excel to JSON using the tool on the website:
-http://beautifytools.com/excel-to-json-converter.php
-*/
+const apiServer = process.env.apiServer;
+const apiEndPoint = process.env.apiEndPoint;
 
-const warnings = {
-  "Lookup": [
-      {
-          "Numeric code": "1",
-          "Short text code": "Partial",
-          "Long text code": "Partial match",
-          "Detailed explanation": "Name matched is a higher taxon than the name submitted."
-      },
-      {
-          "Numeric code": "2",
-          "Short text code": "Ambiguous",
-          "Long text code": "Ambiguous match",
-          "Detailed explanation": "More than one name with the same score and acceptance."
-      },
-      {
-          "Numeric code": "4",
-          "Short text code": "HigherTaxa",
-          "Long text code": "Better higher taxonomic match available",
-          "Detailed explanation": "Another name with lower overall score has a better matching higher taxon."
-      },
-      {
-          "Numeric code": "8",
-          "Short text code": "Overall",
-          "Long text code": "Better overall match available",
-          "Detailed explanation": "Another name in different higher taxon has better overall score."
-      }
-  ],
-  "Combinations": [
-      {
-          "1": "1",
-          "Combined code": "1",
-          "Combined text": "[Partial]"
-      },
-      {
-          "2": "2",
-          "Combined code": "2",
-          "Combined text": "[Ambiguous]"
-      },
-      {
-          "4": "4",
-          "Combined code": "4",
-          "Combined text": "[HigherTaxa]"
-      },
-      {
-          "8": "8",
-          "Combined code": "8",
-          "Combined text": "[Overall]"
-      },
-      {
-          "1": "1",
-          "2": "2",
-          "Combined code": "3",
-          "Combined text": "[Partial] [Ambiguous]"
-      },
-      {
-          "1": "1",
-          "4": "4",
-          "Combined code": "5",
-          "Combined text": "[Partial] [HigherTaxa]"
-      },
-      {
-          "1": "1",
-          "8": "8",
-          "Combined code": "9",
-          "Combined text": "[Partial] [Overall]"
-      },
-      {
-          "2": "2",
-          "4": "4",
-          "Combined code": "6",
-          "Combined text": "[Ambiguous] [HigherTaxa]"
-      },
-      {
-          "2": "2",
-          "8": "8",
-          "Combined code": "10",
-          "Combined text": "[Ambiguous] [Overall]"
-      },
-      {
-          "4": "4",
-          "8": "8",
-          "Combined code": "12",
-          "Combined text": "[HigherTaxa] [Overall]"
-      },
-      {
-          "1": "1",
-          "2": "2",
-          "4": "4",
-          "Combined code": "7",
-          "Combined text": "[Partial] [Ambiguous] [HigherTaxa]"
-      },
-      {
-          "1": "1",
-          "2": "2",
-          "8": "8",
-          "Combined code": "11",
-          "Combined text": "[Partial] [Ambiguous] [Overall]"
-      },
-      {
-          "1": "1",
-          "4": "4",
-          "8": "8",
-          "Combined code": "13",
-          "Combined text": "[Partial] [HigherTaxa] [Overall]"
-      },
-      {
-          "2": "2",
-          "4": "4",
-          "8": "8",
-          "Combined code": "14",
-          "Combined text": "[Ambiguous] [HigherTaxa] [Overall]"
-      },
-      {
-          "1": "1",
-          "2": "2",
-          "4": "4",
-          "8": "8",
-          "Combined code": "15",
-          "Combined text": "[Partial] [Ambiguous] [HigherTaxa] [Overall]"
-      }
-  ]
-};
+const useStyles = makeStyles((theme) => ({
+  page: {
+    padding: theme.spacing(0.5),
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  root: {
+    flexGrow: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  header: {
+    color: theme.palette.grey[400],
+    height: "15px",
+  },
+  image: {
+    padding: theme.spacing(0),
+    objectFit: "none",
+    flex: 1,
+    flexGrow: 1,
+  },
+  card: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  action: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    // alignSelf: "center",
+    // bottom: 0,
+    // flex: 1
+  },
+}));
 
-function AboutApp() {
+function InstructionsApp() {
+  const classes = useStyles();
+
   return (
     <>
       <Head>
-        <title>TNRS - Warnings</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Instructions</title>
+        <a rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-      <Typography variant="h4" align="justify" display="block" gutterBottom="True">Warnings</Typography>
+        <Typography
+          variant="h3"
+          align="justify"
+          display="block"
+          gutterBottom
+        >
+          How To Use The TNRS
+        </Typography>
+        
+        <Typography variant="h5" align="justify">
+          Contents
+        </Typography>
+        <br />
+        <Typography variant="body2" gutterBottom align="justify">
+          <a href="#howwork">How does the TNRS work?</a>
+          <br />
+        </Typography>
+        <Typography variant="body2" gutterBottom align="justify">
+          <a href="#howuse">How do I use the TNRS?</a>
+          <br />
+        </Typography>
+		<br />
 
-      <Typography variant="body1" align="justify" display="block" gutterBottom="True">Refer to the 
-      following table for a detailed explanation of warnings for the name 
-      resolution on TNRS <br/><br/></Typography>
-      
-      <Box mx={2}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell align="center" width={"15%"}>Numeric code</TableCell>
-                <TableCell align="center" width={"15%"}>Short text code</TableCell>
-                <TableCell align="center" width={"25%"}>Long text code</TableCell>
-                <TableCell align="center" width={"55%"}>Detailed explanation</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {warnings.Lookup.map((row) => (
-                <TableRow key={row["Numeric code"]}>
-                  <TableCell align="center">{row["Numeric code"]}</TableCell>
-                  <TableCell align="center">{row["Short text code"]}</TableCell>
-                  <TableCell align="center">{row["Long text code"]}</TableCell>
-                  <TableCell align="justify">{row["Detailed explanation"]}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+        <div id="howwork">
+          <Typography variant="h5" gutterBottom align="justify">
+            How does the TNRS work?
+          </Typography>
 
-      </Layout>
+          <Typography variant="body2" gutterBottom align="justify">
+            The TNRS attempts to match each name submitted to a published
+            scientific name in the TNRS database, correcting spelling if
+            necessary. Once matched, any synonyms 
+            are converted to the correct (accepted) name. Both the matched name 
+            and the accepted name are returned by the TNRS. This process is 
+            performed in the following steps:
+            <br />
+          </Typography>
+
+          <Typography variant="body2" gutterBottom align="justify">
+            <List>
+              <ListItem>
+                <Typography variant="body2">
+                  1. <strong>Parse</strong>. The TNRS first parses (splits)
+                  the name into its components parts. Components
+                  of a species name include genus, specific epithet, and 
+                  authority, if included. If the name is a 
+                  subspecies or variety, the parser will also separate the
+                  rank indicator ("var.", "subsp.", "sbsp.", etc.) and the 
+                  subspecific epithet. The parser also detects and 
+                  separates standard botanical annotations such as "sp. nov." 
+                  (new species) and "ined." (unpublished name) as well as
+                  indicators of uncertainty such as "cf." ("compare with") and 
+                  "aff." (affinis, related to but not the same). Finally, any
+                  unrecognized components are saved as "Unmatched_Terms". 
+                  Separating "contaminants" from standard components
+                  increases the chance that the TNRS will  
+                  match the intended name. Parsing is
+                  performed by the{" "}<a href="http://gni.globalnames.org/" target="_blank">Global Names</a>{" "}<a href="https://github.com/GlobalNamesArchitecture/biodiversity" target="_blank">Biodiversity Name Parser</a>.
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography variant="body2">
+                  2. <strong>Match</strong>. The parsed name components are
+                  again matched against known scientific names in the TNRS 
+                  database. The TNRS attempts both exact matching and fuzzy 
+                  matching using the {" "}<a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0107510" target="_blank">Taxamatch</a>{" "} 
+                  taxonomic fuzzy matching algorithm. The Taxamatch algorithm
+                  speeds up fuzzy matching by searching within the taxonomic 
+                  hierarchy. For example, once a genus has been identified, only 
+                  species within that genus are searched.
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography variant="body2">
+                  3. <strong>Correct</strong>. Once the TNRS has discovered the
+                  most likely intended scientific name, it will then examine
+                  the taxonomic status of that name. If the name is an outdated
+                  synonym of another name, the TNRS will return the "Accepted"
+                  (correct) name along with matched name, according to the 
+                  taxonomic sources selected by the user. For some erroneous
+                  names, the TNRS will return only the matched name but no 
+                  accepted name. This can happen is the accepted name is 
+                  missing or unknown in the selected taxonomic database, 
+                  or if the name matched is nomenclaturally invalid (e.g., 
+                  "Invalid", "Illegitimate"), in which case an 
+                  accepted name may not exist.
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography variant="body2">
+                  3. <strong>Select Best Match</strong>. Different sources can 
+                  sometimes return different names as the single correct 
+                  (accepted) name. Even if you are using only one taxonomic 
+                  source, a submitted name can sometimes fuzzy match
+                  to multiple names with exactly the same match score. In such
+                  cases, the TNRS uses a conservative "Best Match Algorithm" to 
+                  sort the names in descending order of match quality, 
+                  preferring, for example, 
+                  synonyms which have been corrected to a different accepted 
+                  name over the same name labelled as accepted. After applying
+                  these rules, the TNRS marks the top-ranked name as the single
+                  best match. In such cases, the TNRS will alert you that 
+                  multiple matches were found, allowing you to select an 
+                  alternative match if preferred. We recommend that users 
+                  examine all alternative matches rather than accepting 
+                  uncritically the TNRS's 
+                  choice of "Best Match".
+                </Typography>
+              </ListItem>
+            </List>
+            These steps are illustrated in the figure below:<br />
+			<img src="URL_TNRS_WORLFLOW" />
+          </Typography>
+        </div>
+
+       <div id="howuse">
+          <Typography variant="h5" gutterBottom align="justify">
+            How do I use the TNRS?
+          </Typography>
+
+          <Typography variant="body2" gutterBottom align="justify">
+            Follow these steps to use the TNRS:
+            <br />
+          </Typography>
+
+          <Typography variant="body2" gutterBottom align="justify">
+            <List>
+              <ListItem>
+                <Typography variant="body2">
+                  1. <strong>Enter your names</strong>. Paste your list of 
+                  names into the "Scientific names to check box", one name per
+                  line.
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography variant="body2">
+                  2. <strong>Choose your settings</strong>. For most users, the
+                  default settings are generally best. However, if you only wish
+                  to break your names into their components, as detected by the 
+                  Name Parse, then choose "Perform Name Resolution" under 
+                  setting "Processing Mode". For "Family Classification", 
+                  "Tropicos" uses APG III families for all matched and accepted 
+                  names. Although Tropicos is currently the only available 
+                  option, this may change in the future. For "Sources", some
+                  users may prefer or be required to use only a single taxonomic 
+                  source. For
+                  example, government users in the U.S.A. may be required to 
+                  resolve species names using USDA PLants taxonomy only.
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography variant="body2">
+                  3. <strong>Submit!</strong> Process your names by pressing
+                  the Submit button.
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography variant="body2">
+                  4. <strong>Inspect</strong>. Always inspect your results 
+                  before downloading if (a) any {" "}<a 
+                  href="/warnings">warnings</a> are displayed in
+                  the first column of the results table (click on the {" "}<a 
+                  href="/warnings">warning</a>{" "}
+                  symbol for details), or (b) the TNRS found >1 match
+                  to a name. The latter will be indicated by the hyperlinked
+                  text "(+n more)" after the name in column
+                  "Name Matched". Use the provided links to research all 
+                  potential matches, selecting an alternative match as the
+                  best name if appropropriate. If a {" "}<a 
+                  href="/warnings">warning</a> indicates that a 
+                  better higher taxonomic match is available for a submitted
+                  name, you should inspect the alternative very carefully, as 
+                  this may indicate that a better matching genus or family is
+                  correct, but the specific epithet was fuzzy matched to an
+                  unrelated taxon in a different genus or family. 
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography variant="body2">
+                  5. <strong>Adjust best match algorithm (if desired)</strong>. 
+                  You can adjust the Best Match algorithm on the fly by clicking
+                  on the "Best Match Settings" control and selecting "Sort by 
+                  Higher Taxonomy" instead of the default "Sort by Overall 
+                  Score". However, in most cases you should instead inspect and
+                  change names individually, as changing "Best Match Settings"
+                  will discard any manual selections you have made. However,
+                  if many names have the {" "}<a href="/warnings">warning
+                  </a>{" "} 
+                  "Better higher taxonomic match 
+                  available", you may find it helpful to download your names
+                  twice and compare the results: once using 
+                  the default "Sort by Overall Score" method, and
+                  a second time using "Sort by Higher Taxonomy".
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography variant="body2">
+                  5. <strong>Download</strong>. 
+                  After you have inspected your results and made changes, if 
+                  any, you can download your results by clicking on the 
+                  "Download Data" control. You will be given the option to
+                  download your file as comma-delimitted or tab-delimitted,
+                  and can choose between download all matches or the best match
+                  only for each name.
+                </Typography>
+              </ListItem>
+            </List>
+        </Typography>
+    </div>
+
+	</Layout>
     </>
   );
 }
-export default AboutApp;
+
+export default InstructionsApp;
