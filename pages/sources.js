@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   Box,
   Divider,
+  Hidden,
 } from "@material-ui/core";
 
 import axios from "axios";
@@ -71,17 +72,19 @@ function SourcesApp({ sourcesAvailable }) {
             {sourcesAvailable.map((s) => (
               <>
                 <ListItem>
-                  <ListItemIcon>
-                    <div>
-                      {/* FIXME: make this fit a small screen */}
-                      <img
-                        style={{ objectFit: "none" }}
-                        height="200"
-                        width="200"
-                        src={apiServer + s.logo_path}
-                      />
-                    </div>
-                  </ListItemIcon>
+                  <Hidden xsDown>
+                    <ListItemIcon>
+                      <div>
+                        {/* FIXME: make this fit a small screen */}
+                        <img
+                          style={{ objectFit: "none" }}
+                          height="200"
+                          width="200"
+                          src={apiServer + s.logo_path}
+                        />
+                      </div>
+                    </ListItemIcon>
+                  </Hidden>
                   <ListItemText>
                     <Typography gutterBottom={true} variant="h7" component="h2">
                       {s.sourceNameFull} - {s.sourceName.toUpperCase()}
