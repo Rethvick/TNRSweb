@@ -70,9 +70,10 @@ function SourcesApp({ sourcesAvailable }) {
           <List>
             {sourcesAvailable.map((s) => (
               <>
-                <ListItem alignItems="flex-start">
+                <ListItem>
                   <ListItemIcon>
                     <div>
+                      {/* FIXME: make this fit a small screen */}
                       <img
                         style={{ objectFit: "none" }}
                         height="200"
@@ -130,7 +131,7 @@ function SourcesApp({ sourcesAvailable }) {
   );
 }
 
-// making inittial props available
+// making initial props available
 SourcesApp.getInitialProps = async () => {
   let sources = await loadSources();
   return { sourcesAvailable: sources };

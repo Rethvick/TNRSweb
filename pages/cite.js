@@ -43,6 +43,59 @@ const loadCitations = async () => {
     );
 };
 
+const renderCitations = (citationsAvailable) => {
+  var result = {};
+  citationsAvailable.map((citation) => {
+    // parse data
+    let parsed = new Cite(citation.citation);
+    // get today's data
+    let options = { year: "numeric", month: "short", day: "numeric" };
+    let today = new Date();
+    // fill accessed_date
+    var accessed_date =
+      ", " +
+      parsed.data[0].note?.replace(
+        "<date_of_access>",
+        today.toLocaleDateString("en-US", options)
+      );
+    // check if note was empty
+    if (accessed_date == ", undefined") {
+      accessed_date = "";
+    }
+
+    result[citation.source] = (
+      <div>
+        {/*
+        <Typography variant="body1" gutterBottom={true} align="justify">
+          <strong>{citation.source.toUpperCase()}</strong>
+        </Typography>
+        */}
+        <Typography variant="body2" gutterBottom={true} align="justify">
+          <div
+            dangerouslySetInnerHTML={{
+              __html:
+                parsed
+                  .format("bibliography", {
+                    format: "html",
+                    template: "apa",
+                    lang: "en-US",
+                    // remove part of the html that contains the closing div tag
+                    // and add the accessed date
+                  })
+                  .slice(0, -13) +
+                accessed_date +
+                "</div>",
+            }}
+          ></div>
+        </Typography>
+        <BibTexDialog displayText={citation.citation} />
+        <br />
+      </div>
+    );
+  });
+  return result;
+};
+
 function BibTexDialog({ displayText }) {
   const [open, setOpen] = useState(false);
 
@@ -56,9 +109,9 @@ function BibTexDialog({ displayText }) {
 
   return (
     <div>
-      <Button component={Link} onClick={handleClickOpen}>
+      <a href="#" component={Link} onClick={handleClickOpen}>
         [bibtex]
-      </Button>
+      </a>
       <Dialog
         maxWidth={"md"}
         fullWidth
@@ -94,6 +147,8 @@ function BibTexDialog({ displayText }) {
 }
 
 function HowCiteApp({ citationsAvailable }) {
+  let renderedCitations = renderCitations(citationsAvailable);
+  console.log(renderedCitations);
   return (
     <>
       <Head>
@@ -115,6 +170,7 @@ function HowCiteApp({ citationsAvailable }) {
         <Typography variant="h5" gutterBottom="True" align="justify">
           To cite the Taxonomic Name Resolution Service:
         </Typography>
+        {/*
         <Typography variant="body2" gutterBottom={true} align="justify">
           ﻿Boyle, B., N. Hopkins, Z. Lu, J. A. Raygoza Garay, D. Mozzherin, T.
           Rees, N. Matasci, M. L. Narro, W. H. Piel, S. J. McKay, S. Lowry, C.
@@ -122,23 +178,35 @@ function HowCiteApp({ citationsAvailable }) {
           resolution service: an online tool for automated standardization of
           plant names. BMC bioinformatics 14:16. doi:10.1186/1471-2105-14-16.
         </Typography>
-        <br />
+        */}
+
+        {renderedCitations.tnrs_pub}
 
         <Typography variant="h5" gutterBottom="True" align="justify">
           If results derived from the TNRS are used in a publication, please
           cite:
         </Typography>
+
+        {/*
         <Typography variant="body2" gutterBottom={true} align="justify">
           Botanical Information and Ecology Network (n.d.). Taxonomic Name
           Resolution Service v5.0. Accessed January 22, 2021 from
           https://tnrs.biendata.org/.
         </Typography>
-        <br />
+        
+          */}
+        {renderedCitations.tnrs}
 
         <Typography variant="h5" gutterBottom="True" align="justify">
           Please acknowledge separately the individual taxonomic sources used to
           process your data:
         </Typography>
+
+        {renderedCitations.tropicos}
+        {renderedCitations.tpl}
+        {renderedCitations.usda}
+
+        {/*
         <Typography variant="body2" gutterBottom={true} align="justify">
           Missouri Botanical Garden. (n.d.). Tropicos. Missouri Botanical
           Garden. Accessed May 30, 2020 from http://www.tropicos.org.
@@ -154,59 +222,6 @@ function HowCiteApp({ citationsAvailable }) {
           data from that source when building the current TNRS database (see
           also <a href="/sources">Sources</a>).
         </Typography>
-
-        {/*
-        <div id="literaturecited">
-          <Typography variant="h5" gutterBottom="True" align="justify">
-            Literature cited
-          </Typography>
-
-          {citationsAvailable.map((citation) => {
-            // parse data
-            let parsed = new Cite(citation.citation);
-            // get today's data
-            let options = { year: "numeric", month: "short", day: "numeric" };
-            let today = new Date();
-            // fill accessed_date
-            var accessed_date =
-              ", " +
-              parsed.data[0].note?.replace(
-                "<date_of_access>",
-                today.toLocaleDateString("en-US", options)
-              );
-            // check if note was empty
-            if (accessed_date == ", undefined") {
-              accessed_date = "";
-            }
-            return (
-              <div>
-                <Typography variant="body1" gutterBottom={true} align="justify">
-                  <strong>{citation.source.toUpperCase()}</strong>
-                </Typography>
-                <Typography variant="body2" gutterBottom={true} align="justify">
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        parsed
-                          .format("bibliography", {
-                            format: "html",
-                            template: "apa",
-                            lang: "en-US",
-                            // remove part of the html that contains the closing div tag
-                            // and add the accessed date
-                          })
-                          .slice(0, -13) +
-                        accessed_date +
-                        "</div>",
-                    }}
-                  ></div>
-                </Typography>
-                <BibTexDialog displayText={citation.citation} />
-                <br />
-              </div>
-            );
-          })}
-        </div>
         */}
       </Layout>
     </>
