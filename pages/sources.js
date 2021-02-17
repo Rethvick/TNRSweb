@@ -3,22 +3,14 @@ import Head from "next/head";
 
 import {
   Typography,
-  makeStyles,
-  Grid,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Button,
   List,
   ListItem,
   ListItemText,
   ListItemIcon,
-  ListItemAvatar,
-  ListItemSecondaryAction,
   Box,
   Divider,
 } from "@material-ui/core";
+
 import axios from "axios";
 
 const apiServer = process.env.apiServer;
@@ -48,44 +40,7 @@ const loadSources = async () => {
     );
 };
 
-const useStyles = makeStyles((theme) => ({
-  page: {
-    padding: theme.spacing(0.5),
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  root: {
-    flexGrow: 1,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  header: {
-    color: theme.palette.grey[400],
-    height: "15px",
-  },
-  image: {
-    padding: theme.spacing(2),
-    objectFit: "none",
-    flex: 1,
-    flexGrow: 1,
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  action: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-}));
-
 function SourcesApp({ sourcesAvailable }) {
-  const classes = useStyles();
-
   return (
     <>
       <Head>
@@ -119,10 +74,9 @@ function SourcesApp({ sourcesAvailable }) {
                   <ListItemIcon>
                     <div>
                       <img
-                        className={classes.image}
+                        style={{ objectFit: "none" }}
                         height="200"
                         width="200"
-                        src="https://tnrsapi.xyz/images/tpl.png"
                         src={apiServer + s.logo_path}
                       />
                     </div>
@@ -140,8 +94,7 @@ function SourcesApp({ sourcesAvailable }) {
                     <Box>
                       <a href={s.dataUrl} size="small" color="primary">
                         Data
-                      </a>
-                      {" "}
+                      </a>{" "}
                       <a href={s.sourceUrl} size="small" color="primary">
                         Learn More
                       </a>
@@ -170,13 +123,14 @@ function SourcesApp({ sourcesAvailable }) {
             taxonomic data providers directly.
           </Typography>
         </div>
-        
+
         <br />
       </Layout>
     </>
   );
 }
 
+// making inittial props available
 SourcesApp.getInitialProps = async () => {
   let sources = await loadSources();
   return { sourcesAvailable: sources };
