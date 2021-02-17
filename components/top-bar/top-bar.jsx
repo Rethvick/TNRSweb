@@ -30,13 +30,22 @@ const useStyles = makeStyles((theme) => ({
   homeLink: {
     textDecoration: "none !important",
   },
+  menuButton: {
+    marginRight: theme.spacing(0),
+    paddingRight: theme.spacing(0),
+  },
+  container: {
+    [theme.breakpoints.down("md")]: {
+      padding: theme.spacing(0),
+    },
+  },
 }));
 
 export function TopBar() {
   const classes = useStyles();
   return (
     <AppBar position="static">
-      <Container>
+      <Container className={classes.container}>
         <Toolbar>
           <Box mr={1}>
             <Link href="/" passHref>
@@ -97,6 +106,7 @@ export function TopBar() {
 }
 
 export function LowResMenu() {
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -109,7 +119,12 @@ export function LowResMenu() {
 
   return (
     <div>
-      <IconButton onClick={handleClick} component="a" color="inherit">
+      <IconButton
+        className={classes.menuButton}
+        onClick={handleClick}
+        component="a"
+        color="inherit"
+      >
         <MoreVertIcon />
       </IconButton>
       <Menu
@@ -134,7 +149,6 @@ export function LowResMenu() {
         <Link href="/cite">
           <MenuItem onClick={handleClose}>Cite</MenuItem>
         </Link>
-
       </Menu>
     </div>
   );
