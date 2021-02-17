@@ -182,7 +182,7 @@ function InstructionsApp() {
             </List>
             These steps are illustrated in the figure below:
             <br />
-            <img src="spellingCorrection.png" />
+            <img src="/spellingCorrection.png" />
           </Typography>
         </div>
 

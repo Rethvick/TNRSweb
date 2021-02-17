@@ -1,5 +1,4 @@
-//import { useStyles } from "./top-bar.style";
-
+import { useState } from "react";
 import Link from "next/link";
 
 import {
@@ -11,7 +10,12 @@ import {
   Button,
   makeStyles,
   Hidden,
+  Menu,
+  MenuItem,
+  IconButton,
 } from "@material-ui/core";
+
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,51 +50,92 @@ export function TopBar() {
               </Typography>
             </Link>
           </Box>
-          <Typography variant="overline" className={classes.title}>
-            Alpha
-          </Typography>
-          <Hidden xsDown >
+          <Box flexGrow={1} />
+          <Hidden mdUp>
+            <LowResMenu />
+          </Hidden>
+
+          <Hidden smDown>
             <Typography variant="overline" className={classes.title}>
               Taxonomic Name Resolution Service v5.0
             </Typography>
+            <Link href="/" passHref>
+              <Button component="a" color="inherit">
+                Home
+              </Button>
+            </Link>
+            <Link href="/sources" passHref>
+              <Button size="small" component="a" color="inherit">
+                Sources
+              </Button>
+            </Link>
+            <Link href="/instructions" passHref>
+              <Button size="small" component="a" color="inherit">
+                Instructions
+              </Button>
+            </Link>
+            <Link href="/about" passHref>
+              <Button size="small" component="a" color="inherit">
+                About
+              </Button>
+            </Link>
+            <Link href="/contribute" passHref>
+              <Button size="small" component="a" color="inherit">
+                Contribute
+              </Button>
+            </Link>
+            <Link href="/cite" passHref>
+              <Button size="small" component="a" color="inherit">
+                Cite
+              </Button>
+            </Link>
           </Hidden>
-          <Link href="/" passHref>
-            <Button component="a" color="inherit">
-              Home
-            </Button>
-          </Link>
-          <Link href="/sources" passHref>
-            <Button size='small' component="a" color="inherit">
-              Sources
-            </Button>
-          </Link>
-           <Link href="/instructions" passHref>
-            <Button size='small' component="a" color="inherit">
-              Instructions
-            </Button>
-          </Link>
-          <Link href="/about" passHref>
-            <Button size='small' component="a" color="inherit">
-              About
-            </Button>
-          </Link>
-          <Link href="/contribute" passHref>
-            <Button size='small' component="a" color="inherit">
-              Contribute
-            </Button>
-          </Link>
-         <Link href="/cite" passHref>
-            <Button size='small' component="a" color="inherit">
-              Cite
-            </Button>
-          </Link>
-       </Toolbar>
+        </Toolbar>
       </Container>
     </AppBar>
   );
 }
 
+export function LowResMenu() {
+  const [anchorEl, setAnchorEl] = useState(null);
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
+  return (
+    <div>
+      <IconButton onClick={handleClick} component="a" color="inherit">
+        <MoreVertIcon />
+      </IconButton>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <Link href="/sources">
+          <MenuItem onClick={handleClose}>Sources</MenuItem>
+        </Link>
+        <Link href="/instructions">
+          <MenuItem onClick={handleClose}>Instructions</MenuItem>
+        </Link>
+        <Link href="/about">
+          <MenuItem onClick={handleClose}>About</MenuItem>
+        </Link>
+        <Link href="/contribute">
+          <MenuItem onClick={handleClose}>Contribute</MenuItem>
+        </Link>
+        <Link href="/cite">
+          <MenuItem onClick={handleClose}>Cite</MenuItem>
+        </Link>
 
+      </Menu>
+    </div>
+  );
+}

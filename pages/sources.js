@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   Box,
   Divider,
+  Hidden,
 } from "@material-ui/core";
 
 import axios from "axios";
@@ -70,17 +71,20 @@ function SourcesApp({ sourcesAvailable }) {
           <List>
             {sourcesAvailable.map((s) => (
               <>
-                <ListItem alignItems="flex-start">
-                  <ListItemIcon>
-                    <div>
-                      <img
-                        style={{ objectFit: "none" }}
-                        height="200"
-                        width="200"
-                        src={apiServer + s.logo_path}
-                      />
-                    </div>
-                  </ListItemIcon>
+                <ListItem>
+                  <Hidden xsDown>
+                    <ListItemIcon>
+                      <div>
+                        {/* FIXME: make this fit a small screen */}
+                        <img
+                          style={{ objectFit: "none" }}
+                          height="200"
+                          width="200"
+                          src={apiServer + s.logo_path}
+                        />
+                      </div>
+                    </ListItemIcon>
+                  </Hidden>
                   <ListItemText>
                     <Typography gutterBottom={true} variant="h7" component="h2">
                       {s.sourceNameFull} - {s.sourceName.toUpperCase()}
@@ -130,7 +134,7 @@ function SourcesApp({ sourcesAvailable }) {
   );
 }
 
-// making inittial props available
+// making initial props available
 SourcesApp.getInitialProps = async () => {
   let sources = await loadSources();
   return { sourcesAvailable: sources };
