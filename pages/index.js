@@ -3,9 +3,6 @@ import { useState } from "react";
 import Head from "next/head";
 import axios from "axios";
 
-// importing loadash
-import _ from "lodash";
-
 import {
   SearchBox,
   OptionsBox,
