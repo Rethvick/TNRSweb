@@ -1,13 +1,16 @@
 import { Layout } from "../components";
 import Head from "next/head";
 
-import { Typography, makeStyles } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Box,
+  Divider,
+} from "@material-ui/core";
+
 import axios from "axios";
 
 const apiServer = process.env.apiServer;
@@ -37,44 +40,7 @@ const loadSources = async () => {
     );
 };
 
-const useStyles = makeStyles((theme) => ({
-  page: {
-    padding: theme.spacing(0.5),
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  root: {
-    flexGrow: 1,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  header: {
-    color: theme.palette.grey[400],
-    height: "15px",
-  },
-  image: {
-    padding: theme.spacing(2),
-    objectFit: "none",
-    flex: 1,
-    flexGrow: 1,
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  action: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-}));
-
 function SourcesApp({ sourcesAvailable }) {
-  const classes = useStyles();
-
   return (
     <>
       <Head>
@@ -96,64 +62,50 @@ function SourcesApp({ sourcesAvailable }) {
             Taxonomic data providers
           </Typography>
           <Typography variant="body2" gutterBottom="True" align="justify">
+            {/* TODO: dynamic numbering here */}
             TNRS version 5.0 consults the following sources of nomenclatural and
             taxonomic information:
           </Typography>
 
-          <div className={classes.root}>
-            <Grid container spacing={1} alignItems="stretch">
-              {sourcesAvailable.map((s) => (
-                <Grid
-                  item
-                  component={Card}
-                  direction="column"
-                  className={classes.card}
-                  justify="space-between"
-                  xs
-                >
-                  <div>
-                    <CardMedia
-                      className={classes.image}
-                      component="img"
-                      height="75"
-                      width="auto"
-                      image={apiServer + s.logo_path}
-                    />
-                  </div>
-
-                  <div className={classes.page}>
-                    <CardContent>
-                      <Typography
-                        gutterBottom={true}
-                        variant="h5"
-                        component="h2"
-                      >
-                        {s.sourceNameFull} [{s.sourceName}]
-                      </Typography>
-                      <Typography variant="body2" color="black" component="p">
-                        {s.description} <br />
-                        <br />
-                        Date Accessed: {s.tnrsDateAccessed}
-                      </Typography>
-                    </CardContent>
-                  </div>
-
-                  <div className={classes.action}>
-                    <CardActions>
-                      <Button href={s.dataUrl} size="small" color="primary">
+          <List>
+            {sourcesAvailable.map((s) => (
+              <>
+                <ListItem alignItems="flex-start">
+                  <ListItemIcon>
+                    <div>
+                      <img
+                        style={{ objectFit: "none" }}
+                        height="200"
+                        width="200"
+                        src={apiServer + s.logo_path}
+                      />
+                    </div>
+                  </ListItemIcon>
+                  <ListItemText>
+                    <Typography gutterBottom={true} variant="h7" component="h2">
+                      {s.sourceNameFull} - {s.sourceName.toUpperCase()}
+                    </Typography>
+                    <Typography variant="body2" color="black" component="p">
+                      {s.description} <br />
+                      <br />
+                      Date Accessed: {s.tnrsDateAccessed}
+                    </Typography>
+                    <br />
+                    <Box>
+                      <a href={s.dataUrl} size="small" color="primary">
                         Data
-                      </Button>
-                      <Button href={s.sourceUrl} size="small" color="primary">
+                      </a>{" "}
+                      <a href={s.sourceUrl} size="small" color="primary">
                         Learn More
-                      </Button>
-                    </CardActions>
-                  </div>
-                </Grid>
-              ))}
-            </Grid>
-          </div>
+                      </a>
+                    </Box>
+                  </ListItemText>
+                </ListItem>
+                <Divider />
+              </>
+            ))}
+          </List>
         </div>
-        <br />
         <br />
 
         <div id="reporterrors">
@@ -171,11 +123,14 @@ function SourcesApp({ sourcesAvailable }) {
             taxonomic data providers directly.
           </Typography>
         </div>
+
+        <br />
       </Layout>
     </>
   );
 }
 
+// making inittial props available
 SourcesApp.getInitialProps = async () => {
   let sources = await loadSources();
   return { sourcesAvailable: sources };

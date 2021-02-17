@@ -1,9 +1,7 @@
 import { Layout } from "../components";
 import Head from "next/head";
 
-import { Typography, makeStyles } from "@material-ui/core";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import { makeStyles } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -12,6 +10,16 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import Link from "next/link";
+
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Box,
+  Divider,
+} from "@material-ui/core";
 
 const apiServer = process.env.apiServer;
 const apiEndPoint = process.env.apiEndPoint;
@@ -579,57 +587,37 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
 
           {/* Collaborators */}
-          <div className={classes.root}>
-            <Grid container spacing={1} alignItems="stretch">
-              {collaboratorsAvailable.map((c) => (
-                <Grid
-                  item
-                  component={Card}
-                  direction="column"
-                  className={classes.card}
-                  justify="space-between"
-                  xs
-                >
-                  <div>
-                    <CardMedia
-                      className={classes.image}
-                      component="img"
-                      height="200"
-                      width="auto"
-                      image={apiServer + c.logo_path}
-                    />
-                  </div>
+          <List>
+            {collaboratorsAvailable.map((c) => (
+              <>
+                <ListItem alignItems="flex-start">
+                  <ListItemIcon>
+                    <div>
+                      <img
+                        style={{ objectFit: "scale-down" }}
+                        height="50"
+                        width="50"
+                        src={apiServer + c.logo_path}
+                      />
+                    </div>
+                  </ListItemIcon>
 
-                  <div className={classes.page}>
-                    <CardContent>
-                      <Typography
-                        gutterBottom={true}
-                        variant="body2"
-                        component="h2"
-                      >
-                        {c.collaboratorNameFull}
-                      </Typography>
-                      <Typography variant="body2" color="black" component="p">
-                        {c.description}
-                      </Typography>
-                    </CardContent>
-                  </div>
-
-                  <div className={classes.action}>
-                    <CardActions>
-                      <Button
-                        href={c.collaboratorUrl}
-                        size="small"
-                        color="primary"
-                      >
-                        Learn More
-                      </Button>
-                    </CardActions>
-                  </div>
-                </Grid>
-              ))}
-            </Grid>
-          </div>
+                  <ListItemText>
+                    <Typography gutterBottom={true} variant="h7">
+                      {c.collaboratorNameFull}
+                    </Typography>
+                    <Typography variant="body2" color="black" component="p">
+                      {c.description}
+                    </Typography>
+                    <a href={c.collaboratorUrl} size="small" color="primary">
+                      Learn More
+                    </a>
+                  </ListItemText>
+                </ListItem>
+                <Divider />
+              </>
+            ))}
+          </List>
           <br />
           <br />
         </div>

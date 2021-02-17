@@ -222,7 +222,7 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
 				be added immediately to the TNRS database using our existing
 				Darwin Core import utility. Detailed instructions on how to
 				prepare you data in this format are provided in the 
-				document{" "}<a href="URL_TNRS_SIMPLIFIED_DWC">
+				document{" "}<a href="tnrs_dwc_template_instructions.txt">
 				TNRS Simplified Darwin Core format</a>.
 			</Typography>
         </div>
