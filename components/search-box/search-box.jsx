@@ -26,7 +26,7 @@ export function SearchBox({ onSearch, loadingStatus }) {
             lael="Multiline"
             fullWidth
             variant="outlined"
-            label="Species Names"
+            label="Enter up to 5000 scientific names"
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
