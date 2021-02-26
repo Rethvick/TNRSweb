@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import Head from "next/head";
-import axios from "axios";
 
 import { Grid, Box, Container, Paper } from "@material-ui/core";
 
@@ -20,13 +19,11 @@ import {
 
 // TODO: sortByColumn could have a better name
 import {
-  translateWarningCode,
   sortByColumn,
   requestResolveNames,
+  requestParseNames,
+  requestSources,
 } from "../actions";
-
-// TODO: can we do this in a better way?
-const apiEndPoint = process.env.apiEndPoint;
 
 function IndexApp({ sourcesAvailable, familiesAvailable }) {
   // TODO: having all these states does not seem fun
@@ -69,6 +66,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
       return;
     }
     // clear results
+    // TODO: rename this to setResolvedNames
     setResult([]);
     setParsedNames([]);
     // show spinner
@@ -83,28 +81,15 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         // record start and end time
         setQueryTime({ start: start, end: Date() });
         setBestMatchingSetting("Overall_score_order");
-        setResult(res)
+        setResult(res);
       });
     }
 
     if (queryType === "parse") {
-      const parseObject = {
-        opts: {
-          mode: "parse",
-        },
-        data: [],
-      };
-
-      // queryNames coming from the searchbox
-      parseObject.data = queryNames;
-      axios
-        .post(apiEndPoint, parseObject, {
-          headers: { "Content-Type": "application/json" },
-        })
-        .then((response) => {
-          setParsedNames(response.data);
-        });
-      setLoadingStatus(false);
+      requestParseNames(queryNames).then((res) => {
+        setLoadingStatus(false);
+        setResult(res);
+      });
     }
   };
 
@@ -158,11 +143,11 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                 </Grid>
                 <Grid lg={6} xs={12} item>
                   <OptionsBox
-                    queryType={queryType}
-                    onChangeQueryType={(queryType) => setQueryType(queryType)}
                     sourcesAvailable={sourcesAvailable}
                     familiesAvailable={familiesAvailable}
+                    queryType={queryType}
                     familyQuery={familyQuery}
+                    onChangeQueryType={(queryType) => setQueryType(queryType)}
                     onChangeFamily={(family) => setFamilyQuery(family)}
                     onChangeSources={(sources) => setSourcesQuery(sources)}
                   />
@@ -220,60 +205,11 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   );
 }
 
-// TODO: move this to an action
-const loadSources = async () => {
-  // query source
-  let query = {
-    opts: {
-      mode: "sources",
-    },
-  };
-  // axios
-  return await axios
-    .post(apiEndPoint, query, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then(
-      (response) => {
-        // get source names
-        let sourceNames = response.data.map((s) => s.sourceName);
-        //
-        return sourceNames;
-      },
-      () => {
-        alert("There was an error while retrieving the sources");
-      }
-    );
-};
-
-// TODO: move this to an action
-const loadFamilyClassifications = async () => {
-  // query source
-  let query = {
-    opts: {
-      mode: "classifications",
-    },
-  };
-  // axios
-  return await axios
-    .post(apiEndPoint, query, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then(
-      (response) => {
-        return response.data;
-      },
-      () => {
-        alert("There was an error while retrieving the classifications");
-      }
-    );
-};
-
 // setting initial props with sources and families
 // these are necessary to render the application
 IndexApp.getInitialProps = async () => {
-  let sources = await loadSources();
-  let families = await loadFamilyClassifications();
+  let sources = await requestSources();
+  let families = await requestFamilyClassifications();
   return { sourcesAvailable: sources, familiesAvailable: families };
 };
 
