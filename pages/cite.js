@@ -17,9 +17,9 @@ import {
 
 const Cite = require("citation-js");
 
-const apiServer = process.env.apiServer;
 const apiEndPoint = process.env.apiEndPoint;
 
+// TODO: move this function somewhere else
 const loadCitations = async () => {
   const query = {
     opts: {
@@ -45,6 +45,7 @@ const loadCitations = async () => {
 
 const renderCitations = (citationsAvailable) => {
   var result = {};
+
   citationsAvailable.map((citation) => {
     // parse data
     let parsed = new Cite(citation.citation);
@@ -63,31 +64,24 @@ const renderCitations = (citationsAvailable) => {
       accessed_date = "";
     }
 
+    let parsedRendered =
+      parsed
+        .format("bibliography", {
+          format: "text",
+          template: "apa",
+          lang: "en-US",
+          // remove part of the html that contains the closing div tag
+          // and add the accessed date
+        })
+        + accessed_date;
+
     result[citation.source] = (
       <div>
-        {/*
-        <Typography variant="body1" gutterBottom={true} align="justify">
-          <strong>{citation.source.toUpperCase()}</strong>
-        </Typography>
-        */}
-        <Typography variant="body2" gutterBottom={true} align="justify">
-          <div
-            dangerouslySetInnerHTML={{
-              __html:
-                parsed
-                  .format("bibliography", {
-                    format: "html",
-                    template: "apa",
-                    lang: "en-US",
-                    // remove part of the html that contains the closing div tag
-                    // and add the accessed date
-                  })
-                  .slice(0, -13) +
-                accessed_date +
-                "</div>",
-            }}
-          ></div>
-        </Typography>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: parsedRendered
+          }}
+        ></div>
         <BibTexDialog displayText={citation.citation} />
         <br />
       </div>
@@ -109,17 +103,10 @@ function BibTexDialog({ displayText }) {
 
   return (
     <div>
-      <a href="#" component={Link} onClick={handleClickOpen}>
+      <Link onClick={handleClickOpen}>
         [bibtex]
-      </a>
-      <Dialog
-        maxWidth={"md"}
-        fullWidth
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+      </Link>
+      <Dialog maxWidth={"md"} fullWidth open={open} onClose={handleClose}>
         <DialogTitle id="alert-dialog-title">{"BibTeX entry"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -128,7 +115,7 @@ function BibTexDialog({ displayText }) {
                 line = "\xa0\xa0\xa0\xa0" + line;
               }
               return (
-                <span>
+                <span key={index}>
                   {line}
                   <br />
                 </span>
@@ -148,56 +135,28 @@ function BibTexDialog({ displayText }) {
 
 function HowCiteApp({ citationsAvailable }) {
   let renderedCitations = renderCitations(citationsAvailable);
-  console.log(renderedCitations);
   return (
     <>
-      <Head>
-        <title>How to Cite</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <Layout>
-        <Typography
-          variant="h3"
-          align="justify"
-          display="block"
-          gutterBottom="True"
-        >
+        <Typography variant="h3" align="justify" display="block" gutterBottom>
           How to Cite the TNRS
         </Typography>
 
         {/*<Typography variant="h6" gutterBottom align="justify">*/}
-        <Typography variant="h5" gutterBottom="True" align="justify">
+        <Typography variant="h5" gutterBottom align="justify">
           To cite the Taxonomic Name Resolution Service:
         </Typography>
-        {/*
-        <Typography variant="body2" gutterBottom={true} align="justify">
-          ﻿Boyle, B., N. Hopkins, Z. Lu, J. A. Raygoza Garay, D. Mozzherin, T.
-          Rees, N. Matasci, M. L. Narro, W. H. Piel, S. J. McKay, S. Lowry, C.
-          Freeland, R. K. Peet, and B. J. Enquist. 2013. The taxonomic name
-          resolution service: an online tool for automated standardization of
-          plant names. BMC bioinformatics 14:16. doi:10.1186/1471-2105-14-16.
-        </Typography>
-        */}
 
         {renderedCitations.tnrs_pub}
 
-        <Typography variant="h5" gutterBottom="True" align="justify">
+        <Typography variant="h5" gutterBottom align="justify">
           If results derived from the TNRS are used in a publication, please
           cite:
         </Typography>
 
-        {/*
-        <Typography variant="body2" gutterBottom={true} align="justify">
-          Botanical Information and Ecology Network (n.d.). Taxonomic Name
-          Resolution Service v5.0. Accessed January 22, 2021 from
-          https://tnrs.biendata.org/.
-        </Typography>
-        
-          */}
         {renderedCitations.tnrs}
 
-        <Typography variant="h5" gutterBottom="True" align="justify">
+        <Typography variant="h5" gutterBottom align="justify">
           Please acknowledge separately the individual taxonomic sources used to
           process your data:
         </Typography>
@@ -205,24 +164,6 @@ function HowCiteApp({ citationsAvailable }) {
         {renderedCitations.tropicos}
         {renderedCitations.tpl}
         {renderedCitations.usda}
-
-        {/*
-        <Typography variant="body2" gutterBottom={true} align="justify">
-          Missouri Botanical Garden. (n.d.). Tropicos. Missouri Botanical
-          Garden. Accessed May 30, 2020 from http://www.tropicos.org.
-          <br />
-          The Plant List, version 1.1. (2013). Accessed June 26, 2020 from
-          http://www.theplantlist.org.
-          <br />
-          USDA, NRCS. (n.d.). The PLANTS Database. National Plant Data Team.
-          Accessed July 3, 2020 from http://plants.usda.gov.
-          <br />
-          <br />
-          Note: for taxonomic sources, "Accessed" is the date of download of
-          data from that source when building the current TNRS database (see
-          also <a href="/sources">Sources</a>).
-        </Typography>
-        */}
       </Layout>
     </>
   );
