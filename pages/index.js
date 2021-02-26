@@ -23,6 +23,7 @@ import {
   requestResolveNames,
   requestParseNames,
   requestSources,
+  requestFamilyClassifications
 } from "../actions";
 
 function IndexApp({ sourcesAvailable, familiesAvailable }) {

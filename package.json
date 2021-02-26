@@ -17,7 +17,7 @@
     "react-dom": "latest"
   },
   "scripts": {
-    "dev": "next",
+    "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "export": "next build && next export",
     "start": "next start",
