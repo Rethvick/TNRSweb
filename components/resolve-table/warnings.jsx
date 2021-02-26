@@ -17,7 +17,7 @@ import {
 import {
   shortText2LongText,
   shortText2DetailedExplanation,
-} from "../../src/actions";
+} from "../../actions";
 
 import { zip } from "lodash";
 

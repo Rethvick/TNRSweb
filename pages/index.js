@@ -3,6 +3,8 @@ import { useState } from "react";
 import Head from "next/head";
 import axios from "axios";
 
+import { Grid, Box, Container, Paper } from "@material-ui/core";
+
 import {
   SearchBox,
   OptionsBox,
@@ -16,13 +18,18 @@ import {
   DownloadSettings,
 } from "../components/";
 
-import { translateWarningCode, sortByColumn } from "../src/actions";
+// TODO: sortByColumn could have a better name
+import {
+  translateWarningCode,
+  sortByColumn,
+  requestResolveNames,
+} from "../actions";
 
-import { Grid, Box, Container, Paper } from "@material-ui/core";
-
+// TODO: can we do this in a better way?
 const apiEndPoint = process.env.apiEndPoint;
 
 function IndexApp({ sourcesAvailable, familiesAvailable }) {
+  // TODO: having all these states does not seem fun
   // state where we keep the results that come from the API
   const [result, setResult] = useState([]);
   // state where we store the parsed names
@@ -39,7 +46,8 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   const [queryType, setQueryType] = useState("resolve");
   //
   const [bestMatchingSetting, setBestMatchingSetting] = useState();
-  //
+  // this is used to keep track of the submission time
+  // when we download the settings
   const [queryTimeTracker, setQueryTime] = useState({ start: null, end: null });
 
   // function to query data from the api
@@ -60,107 +68,23 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     if (names.length == 0) {
       return;
     }
-    //
+    // clear results
     setResult([]);
     setParsedNames([]);
     // show spinner
     setLoadingStatus(true);
     //
     if (queryType === "resolve") {
-      // store the start time of the query
+      // show spinner
       let start = Date();
-      // query object sent to the api
-      const queryObject = {
-        opts: {
-          // sources coming from the options box
-          sources: sourcesQuery,
-          class: familyQuery,
-          mode: "resolve",
-          matches: "all",
-        },
-        data: [],
-      };
-
-      // queryNames coming from the searchbox
-      queryObject.data = queryNames;
-
-      // sending the request to the API
-      axios
-        .post(apiEndPoint, queryObject, {
-          headers: { "Content-Type": "application/json" },
-        })
-        .then(
-          (response) => {
-            // group data using
-            // Author_matched + Name_matched + Overall_score + Accepted_name
-            let groupedData = _.chain(response.data)
-              //for each ID returned
-              .groupBy("ID")
-              .map((idGroup) => {
-                // group by selected properties
-                return (
-                  _.chain(idGroup)
-                    .groupBy((row) => {
-                      return (
-                        row.Canonical_author +
-                        row.Name_matched +
-                        row.Overall_score +
-                        row.Accepted_name +
-                        row.Taxonomic_status +
-                        row.Accepted_name +
-                        row.Accepted_name_author
-                      );
-                    })
-                    // consolidate Source, Name_matched_url and Accepted_name_url
-                    .map((eqRow) => {
-                      let sources = [];
-                      let accepted_urls = [];
-                      let matched_urls = [];
-                      //
-                      let head = eqRow[0];
-                      //let tail = eqRow.slice(1);
-                      eqRow.forEach((row) => {
-                        //
-                        if (sources.includes(row.Source) === false) {
-                          sources.push(row.Source);
-                          matched_urls.push(row.Name_matched_url);
-                          accepted_urls.push(row.Accepted_name_url);
-                        }
-                      });
-                      //
-                      head.Source = sources.join(",");
-                      head.Name_matched_url = matched_urls.join(";");
-                      head.Accepted_name_url = accepted_urls.join(";");
-                      // return only one row per group
-                      return head;
-                    })
-                    .value()
-                );
-              })
-              // flatten to remove groupById
-              .flatten()
-              .value();
-            // use the column 'Overall_score_order' to create the column selected
-            let responseSelected = groupedData.map((row, idx) => {
-              row.Warnings = translateWarningCode(row.Warnings);
-              return {
-                ...row,
-                ...{ selected: row.Overall_score_order == 1, unique_id: idx },
-              };
-            });
-            // update state
-            setResult(responseSelected);
-            // hide spinner
-            setLoadingStatus(false);
-            // reset best matching settings
-            setBestMatchingSetting("Overall_score_order");
-            // store end time
-            setQueryTime({ start: start, end: Date() });
-          },
-          () => {
-            alert("Error fetching data from API");
-          }
-        );
+      // request the data and set result
+      requestResolveNames(queryNames, sourcesQuery, familyQuery).then((res) => {
+        setLoadingStatus(false);
+        // record start and end time
+        setQueryTime({ start: start, end: Date() });
+        setBestMatchingSetting("Overall_score_order");
+        setResult(res)
+      });
     }
 
     if (queryType === "parse") {
@@ -296,6 +220,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   );
 }
 
+// TODO: move this to an action
 const loadSources = async () => {
   // query source
   let query = {
@@ -321,6 +246,7 @@ const loadSources = async () => {
     );
 };
 
+// TODO: move this to an action
 const loadFamilyClassifications = async () => {
   // query source
   let query = {
@@ -343,7 +269,8 @@ const loadFamilyClassifications = async () => {
     );
 };
 
-// loading sources
+// setting initial props with sources and families
+// these are necessary to render the application
 IndexApp.getInitialProps = async () => {
   let sources = await loadSources();
   let families = await loadFamilyClassifications();

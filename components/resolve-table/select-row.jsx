@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 
 import { mkSourceLinks } from "./links";
-import { roundScore } from "../../src/actions";
+import { roundScore } from "../../actions";
 
 // shows the dialog to allow the user to select a diff row
 export function SelectRowDialog(props) {
