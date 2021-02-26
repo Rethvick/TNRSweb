@@ -17,6 +17,7 @@ import axios from "axios";
 const apiServer = process.env.apiServer;
 const apiEndPoint = process.env.apiEndPoint;
 
+// TODO: move this to a separate file
 const loadSources = async () => {
   // build query
   const query = {
@@ -49,20 +50,15 @@ function SourcesApp({ sourcesAvailable }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Typography
-          variant="h3"
-          align="justify"
-          display="block"
-          gutterBottom="True"
-        >
+        <Typography variant="h3" align="justify" display="block" gutterBottom>
           Sources
         </Typography>
 
         <div id="currentsources">
-          <Typography variant="h5" gutterBottom="True" align="justify">
+          <Typography variant="h5" gutterBottom align="justify">
             Taxonomic data providers
           </Typography>
-          <Typography variant="body2" gutterBottom="True" align="justify">
+          <Typography variant="body2" gutterBottom align="justify">
             {/* TODO: dynamic numbering here */}
             TNRS version 5.0 consults the following sources of nomenclatural and
             taxonomic information:
@@ -70,7 +66,7 @@ function SourcesApp({ sourcesAvailable }) {
 
           <List>
             {sourcesAvailable.map((s) => (
-              <>
+              <div key={s.sourceName}>
                 <ListItem>
                   <Hidden xsDown>
                     <ListItemIcon>
@@ -86,10 +82,10 @@ function SourcesApp({ sourcesAvailable }) {
                     </ListItemIcon>
                   </Hidden>
                   <ListItemText>
-                    <Typography gutterBottom={true} variant="h7" component="h2">
+                    <Typography gutterBottom variant="h6" component="h2">
                       {s.sourceNameFull} - {s.sourceName.toUpperCase()}
                     </Typography>
-                    <Typography variant="body2" color="black" component="p">
+                    <Typography variant="body2" component="p">
                       {s.description} <br />
                       <br />
                       Date Accessed: {s.tnrsDateAccessed}
@@ -106,17 +102,17 @@ function SourcesApp({ sourcesAvailable }) {
                   </ListItemText>
                 </ListItem>
                 <Divider />
-              </>
+              </div>
             ))}
           </List>
         </div>
         <br />
 
         <div id="reporterrors">
-          <Typography variant="h5" gutterBottom="True" align="justify">
+          <Typography variant="h5" gutterBottom align="justify">
             Reporting errors
           </Typography>
-          <Typography variant="body2" align="justify" gutterBottom="True">
+          <Typography variant="body2" align="justify" gutterBottom>
             Please contact us at{" "}
             <a href="mailto:support@tnrs.biendata.org">
               support@tnrs.biendata.org
