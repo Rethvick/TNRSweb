@@ -172,16 +172,16 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
           variant="h3"
           align="justify"
           display="block"
-          gutterBottom="True"
+          gutterBottom
         >
           Becoming a data provider
         </Typography>
 
         <div id="whoshouldjoin">
-			<Typography variant="h5" gutterBottom="True" align="justify">
+			<Typography variant="h5" gutterBottom align="justify">
 				Who should become a data provider for the TNRS?
 			</Typography>
-			<Typography variant="body2" gutterBottom={true} align="justify">
+			<Typography variant="body2" gutterBottom align="justify">
 				Curators of databases of high quality plant taxonomy (taxonomy
 				for any group of organisms goverened by the ICN, or
 				International Code of Nomenclature for algae, fungi, and
@@ -197,10 +197,10 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
 			</Typography>
 			<br />
 
-			<Typography variant="h5" gutterBottom="True" align="justify">
+			<Typography variant="h5" gutterBottom align="justify">
 				How do I share my taxonomy?
 			</Typography>
-			<Typography variant="body2" gutterBottom={true} align="justify">
+			<Typography variant="body2" gutterBottom align="justify">
 				TNRS developers will work with you to develop the most effective
 				method of sharing your taxonomic information. Exposing your
 				data via the TNRS requires that we import your names and
@@ -212,10 +212,10 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
 			</Typography>
 			<br />
 
-			<Typography variant="h5" gutterBottom="True" align="justify">
+			<Typography variant="h5" gutterBottom align="justify">
 				TNRS Simple Darwin Core export format
 			</Typography>
-			<Typography variant="body2" gutterBottom={true} align="justify">
+			<Typography variant="body2" gutterBottom align="justify">
 				The simplest way to share your taxonomic information with the
 				TNRS is as an export structured according to the TNRS Simple
 				Darwin Core format. Taxonomic data formatted in this way can
