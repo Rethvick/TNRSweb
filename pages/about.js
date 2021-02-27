@@ -1,7 +1,5 @@
 import { Layout } from "../components";
-import Head from "next/head";
 
-import { makeStyles } from "@material-ui/core";
 import axios from "axios";
 
 import {
@@ -11,6 +9,7 @@ import {
   ListItemText,
   ListItemIcon,
   Divider,
+  Link
 } from "@material-ui/core";
 
 const apiServer = process.env.apiServer;
@@ -40,7 +39,6 @@ const loadCollab = async () => {
 };
 
 function AboutApp({ collaboratorsAvailable }) {
-
   return (
     <>
       <Layout>
@@ -53,21 +51,21 @@ function AboutApp({ collaboratorsAvailable }) {
         <br />
 
         <Typography variant="body2" gutterBottom align="justify">
-          <a href="#whattnrs">What is the TNRS?</a>
+          <Link href="#whattnrs">What is the TNRS?</Link>
           <br />
-          <a href="#wheretnrs">Where does the TNRS get its taxonomy?</a>
+          <Link href="#wheretnrs">Where does the TNRS get its taxonomy?</Link>
           <br />
-          <a href="#tnrsapi">TNRS API</a>
+          <Link href="#tnrsapi">TNRS API</Link>
           <br />
-          <a href="#rtnrs">TNRS R package</a>
+          <Link href="#rtnrs">TNRS R package</Link>
           <br />
-          <a href="#sourcecode">Source code</a>
+          <Link href="#sourcecode">Source code</Link>
           <br />
-          <a href="#software">Contributing software</a>
+          <Link href="#software">Contributing software</Link>
           <br />
-          <a href="#contributors">Contributors</a>
+          <Link href="#contributors">Contributors</Link>
           <br />
-          <a href="#funding">Funding</a>
+          <Link href="#funding">Funding</Link>
           <br />
         </Typography>
         <br />
@@ -105,7 +103,8 @@ function AboutApp({ collaboratorsAvailable }) {
             the authoritative sources. Although the TNRS allows users to choose
             which taxonomic sources they consult, in the end, the opinions
             provided are those of the selected sources, not the TNRS. For a list
-            of current taxanomic sources, see <a href="/sources">Sources</a>.
+            of current taxanomic sources, see{" "}
+            <Link href="/sources">Sources</Link>.
           </Typography>
           <br />
         </div>
@@ -117,16 +116,19 @@ function AboutApp({ collaboratorsAvailable }) {
 
           <Typography variant="body2" gutterBottom align="justify">
             The TNRS web interface uses the{" "}
-            <a href="https://github.com/ojalaquellueva/TNRSapi" target="_blank">
+            <Link
+              href="https://github.com/ojalaquellueva/TNRSapi"
+              target="_blank"
+            >
               new TNRS API
-            </a>{" "}
+            </Link>{" "}
             to access the upgraded{" "}
-            <a
+            <Link
               href="https://github.com/ojalaquellueva/TNRSbatch"
               target="_blank"
             >
               TNRS 5.0 search engine
-            </a>
+            </Link>
             . The TNRS API functions handles all traffic between external
             applications and the TNRS search engine. Consequently, all features
             available via the web interface are also accessible by calling API
@@ -138,9 +140,12 @@ function AboutApp({ collaboratorsAvailable }) {
             applications. For more information on the TNRS API and detailed
             instructions and examples of how to access the API in languages such
             as R and PHP, see documentation on the{" "}
-            <a href="https://github.com/ojalaquellueva/TNRSapi" target="_blank">
+            <Link
+              href="https://github.com/ojalaquellueva/TNRSapi"
+              target="_blank"
+            >
               TNRS API GitHub repository
-            </a>
+            </Link>
           </Typography>
           <br />
         </div>
@@ -152,13 +157,13 @@ function AboutApp({ collaboratorsAvailable }) {
 
           <Typography variant="body2" gutterBottom align="justify">
             Users who are familiar with the{" "}
-            <a href="https://www.r-project.org/" target="_blank">
+            <Link href="https://www.r-project.org/" target="_blank">
               R programming language
-            </a>{" "}
+            </Link>{" "}
             may prefer to access the TNRS using the{" "}
-            <a href="https://github.com/EnquistLab/RTNRS" target="_blank">
+            <Link href="https://github.com/EnquistLab/RTNRS" target="_blank">
               RTNRS R package
-            </a>
+            </Link>
             . Among other advantages, using RTNRS provides an efficient way to
             process large taxonomic lists which exceed limit of 5000 names per
             batch, as you can loop through the names in batches. All options
@@ -181,36 +186,42 @@ function AboutApp({ collaboratorsAvailable }) {
 
           <Typography variant="body2" gutterBottom align="justify">
             TNRS Search Engine:{" "}
-            <a
+            <Link
               href="https://github.com/ojalaquellueva/TNRSbatch"
               target="_blank"
             >
               https://github.com/ojalaquellueva/TNRSbatch
-            </a>
+            </Link>
             <br />
             TNRS database:{" "}
-            <a href="https://github.com/ojalaquellueva/tnrs_db" target="_blank">
+            <Link
+              href="https://github.com/ojalaquellueva/tnrs_db"
+              target="_blank"
+            >
               https://github.com/ojalaquellueva/tnrs_db
-            </a>
+            </Link>
             <br />
             TNRS name parser:{" "}
-            <a
+            <Link
               href="https://github.com/GlobalNamesArchitecture/biodiversity"
               target="_blank"
             >
               https://github.com/GlobalNamesArchitecture/biodiversity
-            </a>{" "}
+            </Link>{" "}
             (=Global Names Biodiversity Parser - Ruby version)
             <br />
             TNRS API:{" "}
-            <a href="https://github.com/ojalaquellueva/TNRSapi" target="_blank">
+            <Link
+              href="https://github.com/ojalaquellueva/TNRSapi"
+              target="_blank"
+            >
               https://github.com/ojalaquellueva/TNRSapi
-            </a>
+            </Link>
             <br />
             RTNRS R package:{" "}
-            <a href="https://github.com/EnquistLab/RTNRS" target="_blank">
+            <Link href="https://github.com/EnquistLab/RTNRS" target="_blank">
               https://github.com/EnquistLab/RTNRS
-            </a>
+            </Link>
             <br />
           </Typography>
           <br />
@@ -227,47 +238,47 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
 
           <Typography variant="body2" gutterBottom align="justify">
-            <a
+            <Link
               href="http://www.cmar.csiro.au/datacentre/taxamatch.htm"
               target="_blank"
             >
               Original Taxamatch Algorithm
-            </a>
+            </Link>
             . Developed by{" "}
-            <a
+            <Link
               href="https://en.wikipedia.org/wiki/Tony_Rees_(scientist)"
               target="_blank"
             >
               Tony Rees
-            </a>
+            </Link>
             .
             <br />
-            <a
+            <Link
               href="http://www.silverbiology.com/products/taxamatch/"
               target="_blank"
             >
               Taxamatch PHP Web Service
-            </a>
+            </Link>
             . Developed by{" "}
-            <a href="http://www.silverbiology.com/" target="_blank">
+            <Link href="http://www.silverbiology.com/" target="_blank">
               {" "}
               Michael Giddens
-            </a>
+            </Link>
             .
             <br />
-            <a
+            <Link
               href="https://github.com/GlobalNamesArchitecture/biodiversity"
               target="_blank"
             >
               Global Names Biodiversity Parser (Ruby version)
-            </a>
+            </Link>
             . Developed by{" "}
-            <a
+            <Link
               href="https://www.researchgate.net/profile/Dmitry_Mozzherin"
               target="_blank"
             >
               Dmitry Mozzherin
-            </a>
+            </Link>
             .
           </Typography>
           <br />
@@ -281,25 +292,28 @@ function AboutApp({ collaboratorsAvailable }) {
           <Typography variant="body2" gutterBottom align="justify">
             TNRS was first developed by the iPlant Collaborative Tree of Life
             Project, in collaboration with the{" "}
-            <a href="http://www.mobot.org/" target="_blank">
+            <Link href="http://www.mobot.org/" target="_blank">
               Missouri Botanical Garden
-            </a>{" "}
+            </Link>{" "}
             and the{" "}
-            <a href="http://bien.nceas.ucsb.edu/bien/" target="_blank">
+            <Link href="http://bien.nceas.ucsb.edu/bien/" target="_blank">
               Botanical Information and Ecology Network
-            </a>
+            </Link>
             . Later development was supported by{" "}
-            <a href="https://www.cyverse.org/" target="_blank">
+            <Link href="https://www.cyverse.org/" target="_blank">
               Cyverse
-            </a>
+            </Link>
             , led by the Botanical Information and Ecology Network and funded by
             a{" "}
-            <a href="https://www.nsf.gov/" target="_blank">
+            <Link href="https://www.nsf.gov/" target="_blank">
               National Science Foundation
-            </a>{" "}
-            <a href="https://www.nsf.gov/cise/harnessingdata/" target="_blank">
+            </Link>{" "}
+            <Link
+              href="https://www.nsf.gov/cise/harnessingdata/"
+              target="_blank"
+            >
               Harnessing the Data Revolution
-            </a>{" "}
+            </Link>{" "}
             Grant HDR 1934790. Numerous members of the taxonomic and informatics
             community provided advice , access to data, and source code.
           </Typography>
@@ -309,14 +323,14 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
           <Typography variant="body2" gutterBottom align="justify">
             Brad Boyle{" "}
-            <a href="https://eeb.arizona.edu/" target="_blank">
+            <Link href="https://eeb.arizona.edu/" target="_blank">
               University of Arizona
-            </a>
+            </Link>
             <br />
             Brian Enquist{" "}
-            <a href="https://eeb.arizona.edu/" target="_blank">
+            <Link href="https://eeb.arizona.edu/" target="_blank">
               University of Arizona
-            </a>
+            </Link>
             <br />
           </Typography>
 
@@ -325,104 +339,110 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
           <Typography variant="body2" gutterBottom align="justify">
             Brad Boyle (
-            <a href="https://github.com/ojalaquellueva/tnrs_db" target="_blank">
+            <Link
+              href="https://github.com/ojalaquellueva/tnrs_db"
+              target="_blank"
+            >
               TNRS database
-            </a>
+            </Link>
             ,{" "}
-            <a href="https://github.com/ojalaquellueva/TNRSapi" target="_blank">
+            <Link
+              href="https://github.com/ojalaquellueva/TNRSapi"
+              target="_blank"
+            >
               API
-            </a>{" "}
+            </Link>{" "}
             and{" "}
-            <a
+            <Link
               href="https://github.com/ojalaquellueva/TNRSbatch"
               target="_blank"
             >
               TNRS batch/parallelization update
-            </a>
+            </Link>
             )
             <br />
             Naim Matasci (
-            <a href="https://github.com/nmatasci/TNRSbatch" target="_blank">
+            <Link href="https://github.com/nmatasci/TNRSbatch" target="_blank">
               Original TNRS batch mode/parallelization
-            </a>
+            </Link>
             )
             <br />
             Dmitry Mozzherin (
-            <a
+            <Link
               href="https://github.com/GlobalNamesArchitecture/biodiversity"
               target="_blank"
             >
               Name parser
-            </a>
+            </Link>
             )
             <br />
             Tony Rees (
-            <a
+            <Link
               href="http://www.cmar.csiro.au/datacentre/taxamatch.htm"
               target="_blank"
             >
               Fuzzy matching module
-            </a>
+            </Link>
             )
             <br />
             Michael Giddens (
-            <a
+            <Link
               href="http://www.silverbiology.com/products/taxamatch/"
               target="_blank"
             >
               Taxamatch PHP adaptation
-            </a>
+            </Link>
             )
             <br />
             George C. Barbosa (
-            <a href="https://github.com/EnquistLab/TNRSweb" target="_blank">
+            <Link href="https://github.com/EnquistLab/TNRSweb" target="_blank">
               TNRSweb
-            </a>{" "}
+            </Link>{" "}
             Javascript/Node.js user interface)
             <br />
             Rohith Kumar Sajja (
-            <a href="https://github.com/EnquistLab/TNRSweb" target="_blank">
+            <Link href="https://github.com/EnquistLab/TNRSweb" target="_blank">
               TNRSweb
-            </a>{" "}
+            </Link>{" "}
             Javascript/Node.js user interface)
             <br />
           </Typography>
 
           <Typography variant="h6" gutterBottom align="justify">
             Project direction and development - Original{" "}
-            <a
+            <Link
               href="https://github.com/iPlantCollaborativeOpenSource/TNRS"
               target="_blank"
             >
               iPlant TNRS
-            </a>{" "}
+            </Link>{" "}
             (deprecated)
           </Typography>
 
           <Typography variant="body2" gutterBottom align="justify">
-            <a href="https://eeb.arizona.edu/" target="_blank">
+            <Link href="https://eeb.arizona.edu/" target="_blank">
               Brad Boyle
-            </a>
+            </Link>
             <br />
-            <a href="https://eeb.arizona.edu/" target="_blank">
+            <Link href="https://eeb.arizona.edu/" target="_blank">
               Brian Enquist
-            </a>
+            </Link>
             <br />
             Juan Antonio Raygoza Garay
             <br />
-            <a
+            <Link
               href="https://www.researchgate.net/profile/Dmitry_Mozzherin"
               target="_blank"
             >
               Dmitry Mozzherin
-            </a>
+            </Link>
             <br />
-            <a
+            <Link
               href="https://en.wikipedia.org/wiki/Tony_Rees_(scientist)"
               target="_blank"
             >
               Tony Rees
-            </a>{" "}
+            </Link>{" "}
             <br />
             Nicole Hopkins
             <br />
@@ -440,102 +460,99 @@ function AboutApp({ collaboratorsAvailable }) {
             iPlant staff
             <br />
           </Typography>
-
           <Typography variant="h6" gutterBottom align="justify">
             Collaborators
           </Typography>
           <Typography variant="body2" gutterBottom align="justify">
-            <a href="https://eeb.arizona.edu/" target="_blank">
+            <Link href="https://eeb.arizona.edu/" target="_blank">
               Brian Maitner
-            </a>
+            </Link>
             <br />
-            <a href="https://cmerow.github.io/" target="_blank">
+            <Link href="https://cmerow.github.io/" target="_blank">
               Cory Merow
-            </a>
+            </Link>
             <br />
             Bob Magill (
-            <a href="http://www.mobot.org/" target="_blank">
+            <Link href="http://www.mobot.org/" target="_blank">
               Missouri Botanical Garden
-            </a>
+            </Link>
             )<br />
             Chris Freeland (
-            <a href="http://www.mobot.org/" target="_blank">
+            <Link href="http://www.mobot.org/" target="_blank">
               Missouri Botanical Garden
-            </a>
+            </Link>
             )<br />
             Chuck Miller (
-            <a href="http://www.mobot.org/" target="_blank">
+            <Link href="http://www.mobot.org/" target="_blank">
               Missouri Botanical Garden
-            </a>
+            </Link>
             )<br />
             Peter Jorgensen (
-            <a href="http://www.mobot.org/" target="_blank">
+            <Link href="http://www.mobot.org/" target="_blank">
               Missouri Botanical Garden
-            </a>
+            </Link>
             )<br />
             Amy Zanne (
-            <a href="http://www.umsl.edu/" target="_blank">
+            <Link href="http://www.umsl.edu/" target="_blank">
               University of Missouri, St. Louis
-            </a>
+            </Link>
             )<br />
             Peter Stevens (
-            <a href="http://www.mobot.org/" target="_blank">
+            <Link href="http://www.mobot.org/" target="_blank">
               Missouri Botanical Garden
-            </a>
+            </Link>
             )<br />
             Jay Paige (
-            <a href="http://www.mobot.org/" target="_blank">
+            <Link href="http://www.mobot.org/" target="_blank">
               Missouri Botanical Garden
-            </a>
+            </Link>
             )<br />
             Bob Peet (
-            <a href="http://www.unc.edu/" target="_blank">
+            <Link href="http://www.unc.edu/" target="_blank">
               University of North Carolina at Chapel Hill
-            </a>
+            </Link>
             )<br />
             Paul Morris (
-            <a href="http://www.harvard.edu/" target="_blank">
+            <Link href="http://www.harvard.edu/" target="_blank">
               Harvard University
-            </a>
+            </Link>
             )<br />
             Alan Paton (
-            <a href="http://www.kew.org/" target="_blank">
+            <Link href="http://www.kew.org/" target="_blank">
               Kew Royal Botanic Gardens
-            </a>{" "}
+            </Link>{" "}
             and the{" "}
-            <a
+            <Link
               href="http://www.kew.org/science/directory/projects/IPNI.html"
               target="_blank"
             >
               International Plant Names Index
-            </a>
+            </Link>
             )<br />
             Michael Giddens (
-            <a href="http://www.silverbiology.com/" target="_blank">
+            <Link href="http://www.silverbiology.com/" target="_blank">
               www.silverbiology.com
-            </a>
+            </Link>
             )<br />
             David Remsen (
-            <a href="http://www.gbif.org/" target="_blank">
+            <Link href="http://www.gbif.org/" target="_blank">
               Global Biodiversity Information Facility
-            </a>
+            </Link>
             )<br />
             David Patterson (
-            <a href="http://www.eol.org/" target="_blank">
+            <Link href="http://www.eol.org/" target="_blank">
               Encyclopedia of Life
-            </a>
+            </Link>
             )<br />
             Cam Webb (
-            <a href="http://www.harvard.edu/" target="_blank">
+            <Link href="http://www.harvard.edu/" target="_blank">
               Harvard University
-            </a>
+            </Link>
             )<br />
           </Typography>
-
           <Typography variant="h6" gutterBottom align="justify">
             Institutions
           </Typography>
-
           {/* Collaborators */}
           <List>
             {collaboratorsAvailable.map((c, idx) => (
@@ -558,9 +575,9 @@ function AboutApp({ collaboratorsAvailable }) {
                     <Typography variant="body2" component="p">
                       {c.description}
                     </Typography>
-                    <a href={c.collaboratorUrl} size="small" color="primary">
+                    <Link href={c.collaboratorUrl} size="small" color="primary">
                       Learn More
-                    </a>
+                    </Link>
                   </ListItemText>
                 </ListItem>
                 <Divider />
@@ -570,7 +587,6 @@ function AboutApp({ collaboratorsAvailable }) {
           <br />
           <br />
         </div>
-
         <div id="funding">
           <Typography variant="h5" gutterBottom align="justify">
             Funding
