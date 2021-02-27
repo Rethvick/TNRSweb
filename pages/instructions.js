@@ -1,6 +1,6 @@
 import { Layout } from "../components";
 
-import { Typography, List, ListItem } from "@material-ui/core";
+import { Typography, List, ListItem, Link } from "@material-ui/core";
 
 function InstructionsApp() {
   return (
@@ -15,11 +15,11 @@ function InstructionsApp() {
         </Typography>
         <br />
         <Typography variant="body2" gutterBottom align="justify">
-          <a href="#howwork">How does the TNRS work?</a>
+          <Link href="#howwork">How does the TNRS work?</Link>
           <br />
         </Typography>
         <Typography variant="body2" gutterBottom align="justify">
-          <a href="#howuse">How do I use the TNRS?</a>
+          <Link href="#howuse">How do I use the TNRS?</Link>
           <br />
         </Typography>
         <br />
@@ -53,15 +53,15 @@ function InstructionsApp() {
                 "contaminants" from standard components increases the chance
                 that the TNRS will match the intended name. Parsing is performed
                 by the{" "}
-                <a href="http://gni.globalnames.org/" target="_blank">
+                <Link href="http://gni.globalnames.org/" target="_blank">
                   Global Names
-                </a>{" "}
-                <a
+                </Link>{" "}
+                <Link
                   href="https://github.com/GlobalNamesArchitecture/biodiversity"
                   target="_blank"
                 >
                   Biodiversity Name Parser
-                </a>
+                </Link>
                 .
               </Typography>
             </ListItem>
@@ -70,12 +70,12 @@ function InstructionsApp() {
                 2. <strong>Match</strong>. The parsed name components are again
                 matched against known scientific names in the TNRS database. The
                 TNRS attempts both exact matching and fuzzy matching using the{" "}
-                <a
+                <Link
                   href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0107510"
                   target="_blank"
                 >
                   Taxamatch
-                </a>{" "}
+                </Link>{" "}
                 taxonomic fuzzy matching algorithm. The Taxamatch algorithm
                 speeds up fuzzy matching by searching within the taxonomic
                 hierarchy. For example, once a genus has been identified, only
@@ -163,16 +163,16 @@ function InstructionsApp() {
             <ListItem>
               <Typography variant="body2">
                 4. <strong>Inspect</strong>. Always inspect your results before
-                downloading if (a) any <a href="/warnings">warnings</a> are
-                displayed in the first column of the results table (click on the{" "}
-                <a href="/warnings">warning</a> symbol for details), or (b) the
-                TNRS found >1 match to a name. The latter will be indicated by
-                the hyperlinked text "(+n more)" after the name in column "Name
-                Matched". Use the provided links to research all potential
-                matches, selecting an alternative match as the best name if
-                appropropriate. If a <a href="/warnings">warning</a> indicates
-                that a better higher taxonomic match is available for a
-                submitted name, you should inspect the alternative very
+                downloading if (a) any <Link href="/warnings">warnings</Link>{" "}
+                are displayed in the first column of the results table (click on
+                the <Link href="/warnings">warning</Link> symbol for details),
+                or (b) the TNRS found >1 match to a name. The latter will be
+                indicated by the hyperlinked text "(+n more)" after the name in
+                column "Name Matched". Use the provided links to research all
+                potential matches, selecting an alternative match as the best
+                name if appropriate. If a <Link href="/warnings">warning</Link>{" "}
+                indicates that a better higher taxonomic match is available for
+                a submitted name, you should inspect the alternative very
                 carefully, as this may indicate that a better matching genus or
                 family is correct, but the specific epithet was fuzzy matched to
                 an unrelated taxon in a different genus or family.
@@ -187,11 +187,11 @@ function InstructionsApp() {
                 However, in most cases you should instead inspect and change
                 names individually, as changing "Best Match Settings" will
                 discard any manual selections you have made. However, if many
-                names have the <a href="/warnings">warning</a> "Better higher
-                taxonomic match available", you may find it helpful to download
-                your names twice and compare the results: once using the default
-                "Sort by Overall Score" method, and a second time using "Sort by
-                Higher Taxonomy".
+                names have the <Link href="/warnings">warning</Link> "Better
+                higher taxonomic match available", you may find it helpful to
+                download your names twice and compare the results: once using
+                the default "Sort by Overall Score" method, and a second time
+                using "Sort by Higher Taxonomy".
               </Typography>
             </ListItem>
             <ListItem>
