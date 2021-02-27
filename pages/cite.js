@@ -103,7 +103,7 @@ function BibTexDialog({ displayText }) {
 
   return (
     <div>
-      <Link onClick={handleClickOpen}>
+      <Link href='#' onClick={handleClickOpen}>
         [bibtex]
       </Link>
       <Dialog maxWidth={"md"} fullWidth open={open} onClose={handleClose}>
