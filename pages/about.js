@@ -2,14 +2,7 @@ import { Layout } from "../components";
 import Head from "next/head";
 
 import { makeStyles } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
 import axios from "axios";
-import Link from "next/link";
 
 import {
   Typography,
@@ -17,13 +10,13 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Box,
   Divider,
 } from "@material-ui/core";
 
 const apiServer = process.env.apiServer;
 const apiEndPoint = process.env.apiEndPoint;
 
+// TODO: move this to a separate function
 const loadCollab = async () => {
   const query = {
     opts: {
@@ -46,53 +39,10 @@ const loadCollab = async () => {
     );
 };
 
-const useStyles = makeStyles((theme) => ({
-  page: {
-    padding: theme.spacing(0.5),
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  root: {
-    flexGrow: 1,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  header: {
-    color: theme.palette.grey[400],
-    height: "15px",
-  },
-  image: {
-    padding: theme.spacing(0),
-    objectFit: "none",
-    flex: 1,
-    flexGrow: 1,
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  action: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    // alignSelf: "center",
-    // bottom: 0,
-    // flex: 1
-  },
-}));
-
 function AboutApp({ collaboratorsAvailable }) {
-  const classes = useStyles();
 
   return (
     <>
-      <Head>
-        <title>TNRS - About</title>
-        <a rel="icon" href="/favicon.ico" />
-      </Head>
       <Layout>
         <Typography variant="h3" align="justify" display="block" gutterBottom>
           About the TNRS
@@ -588,8 +538,8 @@ function AboutApp({ collaboratorsAvailable }) {
 
           {/* Collaborators */}
           <List>
-            {collaboratorsAvailable.map((c) => (
-              <>
+            {collaboratorsAvailable.map((c, idx) => (
+              <div key={idx}>
                 <ListItem alignItems="flex-start">
                   <ListItemIcon>
                     <div>
@@ -601,12 +551,11 @@ function AboutApp({ collaboratorsAvailable }) {
                       />
                     </div>
                   </ListItemIcon>
-
                   <ListItemText>
-                    <Typography gutterBottom={true} variant="h7">
+                    <Typography gutterBottom={true} variant="h6">
                       {c.collaboratorNameFull}
                     </Typography>
-                    <Typography variant="body2" color="black" component="p">
+                    <Typography variant="body2" component="p">
                       {c.description}
                     </Typography>
                     <a href={c.collaboratorUrl} size="small" color="primary">
@@ -615,7 +564,7 @@ function AboutApp({ collaboratorsAvailable }) {
                   </ListItemText>
                 </ListItem>
                 <Divider />
-              </>
+              </div>
             ))}
           </List>
           <br />
@@ -626,7 +575,6 @@ function AboutApp({ collaboratorsAvailable }) {
           <Typography variant="h5" gutterBottom align="justify">
             Funding
           </Typography>
-
           <Typography variant="body2" align="justify">
             Funding provided by the National Science Foundation Plant
             Cyberinfrastructure Program (grant #DBI-0735191) and National
