@@ -12,35 +12,9 @@ import {
   Hidden,
 } from "@material-ui/core";
 
-import axios from "axios";
+import { requestSources } from "../actions"
 
 const apiServer = process.env.apiServer;
-const apiEndPoint = process.env.apiEndPoint;
-
-// TODO: move this to a separate file
-const loadSources = async () => {
-  // build query
-  const query = {
-    opts: {
-      mode: "sources",
-    },
-  };
-  // return axios request
-  return await axios
-    .post(apiEndPoint, query, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then(
-      (response) => {
-        // setSources(response.data);
-        let source_list = response.data;
-        return source_list;
-      },
-      () => {
-        alert("There was an error while retrieving the sources");
-      }
-    );
-};
 
 function SourcesApp({ sourcesAvailable }) {
   return (
@@ -132,7 +106,7 @@ function SourcesApp({ sourcesAvailable }) {
 
 // making initial props available
 SourcesApp.getInitialProps = async () => {
-  let sources = await loadSources();
+  let sources = await requestSources();
   return { sourcesAvailable: sources };
 };
 

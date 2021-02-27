@@ -1,36 +1,14 @@
 import { Button } from "@material-ui/core";
 
-import axios from "axios";
 import { saveAs } from "file-saver";
 
-const apiEndPoint = process.env.apiEndPoint
-
-const getTNRSVer = () => {
-  let query = {
-    opts: {
-      mode: "meta",
-    },
-  };
-  return axios
-    .post(apiEndPoint, query, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then(
-      (response) => {
-        //alert(JSON.stringify(response.data))
-        return response.data[0];
-      },
-      () => {
-        alert("There was an error while retrieving the classifications");
-      }
-    );
-};
+import { requestTNRSVersion } from "../../actions"
 
 export function DownloadSettings({ settings }) {
   const handleDownloadClick = async () => {
     let data = [];
     // retrieve versions from the API
-    let versions = await getTNRSVer()
+    let versions = await requestTNRSVersion()
     //alert(JSON.stringify(versions))
     // build file
     data.push("Job type: " + settings.jobType);

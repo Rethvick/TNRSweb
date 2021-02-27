@@ -1,7 +1,5 @@
 import { Layout } from "../components";
 
-import axios from "axios";
-
 import {
   Typography,
   List,
@@ -9,34 +7,12 @@ import {
   ListItemText,
   ListItemIcon,
   Divider,
-  Link
+  Link,
 } from "@material-ui/core";
 
+import { requestCollaborators } from "../actions/";
+
 const apiServer = process.env.apiServer;
-const apiEndPoint = process.env.apiEndPoint;
-
-// TODO: move this to a separate function
-const loadCollab = async () => {
-  const query = {
-    opts: {
-      mode: "collaborators",
-    },
-  };
-
-  return await axios
-    .post(apiEndPoint, query, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then(
-      (response) => {
-        let collab_list = response.data;
-        return collab_list;
-      },
-      () => {
-        alert("There was an error while retrieving the sources");
-      }
-    );
-};
 
 function AboutApp({ collaboratorsAvailable }) {
   return (
@@ -49,7 +25,6 @@ function AboutApp({ collaboratorsAvailable }) {
           Table of Contents
         </Typography>
         <br />
-
         <Typography variant="body2" gutterBottom align="justify">
           <Link href="#whattnrs">What is the TNRS?</Link>
           <br />
@@ -69,12 +44,10 @@ function AboutApp({ collaboratorsAvailable }) {
           <br />
         </Typography>
         <br />
-
         <div id="whattnrs">
           <Typography variant="h5" gutterBottom align="justify">
             What is the Taxonomic Name Resolution Service?
           </Typography>
-
           <Typography variant="body2" gutterBottom align="justify">
             The Taxonomic Name Resolution Service (TNRS) is a tool for the
             computer-assisted standardization of plant scientific names. The
@@ -86,15 +59,12 @@ function AboutApp({ collaboratorsAvailable }) {
             of possibilities and provides tools for researching and selecting
             the preferred name.
           </Typography>
-
           <br />
         </div>
-
         <div id="wheretnrs">
           <Typography variant="h5" gutterBottom align="justify">
             Where does the TNRS get its taxonomy?
           </Typography>
-
           <Typography variant="body2" gutterBottom align="justify">
             The TNRS resolves names by consulting one or more
             publicly-available, expert-curated taxonomic databases. Thus, the
@@ -108,12 +78,10 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
           <br />
         </div>
-
         <div id="tnrsapi">
           <Typography variant="h5" gutterBottom align="justify">
             TNRS API
           </Typography>
-
           <Typography variant="body2" gutterBottom align="justify">
             The TNRS web interface uses the{" "}
             <Link
@@ -149,12 +117,10 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
           <br />
         </div>
-
         <div id="rtnrs">
           <Typography variant="h5" gutterBottom align="justify">
             TNRS R package
           </Typography>
-
           <Typography variant="body2" gutterBottom align="justify">
             Users who are familiar with the{" "}
             <Link href="https://www.r-project.org/" target="_blank">
@@ -172,18 +138,15 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
           <br />
         </div>
-
         <div id="sourcecode">
           <Typography variant="h5" gutterBottom align="justify">
             Source code
           </Typography>
-
           <Typography variant="body2" gutterBottom align="justify">
             Source code for all TNRS components is publicly available from the
             following repositories:
             <br />
           </Typography>
-
           <Typography variant="body2" gutterBottom align="justify">
             TNRS Search Engine:{" "}
             <Link
@@ -226,17 +189,14 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
           <br />
         </div>
-
         <div id="software">
           <Typography variant="h5" gutterBottom align="justify">
             Contributing software
           </Typography>
-
           <Typography variant="body2" gutterBottom align="justify">
             Code from the following open source applications was used during the
             development of the TNRS:
           </Typography>
-
           <Typography variant="body2" gutterBottom align="justify">
             <Link
               href="http://www.cmar.csiro.au/datacentre/taxamatch.htm"
@@ -283,12 +243,10 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
           <br />
         </div>
-
         <div id="contributors">
           <Typography variant="h5" gutterBottom align="justify">
             Contributors
           </Typography>
-
           <Typography variant="body2" gutterBottom align="justify">
             TNRS was first developed by the iPlant Collaborative Tree of Life
             Project, in collaboration with the{" "}
@@ -317,7 +275,6 @@ function AboutApp({ collaboratorsAvailable }) {
             Grant HDR 1934790. Numerous members of the taxonomic and informatics
             community provided advice , access to data, and source code.
           </Typography>
-
           <Typography variant="h6" gutterBottom align="justify">
             Project conception and direction
           </Typography>
@@ -333,7 +290,6 @@ function AboutApp({ collaboratorsAvailable }) {
             </Link>
             <br />
           </Typography>
-
           <Typography variant="h6" gutterBottom align="justify">
             Application development
           </Typography>
@@ -407,7 +363,6 @@ function AboutApp({ collaboratorsAvailable }) {
             Javascript/Node.js user interface)
             <br />
           </Typography>
-
           <Typography variant="h6" gutterBottom align="justify">
             Project direction and development - Original{" "}
             <Link
@@ -418,7 +373,6 @@ function AboutApp({ collaboratorsAvailable }) {
             </Link>{" "}
             (deprecated)
           </Typography>
-
           <Typography variant="body2" gutterBottom align="justify">
             <Link href="https://eeb.arizona.edu/" target="_blank">
               Brad Boyle
@@ -606,7 +560,7 @@ function AboutApp({ collaboratorsAvailable }) {
 }
 
 AboutApp.getInitialProps = async () => {
-  let collaborators = await loadCollab();
+  let collaborators = await requestCollaborators();
   return { collaboratorsAvailable: collaborators };
 };
 

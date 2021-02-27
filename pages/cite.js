@@ -1,8 +1,6 @@
 import { Layout } from "../components";
-import Head from "next/head";
 import { useState } from "react";
 
-import axios from "axios";
 
 import {
   Typography,
@@ -15,37 +13,12 @@ import {
   Link,
 } from "@material-ui/core";
 
+import { requestCitations } from "../actions"
+
 const Cite = require("citation-js");
-
-const apiEndPoint = process.env.apiEndPoint;
-
-// TODO: move this function somewhere else
-const loadCitations = async () => {
-  const query = {
-    opts: {
-      mode: "citations",
-    },
-  };
-
-  return await axios
-    .post(apiEndPoint, query, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then(
-      (response) => {
-        // setSources(response.data);
-        let cit_list = response.data;
-        return cit_list;
-      },
-      () => {
-        alert("There was an error while retrieving the citations");
-      }
-    );
-};
 
 const renderCitations = (citationsAvailable) => {
   var result = {};
-
   citationsAvailable.map((citation) => {
     // parse data
     let parsed = new Cite(citation.citation);
@@ -170,7 +143,7 @@ function HowCiteApp({ citationsAvailable }) {
 }
 
 HowCiteApp.getInitialProps = async () => {
-  let citations = await loadCitations();
+  let citations = await requestCitations();
   return { citationsAvailable: citations };
 };
 
