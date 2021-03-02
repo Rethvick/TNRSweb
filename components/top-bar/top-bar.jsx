@@ -73,9 +73,9 @@ export function TopBar() {
                 Home
               </Button>
             </Link>
-            <Link href="/sources" passHref>
+            <Link href="/about" passHref>
               <Button size="small" component="a" color="inherit">
-                Sources
+                About
               </Button>
             </Link>
             <Link href="/instructions" passHref>
@@ -83,19 +83,24 @@ export function TopBar() {
                 Instructions
               </Button>
             </Link>
-            <Link href="/about" passHref>
+            <Link href="/tnrsapi" passHref>
               <Button size="small" component="a" color="inherit">
-                About
+                Api
               </Button>
             </Link>
-            <Link href="/contribute" passHref>
+            <Link href="/sources" passHref>
               <Button size="small" component="a" color="inherit">
-                Contribute
+                Sources
               </Button>
             </Link>
             <Link href="/cite" passHref>
               <Button size="small" component="a" color="inherit">
                 Cite
+              </Button>
+            </Link>
+            <Link href="/contribute" passHref>
+              <Button size="small" component="a" color="inherit">
+                Contribute
               </Button>
             </Link>
           </Hidden>
@@ -134,20 +139,23 @@ export function LowResMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <Link href="/sources">
-          <MenuItem onClick={handleClose}>Sources</MenuItem>
+        <Link href="/about">
+          <MenuItem onClick={handleClose}>About</MenuItem>
         </Link>
         <Link href="/instructions">
           <MenuItem onClick={handleClose}>Instructions</MenuItem>
         </Link>
-        <Link href="/about">
-          <MenuItem onClick={handleClose}>About</MenuItem>
+        <Link href="/tnrsapi">
+          <MenuItem onClick={handleClose}>Api</MenuItem>
         </Link>
-        <Link href="/contribute">
-          <MenuItem onClick={handleClose}>Contribute</MenuItem>
+        <Link href="/sources">
+          <MenuItem onClick={handleClose}>Sources</MenuItem>
         </Link>
         <Link href="/cite">
           <MenuItem onClick={handleClose}>Cite</MenuItem>
+        </Link>
+        <Link href="/contribute">
+          <MenuItem onClick={handleClose}>Contribute</MenuItem>
         </Link>
       </Menu>
     </div>
