@@ -82,7 +82,9 @@ export function OptionsBox({
               </FormControl>
             </Box>
             <Box pt={2}>
-              <FormLabel component="legend">Sources</FormLabel>
+              <FormLabel component="legend">
+              <a href="/sources">Sources</a>
+              </FormLabel>
               <FormGroup row>
                 {sourcesState?.map((s) => {
                   return (

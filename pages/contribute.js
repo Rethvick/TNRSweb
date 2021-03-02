@@ -179,7 +179,7 @@ function SourcesApp({ sourcesAvailable, citationsAvailable }) {
 
         <div id="whoshouldjoin">
 			<Typography variant="h5" gutterBottom="True" align="justify">
-				Who should become a data provider for the TNRS?
+				Who can become a data provider for the TNRS?
 			</Typography>
 			<Typography variant="body2" gutterBottom={true} align="justify">
 				Curators of databases of high quality plant taxonomy (taxonomy
