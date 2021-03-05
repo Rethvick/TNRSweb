@@ -36,4 +36,4 @@ event - compiled successfully
 
 ## Development Server
 
-We are currently deploying the project at https://tnrsapi.xyz
+We are currently deploying the project at https://tnrs.xyz
