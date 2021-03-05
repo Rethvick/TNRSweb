@@ -1,7 +1,6 @@
 import { Layout } from "../components";
 import { useState } from "react";
 
-
 import {
   Typography,
   Button,
@@ -13,7 +12,7 @@ import {
   Link,
 } from "@material-ui/core";
 
-import { requestCitations } from "../actions"
+import { requestCitations } from "../actions";
 
 const Cite = require("citation-js");
 
@@ -38,21 +37,19 @@ const renderCitations = (citationsAvailable) => {
     }
 
     let parsedRendered =
-      parsed
-        .format("bibliography", {
-          format: "text",
-          template: "apa",
-          lang: "en-US",
-          // remove part of the html that contains the closing div tag
-          // and add the accessed date
-        })
-        + accessed_date;
+      parsed.format("bibliography", {
+        format: "text",
+        template: "apa",
+        lang: "en-US",
+        // remove part of the html that contains the closing div tag
+        // and add the accessed date
+      }) + accessed_date;
 
     result[citation.source] = (
       <div>
         <div
           dangerouslySetInnerHTML={{
-            __html: parsedRendered
+            __html: parsedRendered,
           }}
         ></div>
         <BibTexDialog displayText={citation.citation} />
@@ -76,7 +73,7 @@ function BibTexDialog({ displayText }) {
 
   return (
     <div>
-      <Link href='#' onClick={handleClickOpen}>
+      <Link href="#" onClick={handleClickOpen}>
         [bibtex]
       </Link>
       <Dialog maxWidth={"md"} fullWidth open={open} onClose={handleClose}>

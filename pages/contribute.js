@@ -1,6 +1,5 @@
 import { Layout } from "../components";
-
-import { Typography, Link } from "@material-ui/core";
+import { Typography} from "@material-ui/core";
 
 export default function ContributeApp() {
   return (
@@ -9,10 +8,9 @@ export default function ContributeApp() {
         <Typography variant="h3" align="justify" display="block" gutterBottom>
           Becoming a data provider
         </Typography>
-
         <div id="whoshouldjoin">
           <Typography variant="h5" gutterBottom align="justify">
-            Who should become a data provider for the TNRS?
+            Who can become a data provider for the TNRS?
           </Typography>
           <Typography variant="body2" gutterBottom align="justify">
             Curators of databases of high quality plant taxonomy (taxonomy for
@@ -24,13 +22,12 @@ export default function ContributeApp() {
             taxonomy from monographic treatments of species within families or
             other higher taxa. Potential data providers should begin by
             contacting us at{" "}
-            <Link href="mailto:support@tnrs.biendata.org" target="_blank">
+            <a href="mailto:support@tnrs.biendata.org" target="_blank">
               support@tnrs.biendata.org
-            </Link>
+            </a>
             .
           </Typography>
           <br />
-
           <Typography variant="h5" gutterBottom align="justify">
             How do I share my taxonomy?
           </Typography>
@@ -45,20 +42,19 @@ export default function ContributeApp() {
             representation of your data.
           </Typography>
           <br />
-
           <Typography variant="h5" gutterBottom align="justify">
             TNRS Simple Darwin Core export format
           </Typography>
-          <Typography variant="body2" gutterBottom align="justify">
+          <Typography variant="body2" gutterBottom={true} align="justify">
             The simplest way to share your taxonomic information with the TNRS
             is as an export structured according to the TNRS Simple Darwin Core
             format. Taxonomic data formatted in this way can be added
             immediately to the TNRS database using our existing Darwin Core
             import utility. Detailed instructions on how to prepare you data in
             this format are provided in the document{" "}
-            <Link href="tnrs_dwc_template_instructions.txt">
+            <a href="tnrs_dwc_template_instructions.txt">
               TNRS Simplified Darwin Core format
-            </Link>
+            </a>
             .
           </Typography>
         </div>

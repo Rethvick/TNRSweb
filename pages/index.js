@@ -210,8 +210,10 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
 // these are necessary to render the application
 IndexApp.getInitialProps = async () => {
   let sources = await requestSources();
+  // get only the names
+  let sourceNames = sources.map((s) => s.sourceName);
   let families = await requestFamilyClassifications();
-  return { sourcesAvailable: sources, familiesAvailable: families };
+  return { sourcesAvailable: sourceNames, familiesAvailable: families };
 };
 
 export default IndexApp;

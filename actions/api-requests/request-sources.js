@@ -18,7 +18,7 @@ export const requestSources = async () => {
     .then(
       (response) => {
         // get source names
-        let sourceNames = response.data.map((s) => s.sourceName);
+        let sourceNames = response.data; //.map((s) => s.sourceName);
         //
         return sourceNames;
       },

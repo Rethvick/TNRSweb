@@ -64,7 +64,6 @@ export function TopBar() {
           <Hidden mdUp>
             <LowResMenu />
           </Hidden>
-
           <Hidden smDown>
             <Typography variant="overline" className={classes.title}>
               Taxonomic Name Resolution Service v5.0
@@ -74,9 +73,9 @@ export function TopBar() {
                 Home
               </Button>
             </Link>
-            <Link href="/sources" passHref>
+            <Link href="/about" passHref>
               <Button size="small" component="a" color="inherit">
-                Sources
+                About
               </Button>
             </Link>
             <Link href="/instructions" passHref>
@@ -84,19 +83,24 @@ export function TopBar() {
                 Instructions
               </Button>
             </Link>
-            <Link href="/about" passHref>
+            <Link href="/tnrsapi" passHref>
               <Button size="small" component="a" color="inherit">
-                About
+                Api
               </Button>
             </Link>
-            <Link href="/contribute" passHref>
+            <Link href="/sources" passHref>
               <Button size="small" component="a" color="inherit">
-                Contribute
+                Sources
               </Button>
             </Link>
             <Link href="/cite" passHref>
               <Button size="small" component="a" color="inherit">
                 Cite
+              </Button>
+            </Link>
+            <Link href="/contribute" passHref>
+              <Button size="small" component="a" color="inherit">
+                Contribute
               </Button>
             </Link>
           </Hidden>
@@ -135,8 +139,8 @@ export function LowResMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} component={MUILink} href="/">
-          Home
+        <MenuItem onClick={handleClose} component={MUILink} href="/about">
+          About
         </MenuItem>
         <MenuItem
           onClick={handleClose}
@@ -145,14 +149,17 @@ export function LowResMenu() {
         >
           Instructions
         </MenuItem>
-        <MenuItem onClick={handleClose} component={MUILink} href="/about">
-          About
+        <MenuItem onClick={handleClose} component={MUILink} href="/tnrsapi">
+          Api
         </MenuItem>
-        <MenuItem onClick={handleClose} component={MUILink} href="/contribute">
-          Contribute
+        <MenuItem onClick={handleClose} component={MUILink} href="/sources">
+          Sources
         </MenuItem>
         <MenuItem onClick={handleClose} component={MUILink} href="/cite">
           Cite
+        </MenuItem>
+        <MenuItem onClick={handleClose} component={MUILink} href="/contribute">
+          Contribute
         </MenuItem>
       </Menu>
     </div>

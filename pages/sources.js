@@ -17,6 +17,7 @@ import { requestSources } from "../actions"
 const apiServer = process.env.apiServer;
 
 function SourcesApp({ sourcesAvailable }) {
+  console.log(sourcesAvailable)
   return (
     <>
       <Head>
