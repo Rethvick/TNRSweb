@@ -21,24 +21,22 @@ function AboutApp({ collaboratorsAvailable }) {
         <Typography variant="h3" align="justify" display="block" gutterBottom>
           About the TNRS
         </Typography>
-        <Typography variant="body2" gutterBottom align="justify">
-          <Link href="#newtnrs">New TNRS!</Link>
-          <br />
-          <Link href="#whattnrs">What is the TNRS?</Link>
-          <br />
-          <Link href="#howtnrs">How does the TNRS work?</Link>
-          <br />
-          <Link href="#wheretnrs">Where does the TNRS get its taxonomy?</Link>
-          <br />
-          <Link href="#sourcecode">Source code</Link>
-          <br />
-          <Link href="#software">Contributing software</Link>
-          <br />
-          <Link href="#contributors">Contributors</Link>
-          <br />
-          <Link href="#funding">Funding</Link>
-          <br />
-        </Typography>
+        <Link href="#newtnrs">New TNRS!</Link>
+        <br />
+        <Link href="#whattnrs">What is the TNRS?</Link>
+        <br />
+        <Link href="#howtnrs">How does the TNRS work?</Link>
+        <br />
+        <Link href="#wheretnrs">Where does the TNRS get its taxonomy?</Link>
+        <br />
+        <Link href="#sourcecode">Source code</Link>
+        <br />
+        <Link href="#software">Contributing software</Link>
+        <br />
+        <Link href="#contributors">Contributors</Link>
+        <br />
+        <Link href="#funding">Funding</Link>
+        <br />
         <br />
         <div id="newtnrs">
           <Typography variant="h5" gutterBottom align="justify">
@@ -51,53 +49,52 @@ function AboutApp({ collaboratorsAvailable }) {
             Much of the application has been completely redesigned to simplify
             maintenance, speed development, improve performance, and provide
             access to a wider community of users. Major changes include:
-            <List>
-              <ListItem>
-                <Typography variant="body2">
-                  <strong>
-                    New, full-featured <a href="/tnrsapi">API</a>.
-                  </strong>
-                  The API available with earlier versions of the TNRS provided
-                  access to only a subset of the features available to users of
-                  the TNRS web interface. As of TNRS 5.0, all major application
-                  logic is now embedded within the core services layers, and the
-                  API has been reconfigured as an intermediate layer which
-                  handles all requests to the core services. The full suite of
-                  TNRS capabilities are available at all entry points, whether
-                  calling the API directly, or indirectly via external
-                  applications such as the{" "}
-                  <a href="/tnrsapi#rtnrs">TNRS R package</a> or this web
-                  interface.
-                </Typography>
-              </ListItem>
-              <ListItem>
-                <Typography variant="body2">
-                  <strong> Parallel processing for faster performance.</strong>{" "}
-                  Requests to the TNRS API are futher managed by a controller
-                  layer which breaks large requests into multiple batches that
-                  can be distributed simultaneously across multiple processors.
-                  This architecture provides processing speeds up to 30x faster
-                  than the original TNRS.
-                </Typography>
-              </ListItem>
-              <ListItem>
-                <Typography variant="body2">
-                  <strong>Mobile friendly</strong> The TNRS web interface was
-                  completely rebuilt using React JS, a lightweight, client-side
-                  architecture that runs as easily on mobile devices as it does
-                  on desktop machines.
-                </Typography>
-              </ListItem>
-              <ListItem>
-                <Typography variant="body2">
-                  <strong>New database.</strong> The TNRS database was rebuilt
-                  in July 2020 with updated taxonomic reference information from
-                  all <a href="/sources">taxonomic sources</a>. New sources will
-                  be added in 2021, with updates increased to a quarterly basis.
-                </Typography>
-              </ListItem>
-            </List>
           </Typography>
+          <List>
+            <ListItem>
+              <Typography variant="body2">
+              <strong>
+                New, full-featured <a href="/tnrsapi">API</a>.
+              </strong>
+                The API available with earlier versions of the TNRS provided
+                access to only a subset of the features available to users of
+                the TNRS web interface. As of TNRS 5.0, all major application
+                logic is now embedded within the core services layers, and the
+                API has been reconfigured as an intermediate layer which handles
+                all requests to the core services. The full suite of TNRS
+                capabilities are available at all entry points, whether calling
+                the API directly, or indirectly via external applications such
+                as the <a href="/tnrsapi#rtnrs">TNRS R package</a> or this web
+                interface.
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Typography variant="body2">
+                <strong> Parallel processing for faster performance.</strong>{" "}
+                Requests to the TNRS API are futher managed by a controller
+                layer which breaks large requests into multiple batches that can
+                be distributed simultaneously across multiple processors. This
+                architecture provides processing speeds up to 30x faster than
+                the original TNRS.
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Typography variant="body2">
+                <strong>Mobile friendly</strong> The TNRS web interface was
+                completely rebuilt using React JS, a lightweight, client-side
+                architecture that runs as easily on mobile devices as it does on
+                desktop machines.
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Typography variant="body2">
+                <strong>New database.</strong> The TNRS database was rebuilt in
+                July 2020 with updated taxonomic reference information from all{" "}
+                <a href="/sources">taxonomic sources</a>. New sources will be
+                added in 2021, with updates increased to a quarterly basis.
+              </Typography>
+            </ListItem>
+          </List>
           <br />
         </div>
 
@@ -131,7 +128,6 @@ function AboutApp({ collaboratorsAvailable }) {
             steps:
             <br />
           </Typography>
-          <Typography variant="body2" gutterBottom align="justify">
             <List>
               <ListItem>
                 <Typography variant="body2">
@@ -226,7 +222,6 @@ function AboutApp({ collaboratorsAvailable }) {
                 </Typography>
               </ListItem>
             </List>
-          </Typography>
         </div>
 
         <div id="wheretnrs">
