@@ -54,7 +54,7 @@ function AboutApp({ collaboratorsAvailable }) {
             <ListItem>
               <Typography variant="body2">
               <strong>
-                New, full-featured <a href="/tnrsapi">API</a>.
+                New, full-featured <Link href="/tnrsapi">API</Link>.
               </strong>
                 The API available with earlier versions of the TNRS provided
                 access to only a subset of the features available to users of
@@ -64,7 +64,7 @@ function AboutApp({ collaboratorsAvailable }) {
                 all requests to the core services. The full suite of TNRS
                 capabilities are available at all entry points, whether calling
                 the API directly, or indirectly via external applications such
-                as the <a href="/tnrsapi#rtnrs">TNRS R package</a> or this web
+                as the <Link href="/tnrsapi#rtnrs">TNRS R package</Link> or this web
                 interface.
               </Typography>
             </ListItem>
@@ -90,7 +90,7 @@ function AboutApp({ collaboratorsAvailable }) {
               <Typography variant="body2">
                 <strong>New database.</strong> The TNRS database was rebuilt in
                 July 2020 with updated taxonomic reference information from all{" "}
-                <a href="/sources">taxonomic sources</a>. New sources will be
+                <Link href="/sources">taxonomic sources</Link>. New sources will be
                 added in 2021, with updates increased to a quarterly basis.
               </Typography>
             </ListItem>
@@ -145,15 +145,15 @@ function AboutApp({ collaboratorsAvailable }) {
                   Separating "contaminants" from standard components increases
                   the chance that the TNRS will match the intended name. Parsing
                   is performed by the{" "}
-                  <a href="http://gni.globalnames.org/" target="_blank">
+                  <Link href="http://gni.globalnames.org/" target="_blank">
                     Global Names
-                  </a>{" "}
-                  <a
+                  </Link>{" "}
+                  <Link
                     href="https://github.com/GlobalNamesArchitecture/biodiversity"
                     target="_blank"
                   >
                     Biodiversity Name Parser
-                  </a>
+                  </Link>
                   .
                 </Typography>
               </ListItem>
@@ -163,12 +163,12 @@ function AboutApp({ collaboratorsAvailable }) {
                   again matched against known scientific names in the TNRS
                   database. The TNRS attempts both exact matching and fuzzy
                   matching using the{" "}
-                  <a
+                  <Link
                     href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0107510"
                     target="_blank"
                   >
                     Taxamatch
-                  </a>{" "}
+                  </Link>{" "}
                   taxonomic fuzzy matching algorithm. The Taxamatch algorithm
                   speeds up fuzzy matching by searching within the taxonomic
                   hierarchy. For example, once a genus has been identified, only
@@ -236,7 +236,7 @@ function AboutApp({ collaboratorsAvailable }) {
             the authoritative sources. Although the TNRS allows users to choose
             which taxonomic sources they consult, in the end, the opinions
             provided are those of the selected sources, not the TNRS. For a list
-            of current taxanomic sources, see <a href="/sources">Sources</a>.
+            of current taxanomic sources, see <Link href="/sources">Sources</Link>.
           </Typography>
           <br />
         </div>

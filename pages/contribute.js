@@ -1,5 +1,5 @@
 import { Layout } from "../components";
-import { Typography} from "@material-ui/core";
+import { Typography, Link } from "@material-ui/core";
 
 export default function ContributeApp() {
   return (
@@ -22,9 +22,9 @@ export default function ContributeApp() {
             taxonomy from monographic treatments of species within families or
             other higher taxa. Potential data providers should begin by
             contacting us at{" "}
-            <a href="mailto:support@tnrs.biendata.org" target="_blank">
+            <Link href="mailto:support@tnrs.biendata.org" target="_blank">
               support@tnrs.biendata.org
-            </a>
+            </Link>
             .
           </Typography>
           <br />
@@ -52,9 +52,9 @@ export default function ContributeApp() {
             immediately to the TNRS database using our existing Darwin Core
             import utility. Detailed instructions on how to prepare you data in
             this format are provided in the document{" "}
-            <a href="tnrs_dwc_template_instructions.txt">
+            <Link href="tnrs_dwc_template_instructions.txt">
               TNRS Simplified Darwin Core format
-            </a>
+            </Link>
             .
           </Typography>
         </div>
