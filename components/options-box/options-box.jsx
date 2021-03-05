@@ -11,6 +11,7 @@ import {
   FormControl,
   FormLabel,
   Switch,
+  Link,
 } from "@material-ui/core";
 
 export function OptionsBox({
@@ -83,7 +84,7 @@ export function OptionsBox({
             </Box>
             <Box pt={2}>
               <FormLabel component="legend">
-              <a href="/sources">Sources</a>
+                <Link href="/sources">Sources</Link>
               </FormLabel>
               <FormGroup row>
                 {sourcesState?.map((s) => {

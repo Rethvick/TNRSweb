@@ -28,7 +28,7 @@ import { WarningsPopover } from "./warnings";
 import { SelectRowDialog } from "./select-row";
 import { DetailsDialog } from "./resolve-details-dialog";
 import { mkSourceLinks, mkAcceptedNameLinks } from "./links";
-import { roundScore } from "../../src/actions";
+import { roundScore } from "../../actions";
 
 export function ResolveTable({ tableData, onChangeSelectedRow }) {
   // filter table data where selected == true

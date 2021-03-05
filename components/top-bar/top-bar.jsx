@@ -13,6 +13,7 @@ import {
   Menu,
   MenuItem,
   IconButton,
+  Link as MUILink,
 } from "@material-ui/core";
 
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -63,7 +64,6 @@ export function TopBar() {
           <Hidden mdUp>
             <LowResMenu />
           </Hidden>
-
           <Hidden smDown>
             <Typography variant="overline" className={classes.title}>
               Taxonomic Name Resolution Service v5.0
@@ -139,24 +139,28 @@ export function LowResMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <Link href="/about">
-          <MenuItem onClick={handleClose}>About</MenuItem>
-        </Link>
-        <Link href="/instructions">
-          <MenuItem onClick={handleClose}>Instructions</MenuItem>
-        </Link>
-        <Link href="/tnrsapi">
-          <MenuItem onClick={handleClose}>Api</MenuItem>
-        </Link>
-        <Link href="/sources">
-          <MenuItem onClick={handleClose}>Sources</MenuItem>
-        </Link>
-        <Link href="/cite">
-          <MenuItem onClick={handleClose}>Cite</MenuItem>
-        </Link>
-        <Link href="/contribute">
-          <MenuItem onClick={handleClose}>Contribute</MenuItem>
-        </Link>
+        <MenuItem onClick={handleClose} component={MUILink} href="/about">
+          About
+        </MenuItem>
+        <MenuItem
+          onClick={handleClose}
+          component={MUILink}
+          href="/instructions"
+        >
+          Instructions
+        </MenuItem>
+        <MenuItem onClick={handleClose} component={MUILink} href="/tnrsapi">
+          Api
+        </MenuItem>
+        <MenuItem onClick={handleClose} component={MUILink} href="/sources">
+          Sources
+        </MenuItem>
+        <MenuItem onClick={handleClose} component={MUILink} href="/cite">
+          Cite
+        </MenuItem>
+        <MenuItem onClick={handleClose} component={MUILink} href="/contribute">
+          Contribute
+        </MenuItem>
       </Menu>
     </div>
   );

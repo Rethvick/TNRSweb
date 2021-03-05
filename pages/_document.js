@@ -1,9 +1,9 @@
 import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/core/styles";
-import theme from "../src/theme";
+import theme from "../constants/theme";
 
-export default class MyDocument extends Document {
+export default class TNRSDocument extends Document {
   render() {
     return (
       <Html lang="en">
@@ -40,7 +40,7 @@ export default class MyDocument extends Document {
 
 // `getInitialProps` belongs to `_document` (instead of `_app`),
 // it's compatible with server-side generation (SSG).
-MyDocument.getInitialProps = async (ctx) => {
+TNRSDocument.getInitialProps = async (ctx) => {
   // Resolution order
   //
   // On the server:

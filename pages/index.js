@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 import Head from "next/head";
-import axios from "axios";
+
+import { Grid, Box, Container, Paper } from "@material-ui/core";
 
 import {
   SearchBox,
@@ -16,13 +17,17 @@ import {
   DownloadSettings,
 } from "../components/";
 
-import { translateWarningCode, sortByColumn } from "../src/actions";
-
-import { Grid, Box, Container, Paper } from "@material-ui/core";
-
-const apiEndPoint = process.env.apiEndPoint;
+// TODO: sortByColumn could have a better name
+import {
+  sortByColumn,
+  requestResolveNames,
+  requestParseNames,
+  requestSources,
+  requestFamilyClassifications
+} from "../actions";
 
 function IndexApp({ sourcesAvailable, familiesAvailable }) {
+  // TODO: having all these states does not seem fun
   // state where we keep the results that come from the API
   const [result, setResult] = useState([]);
   // state where we store the parsed names
@@ -39,7 +44,8 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   const [queryType, setQueryType] = useState("resolve");
   //
   const [bestMatchingSetting, setBestMatchingSetting] = useState();
-  //
+  // this is used to keep track of the submission time
+  // when we download the settings
   const [queryTimeTracker, setQueryTime] = useState({ start: null, end: null });
 
   // function to query data from the api
@@ -60,127 +66,31 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     if (names.length == 0) {
       return;
     }
-    //
+    // clear results
+    // TODO: rename this to setResolvedNames
     setResult([]);
     setParsedNames([]);
     // show spinner
     setLoadingStatus(true);
     //
     if (queryType === "resolve") {
-      // store the start time of the query
+      // show spinner
       let start = Date();
-      // query object sent to the api
-      const queryObject = {
-        opts: {
-          // sources coming from the options box
-          sources: sourcesQuery,
-          class: familyQuery,
-          mode: "resolve",
-          matches: "all",
-        },
-        data: [],
-      };
-
-      // queryNames coming from the searchbox
-      queryObject.data = queryNames;
-
-      // sending the request to the API
-      axios
-        .post(apiEndPoint, queryObject, {
-          headers: { "Content-Type": "application/json" },
-        })
-        .then(
-          (response) => {
-            // group data using
-            // Author_matched + Name_matched + Overall_score + Accepted_name
-            let groupedData = _.chain(response.data)
-              //for each ID returned
-              .groupBy("ID")
-              .map((idGroup) => {
-                // group by selected properties
-                return (
-                  _.chain(idGroup)
-                    .groupBy((row) => {
-                      return (
-                        row.Canonical_author +
-                        row.Name_matched +
-                        row.Overall_score +
-                        row.Accepted_name +
-                        row.Taxonomic_status +
-                        row.Accepted_name +
-                        row.Accepted_name_author
-                      );
-                    })
-                    // consolidate Source, Name_matched_url and Accepted_name_url
-                    .map((eqRow) => {
-                      let sources = [];
-                      let accepted_urls = [];
-                      let matched_urls = [];
-                      //
-                      let head = eqRow[0];
-                      //let tail = eqRow.slice(1);
-                      eqRow.forEach((row) => {
-                        //
-                        if (sources.includes(row.Source) === false) {
-                          sources.push(row.Source);
-                          matched_urls.push(row.Name_matched_url);
-                          accepted_urls.push(row.Accepted_name_url);
-                        }
-                      });
-                      //
-                      head.Source = sources.join(",");
-                      head.Name_matched_url = matched_urls.join(";");
-                      head.Accepted_name_url = accepted_urls.join(";");
-                      // return only one row per group
-                      return head;
-                    })
-                    .value()
-                );
-              })
-              // flatten to remove groupById
-              .flatten()
-              .value();
-            // use the column 'Overall_score_order' to create the column selected
-            let responseSelected = groupedData.map((row, idx) => {
-              row.Warnings = translateWarningCode(row.Warnings);
-              return {
-                ...row,
-                ...{ selected: row.Overall_score_order == 1, unique_id: idx },
-              };
-            });
-            // update state
-            setResult(responseSelected);
-            // hide spinner
-            setLoadingStatus(false);
-            // reset best matching settings
-            setBestMatchingSetting("Overall_score_order");
-            // store end time
-            setQueryTime({ start: start, end: Date() });
-          },
-          () => {
-            alert("Error fetching data from API");
-          }
-        );
+      // request the data and set result
+      requestResolveNames(queryNames, sourcesQuery, familyQuery).then((res) => {
+        setLoadingStatus(false);
+        // record start and end time
+        setQueryTime({ start: start, end: Date() });
+        setBestMatchingSetting("Overall_score_order");
+        setResult(res);
+      });
     }
 
     if (queryType === "parse") {
-      const parseObject = {
-        opts: {
-          mode: "parse",
-        },
-        data: [],
-      };
-
-      // queryNames coming from the searchbox
-      parseObject.data = queryNames;
-      axios
-        .post(apiEndPoint, parseObject, {
-          headers: { "Content-Type": "application/json" },
-        })
-        .then((response) => {
-          setParsedNames(response.data);
-        });
-      setLoadingStatus(false);
+      requestParseNames(queryNames).then((res) => {
+        setLoadingStatus(false);
+        setResult(res);
+      });
     }
   };
 
@@ -234,11 +144,11 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                 </Grid>
                 <Grid lg={6} xs={12} item>
                   <OptionsBox
-                    queryType={queryType}
-                    onChangeQueryType={(queryType) => setQueryType(queryType)}
                     sourcesAvailable={sourcesAvailable}
                     familiesAvailable={familiesAvailable}
+                    queryType={queryType}
                     familyQuery={familyQuery}
+                    onChangeQueryType={(queryType) => setQueryType(queryType)}
                     onChangeFamily={(family) => setFamilyQuery(family)}
                     onChangeSources={(sources) => setSourcesQuery(sources)}
                   />
@@ -296,58 +206,14 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   );
 }
 
-const loadSources = async () => {
-  // query source
-  let query = {
-    opts: {
-      mode: "sources",
-    },
-  };
-  // axios
-  return await axios
-    .post(apiEndPoint, query, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then(
-      (response) => {
-        // get source names
-        let sourceNames = response.data.map((s) => s.sourceName);
-        //
-        return sourceNames;
-      },
-      () => {
-        alert("There was an error while retrieving the sources");
-      }
-    );
-};
-
-const loadFamilyClassifications = async () => {
-  // query source
-  let query = {
-    opts: {
-      mode: "classifications",
-    },
-  };
-  // axios
-  return await axios
-    .post(apiEndPoint, query, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then(
-      (response) => {
-        return response.data;
-      },
-      () => {
-        alert("There was an error while retrieving the classifications");
-      }
-    );
-};
-
-// loading sources
+// setting initial props with sources and families
+// these are necessary to render the application
 IndexApp.getInitialProps = async () => {
-  let sources = await loadSources();
-  let families = await loadFamilyClassifications();
-  return { sourcesAvailable: sources, familiesAvailable: families };
+  let sources = await requestSources();
+  // get only the names
+  let sourceNames = sources.map((s) => s.sourceName);
+  let families = await requestFamilyClassifications();
+  return { sourcesAvailable: sourceNames, familiesAvailable: families };
 };
 
 export default IndexApp;

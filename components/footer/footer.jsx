@@ -1,5 +1,3 @@
-import { useStyles } from "./footer.style";
-
 import { Container, Link, Typography, Box } from "@material-ui/core";
 
 function Copyright() {
