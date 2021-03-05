@@ -36,4 +36,4 @@ event - compiled successfully
 
 ## Development Server
 
-We are currently deploying the project at http://mint-pheasant.nceas.ucsb.edu
+We are currently deploying the project at https://tnrsapi.xyz
