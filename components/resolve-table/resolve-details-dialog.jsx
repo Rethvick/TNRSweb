@@ -1,15 +1,13 @@
-
 import {
   Box,
   Dialog,
   DialogTitle,
   Button,
   TableContainer,
-  TableHead,
   TableRow,
   TableCell,
   TableBody,
-  Table
+  Table,
 } from "@material-ui/core";
 
 // shows the dialog with details of each row
@@ -41,6 +39,7 @@ export function DetailsDialog(props) {
     "Name_matched_id",
   ];
 
+  // we want to show only a subset of fields
   deleteFields.forEach((field) => delete dataToDisplay[field]);
 
   return (
@@ -48,7 +47,7 @@ export function DetailsDialog(props) {
       <DialogTitle>Name submited: {dataToDisplay.Name_submitted}</DialogTitle>
       <Box m={4} mt={0}>
         <TableContainer>
-          <Table size='small'>
+          <Table size="small">
             <TableBody>
               {Object.entries(dataToDisplay).map(([key, value], idx) => (
                 <TableRow key={idx}>
@@ -66,4 +65,3 @@ export function DetailsDialog(props) {
     </Dialog>
   );
 }
-
