@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
 import { Warning as WarningIcon } from "@material-ui/icons";
+import { zip } from "lodash";
 import {
   Popover,
   Typography,
@@ -13,13 +13,10 @@ import {
   DialogActions,
   Button,
 } from "@material-ui/core";
-
 import {
   shortText2LongText,
   shortText2DetailedExplanation,
 } from "../../actions";
-
-import { zip } from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   popover: {
@@ -60,7 +57,7 @@ export function WarningsPopover(props) {
         onMouseLeave={handlePopoverClose}
         onClick={handleDialogOpen}
       >
-        <WarningIcon fontSize='small' />
+        <WarningIcon fontSize="small" />
       </Box>
       <Popover
         id="mouse-over-popover"
@@ -105,7 +102,6 @@ export function WarningsPopover(props) {
 function WarningDialog(props) {
   const longText = shortText2LongText(props.warnings);
   const detailedExplanation = shortText2DetailedExplanation(props.warnings);
-
   return (
     <Dialog open={props.open} onClose={props.onClickClose}>
       <DialogTitle>{"Warnings"}</DialogTitle>

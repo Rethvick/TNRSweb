@@ -21,8 +21,8 @@ export function SelectRowDialog(props) {
   const { onClose, open, rows, handleChangeSelectedRow } = props;
   // function to sort by default best match order
   const sortByMatchOrder = (a, b) => {
-    return b['Overall_score'] - a['Overall_score']
-  }
+    return b["Overall_score"] - a["Overall_score"];
+  };
   //
   return (
     <Dialog aria-labelledby="dtitle" open={open} maxWidth="lg">

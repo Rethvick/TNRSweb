@@ -2,18 +2,7 @@ import { useState } from "react";
 import _ from "lodash";
 
 import {
-  WarningTwoTone as WarningTwoToneIcon,
-  FirstPage as FirstPageIcon,
-  LastPage as LastPageIcon,
-  KeyboardArrowLeft,
-  KeyboardArrowRight,
-} from "@material-ui/icons";
-
-import {
   Box,
-  Dialog,
-  DialogTitle,
-  Button,
   TableContainer,
   TableHead,
   TableRow,
@@ -22,102 +11,15 @@ import {
   TableBody,
   TableSortLabel,
   Link,
-  IconButton,
-  TextField,
   Table,
 } from "@material-ui/core";
 
-import DetailsDialog from './parse-details-dialog'
+import DetailsDialog from "./parse-details-dialog";
+import { TablePaginationActions } from "../";
+import { getComparator, stableSort } from "../../actions";
 
-function TablePaginationActions(props) {
-  const { count, page, rowsPerPage, onChangePage } = props;
-  const [inputPage, setInputPage] = useState(page + 1);
-
-  const handleFirstPageButtonClick = (event) => {
-    onChangePage(event, 0);
-    setInputPage(1);
-  };
-
-  const handleBackButtonClick = (event) => {
-    onChangePage(event, page - 1);
-    setInputPage(page);
-  };
-
-  const handleNextButtonClick = (event) => {
-    onChangePage(event, page + 1);
-    setInputPage(page + 2);
-  };
-
-  const handleLastPageButtonClick = (event) => {
-    onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-    setInputPage(Math.max(0, Math.ceil(count / rowsPerPage)));
-  };
-
-  return (
-    <>
-      <Box display="flex">
-        <IconButton
-          onClick={handleFirstPageButtonClick}
-          disabled={page === 0}
-          aria-label="first page"
-        >
-          <FirstPageIcon />
-        </IconButton>
-        <IconButton
-          onClick={handleBackButtonClick}
-          disabled={page === 0}
-          aria-label="previous page"
-        >
-          <KeyboardArrowLeft />
-        </IconButton>
-      </Box>
-      <Box width={150}>
-        <TextField
-          value={inputPage}
-          onKeyDown={(e) => {
-            // when the user presses enter key=13
-            if (e.keyCode === 13) {
-              let maxPage = Math.max(0, Math.ceil(count / rowsPerPage) - 1);
-              if (inputPage < 1) {
-                onChangePage(e, 0);
-                setInputPage(1);
-              } else if (inputPage > maxPage) {
-                onChangePage(e, maxPage);
-                setInputPage(maxPage + 1);
-              } else {
-                onChangePage(e, inputPage - 1);
-              }
-            }
-          }}
-          onChange={(e) => setInputPage(e.target.value)}
-          variant="outlined"
-          size="small"
-        />
-      </Box>
-      <Box display="flex">
-        <IconButton
-          onClick={handleNextButtonClick}
-          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-          aria-label="next page"
-        >
-          <KeyboardArrowRight />
-        </IconButton>
-        <IconButton
-          onClick={handleLastPageButtonClick}
-          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-          aria-label="last page"
-        >
-          <LastPageIcon />
-        </IconButton>
-      </Box>
-    </>
-  );
-}
-
-// TODO: receive a call back function to set the id
 export function ParseTable({ tableData }) {
   // states
-  // FIXME: this is not being used, we should remove
   const [dataPopUpOpen, setDataPopUpOpen] = useState(false);
   const [popUpDetails, setPopUpDetails] = useState({});
   const [page, setPage] = useState(0);
@@ -130,6 +32,7 @@ export function ParseTable({ tableData }) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+  
   //
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -150,36 +53,8 @@ export function ParseTable({ tableData }) {
     setOrderBy(property);
   };
 
-  // FIXME: move these functions to a separate container
-  function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-    return 0;
-  }
-
-  function getComparator(order, orderBy) {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
-
-  function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  }
-
   const renderRow = (row) => {
     let rowData = getRowData(row.ID);
-
     return (
       <TableRow key={row.ID}>
         <TableCell>{row.Name_submitted} </TableCell>
@@ -219,7 +94,7 @@ export function ParseTable({ tableData }) {
     <>
       <Box m={2} mb={0}>
         <TableContainer>
-          <Table size='small'>
+          <Table size="small">
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -258,50 +133,36 @@ function EnhancedTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
+  // to save space we define a vector with the names of the columns
+  let tableColumns = [
+    ["Name_submitted", "Name Submitted"],
+    ["Genus", "Genus"],
+    ["Author", "Author"],
+    ["Unmatched_terms", "Unmatched Terms"],
+  ];
+
+  // we render the names using a map
+  let tableColumnsJsx = tableColumns.map((names) => {
+    return (
+      <TableCell>
+        <TableSortLabel
+          active={orderBy === names[0]}
+          direction={orderBy === names[0] ? order : "asc"}
+          onClick={createSortHandler(names[0])}
+        >
+          {names[1]}
+        </TableSortLabel>
+      </TableCell>
+    );
+  });
 
   return (
     <TableHead>
       <TableRow>
-        <TableCell>
-          <TableSortLabel
-            active={orderBy === "Name_submitted"}
-            direction={orderBy === "Name_submitted" ? order : "asc"}
-            onClick={createSortHandler("Name_submitted")}
-          >
-            Name Submitted
-          </TableSortLabel>
-        </TableCell>
-
-        <TableCell>
-          <TableSortLabel
-            active={orderBy === "Genus"}
-            direction={orderBy === "Genus" ? order : "asc"}
-            onClick={createSortHandler("Genus")}
-          >
-            Taxon Name
-          </TableSortLabel>
-        </TableCell>
-
-        <TableCell>
-          <TableSortLabel
-            active={orderBy === "Author"}
-            direction={orderBy === "Author" ? order : "asc"}
-            onClick={createSortHandler("Author")}
-          >
-            Author
-          </TableSortLabel>
-        </TableCell>
-
-        <TableCell>
-          <TableSortLabel
-            active={orderBy === "Unmatched_terms"}
-            direction={orderBy === "Unmatched_terms" ? order : "asc"}
-            onClick={createSortHandler("Unmatched_terms")}
-          >
-            Unmatched Terms
-          </TableSortLabel>
-        </TableCell>
-
+        {
+          // here we add the previously rendered table cells
+          tableColumnsJsx
+        }
         <TableCell>Details</TableCell>
       </TableRow>
     </TableHead>

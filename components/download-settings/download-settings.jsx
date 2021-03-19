@@ -1,18 +1,16 @@
 import { Button } from "@material-ui/core";
-
 import { saveAs } from "file-saver";
-
-import { requestTNRSVersion } from "../../actions"
+import { requestTNRSVersion } from "../../actions";
 
 export function DownloadSettings({ settings }) {
   const handleDownloadClick = async () => {
     let data = [];
     // retrieve versions from the API
-    let versions = await requestTNRSVersion()
+    let versions = await requestTNRSVersion();
     //alert(JSON.stringify(versions))
     // build file
     data.push("Job type: " + settings.jobType);
-    data.push("Database Version: " + versions.db_version );
+    data.push("Database Version: " + versions.db_version);
     data.push("Code Version: " + versions.code_version);
     data.push("API Version: " + versions.api_version);
     data.push("Start time: " + settings.time.start);
@@ -54,15 +52,13 @@ const generateDownloadFile = (data, fileName, fileFormat) => {
   */
   try {
     // convert data (json) to csv
-    // create the download file
     const csvBlob = new Blob([data], {
       type: "text/plain;charset=utf-8",
     });
+    // create the download file
     saveAs(csvBlob, fileName + "." + fileFormat);
-    //
   } catch (error) {
-    // TODO: think about what to do in case of errors
-    // for now, logging the error to the console
+    // TODO: add an error handler
     console.error(error);
   }
 };

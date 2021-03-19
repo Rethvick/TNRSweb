@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import { Parser } from "json2csv";
+import { saveAs } from "file-saver";
 import {
   TextField,
   Dialog,
@@ -15,13 +16,14 @@ import {
   Box,
 } from "@material-ui/core";
 
-import { Parser } from "json2csv";
-import { saveAs } from "file-saver";
-
 export function DownloadResolvedResults({ data }) {
+  // controls the dialog visibility
   const [open, setOpen] = useState(false);
+  // the name of the downloaded file
   const [fileName, setFileName] = useState("tnrs_result");
+  // format of the download file
   const [fileFormat, setFileFormat] = useState("csv");
+  // wether to show all rows or only best results
   const [matchesToDownload, setMatchesToDownload] = useState("all");
 
   const handleClickOpen = () => {
@@ -37,12 +39,8 @@ export function DownloadResolvedResults({ data }) {
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Download Data
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogTitle id="form-dialog-title">Download Options</DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Download Options</DialogTitle>
         <DialogContent>
           <Box>
             <TextField

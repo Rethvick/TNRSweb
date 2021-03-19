@@ -24,7 +24,6 @@ export function OptionsBox({
   onChangeFamily,
 }) {
   const classes = useStyles();
-
   // populate souce state with sources available
   let [sourcesState, setSourcesState] = useState(
     sourcesAvailable?.map((name) => {
@@ -32,6 +31,7 @@ export function OptionsBox({
     })
   );
 
+  // controls the behavior of the user when he clicks the switch
   const handleChangeSources = (name) => {
     let tmpSourcesState = sourcesState.map((source) => {
       if (source.name == name) {
@@ -40,8 +40,9 @@ export function OptionsBox({
       }
       return source;
     });
-    // set state
+    
     setSourcesState(tmpSourcesState);
+    
     // send result to the index page
     let sourceNames = tmpSourcesState
       .filter((s) => s.enabled)

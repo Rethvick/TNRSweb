@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import { Parser } from "json2csv";
+import { saveAs } from "file-saver";
 import {
   TextField,
   Dialog,
@@ -15,12 +16,13 @@ import {
   Box,
 } from "@material-ui/core";
 
-import { Parser } from "json2csv";
-import { saveAs } from "file-saver";
 
 export function DownloadParsedResults({ data }) {
+  // controls the popup visibility
   const [open, setOpen] = useState(false);
+  // the filename when downloading
   const [fileName, setFileName] = useState("tnrs_result");
+  // default format when downloading
   const [fileFormat, setFileFormat] = useState("csv");
 
   const handleClickOpen = () => {
@@ -29,23 +31,18 @@ export function DownloadParsedResults({ data }) {
 
   const handleClose = () => {
     setOpen(false);
-  };  
+  };
 
   return (
     <>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Download Data
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="form-dialog-title"
-      >
-        <DialogTitle id="form-dialog-title">Download Options</DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Download Options</DialogTitle>
         <DialogContent>
           <Box>
             <TextField
-              id="outlined-helperText"
               label="File Name"
               defaultValue={fileName}
               onChange={(e) => setFileName(e.target.value)}
@@ -71,9 +68,7 @@ export function DownloadParsedResults({ data }) {
             Cancel
           </Button>
           <Button
-            onClick={() =>
-              generateDownloadFile(data, fileName, fileFormat)
-            }
+            onClick={() => generateDownloadFile(data, fileName, fileFormat)}
             color="primary"
           >
             Download
@@ -84,11 +79,7 @@ export function DownloadParsedResults({ data }) {
   );
 }
 
-const generateDownloadFile = (
-  data,
-  fileName,
-  fileFormat,
-) => {
+const generateDownloadFile = (data, fileName, fileFormat) => {
   // add the entire list of columns
   const fields = Object.keys(data[0]);
   // create a new var to hold the results to download

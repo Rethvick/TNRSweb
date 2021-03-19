@@ -89,7 +89,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     if (queryType === "parse") {
       requestParseNames(queryNames).then((res) => {
         setLoadingStatus(false);
-        setResult(res);
+        setParsedNames(res);
       });
     }
   };
