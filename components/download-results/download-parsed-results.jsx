@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import { Parser } from "json2csv";
+import { saveAs } from "file-saver";
 import {
   TextField,
   Dialog,
@@ -15,8 +16,6 @@ import {
   Box,
 } from "@material-ui/core";
 
-import { Parser } from "json2csv";
-import { saveAs } from "file-saver";
 
 export function DownloadParsedResults({ data }) {
   // controls the popup visibility

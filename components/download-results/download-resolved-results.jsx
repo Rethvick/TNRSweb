@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import { Parser } from "json2csv";
+import { saveAs } from "file-saver";
 import {
   TextField,
   Dialog,
@@ -14,9 +15,6 @@ import {
   Button,
   Box,
 } from "@material-ui/core";
-
-import { Parser } from "json2csv";
-import { saveAs } from "file-saver";
 
 export function DownloadResolvedResults({ data }) {
   // controls the dialog visibility
