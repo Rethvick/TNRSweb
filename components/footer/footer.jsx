@@ -1,4 +1,5 @@
-import { Container, Link, Typography, Box } from "@material-ui/core";
+import { Link, Typography, Box } from "@material-ui/core";
+import { ContainerLG } from "../";
 
 function Copyright() {
   return (
@@ -17,9 +18,9 @@ export function Footer() {
   return (
     <footer>
       <Box py={10} bgcolor="gray">
-        <Container>
+        <ContainerLG>
           <Copyright />
-        </Container>
+        </ContainerLG>
       </Box>
     </footer>
   );
