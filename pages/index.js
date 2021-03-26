@@ -14,6 +14,7 @@ import {
   DownloadParsedResults,
   ParseTable,
   BestMatchSettingsPopper,
+  MatchThresholdPopper,
   DownloadSettings,
 } from "../components/";
 
@@ -23,7 +24,7 @@ import {
   requestResolveNames,
   requestParseNames,
   requestSources,
-  requestFamilyClassifications
+  requestFamilyClassifications,
 } from "../actions";
 
 function IndexApp({ sourcesAvailable, familiesAvailable }) {
@@ -161,6 +162,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                           bestMatchingSetting={bestMatchingSetting}
                           onClickSort={sortByColumnHandler}
                         />
+                        <MatchThresholdPopper />
                         <DownloadResolvedResults data={result} />
                         <DownloadSettings
                           settings={{

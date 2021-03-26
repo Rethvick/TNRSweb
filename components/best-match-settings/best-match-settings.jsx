@@ -51,11 +51,14 @@ export function BestMatchSettingsPopper({ onClickSort, bestMatchingSetting }) {
         }}
       >
         <Paper elevation={3}>
-          <Box pt={1} pl={2} pb={0}>
+          <Box py={1} pl={2}>
             <FormControl>
               <FormGroup>
                 <FormControl>
-                  <RadioGroup value={bestMatchingSetting} onChange={handleChangeSortOrder}>
+                  <RadioGroup
+                    value={bestMatchingSetting}
+                    onChange={handleChangeSortOrder}
+                  >
                     <FormControlLabel
                       value="Overall_score_order"
                       control={<Radio />}
@@ -84,7 +87,7 @@ export function BestMatchSettingsPopper({ onClickSort, bestMatchingSetting }) {
         <DialogActions>
           <Button
             onClick={() => {
-              setAnchorEl(null)
+              setAnchorEl(null);
               setDialogOpen(false);
               onClickSort(dialogSort);
             }}
