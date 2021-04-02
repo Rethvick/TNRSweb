@@ -1,9 +1,6 @@
 import { useState } from "react";
-
 import Head from "next/head";
-
 import { Grid, Box, Container, Paper } from "@material-ui/core";
-
 import {
   SearchBox,
   OptionsBox,
@@ -17,7 +14,6 @@ import {
   MatchThresholdPopper,
   DownloadSettings,
 } from "../components/";
-
 // TODO: sortByColumn could have a better name
 import {
   sortByColumn,
@@ -83,6 +79,8 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         // record start and end time
         setQueryTime({ start: start, end: Date() });
         setBestMatchingSetting("Overall_score_order");
+        // add a function to filter results based on score
+        console.log(res)
         setResult(res);
       });
     }

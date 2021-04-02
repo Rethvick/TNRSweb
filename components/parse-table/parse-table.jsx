@@ -32,7 +32,7 @@ export function ParseTable({ tableData }) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  
+
   //
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -142,9 +142,9 @@ function EnhancedTableHead(props) {
   ];
 
   // we render the names using a map
-  let tableColumnsJsx = tableColumns.map((names) => {
+  let tableColumnsJsx = tableColumns.map((names, idx) => {
     return (
-      <TableCell>
+      <TableCell key={idx}>
         <TableSortLabel
           active={orderBy === names[0]}
           direction={orderBy === names[0] ? order : "asc"}
