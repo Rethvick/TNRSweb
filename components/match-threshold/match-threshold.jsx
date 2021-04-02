@@ -13,17 +13,22 @@ import {
   DialogContentText,
 } from "@material-ui/core";
 
-export function MatchThresholdPopper({ onClickSort, bestMatchingSetting }) {
+export function MatchThresholdPopper({
+  onChangeMatchingThreshold,
+  matchingThreshold,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [dialogSort, setDialogSort] = React.useState(bestMatchingSetting);
+  const [tmpMatchingThreshold, setTmpMatchingThreshold] = React.useState(
+    matchingThreshold
+  );
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
-  const handleChangeSortOrder = (e) => {
-    setDialogSort(e.target.value);
+  const handleApplyThreshold = (e) => {
+    // setDialogSort(e.target.value);
     setDialogOpen(true);
   };
 
@@ -48,7 +53,7 @@ export function MatchThresholdPopper({ onClickSort, bestMatchingSetting }) {
         }}
       >
         <Paper elevation={3}>
-          <Box pb={1} pt={3} px={4} width="300px">
+          <Box pb={3} pt={3} px={4} width="300px">
             <Typography>Select the matching threshold</Typography>
             <Slider
               defaultValue={0.53}
@@ -57,7 +62,17 @@ export function MatchThresholdPopper({ onClickSort, bestMatchingSetting }) {
               min={0}
               max={1}
               valueLabelDisplay="auto"
+              onChange={(e, v) => setTmpMatchingThreshold(v)}
+              value={tmpMatchingThreshold}
             />
+            <Button
+              disabled={tmpMatchingThreshold === matchingThreshold}
+              variant="contained"
+              color="primary"
+              onClick={handleApplyThreshold}
+            >
+              Apply
+            </Button>
           </Box>
         </Paper>
       </Popover>
@@ -75,7 +90,7 @@ export function MatchThresholdPopper({ onClickSort, bestMatchingSetting }) {
             onClick={() => {
               setAnchorEl(null);
               setDialogOpen(false);
-              onClickSort(dialogSort);
+              onChangeMatchingThreshold(tmpMatchingThreshold)
             }}
             color="primary"
             autoFocus
