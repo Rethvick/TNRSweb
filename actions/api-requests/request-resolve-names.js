@@ -1,8 +1,9 @@
 import axios from "axios";
 import { translateWarningCode } from "../warnings";
-
+import _ from 'lodash';
 const apiEndPoint = process.env.apiEndPoint;
 
+// TODO: this function does not belong here
 // this function groups names that matched the same species
 const groupRows = (rows) => {
   // group data using

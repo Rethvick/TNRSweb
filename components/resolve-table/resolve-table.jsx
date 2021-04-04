@@ -180,9 +180,9 @@ function EnhancedTableHead(props) {
     ["Accepted_name", "Accepted Name"],
   ];
 
-  let tableColumnsJsx = tableColumns.map((names) => {
+  let tableColumnsJsx = tableColumns.map((names, idx) => {
     return (
-      <TableCell>
+      <TableCell key={idx}>
         <TableSortLabel
           active={orderBy === names[0]}
           direction={orderBy === names[0] ? order : "asc"}

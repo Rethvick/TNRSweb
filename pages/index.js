@@ -1,9 +1,6 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 import Head from "next/head";
-
 import { Grid, Box, Container, Paper } from "@material-ui/core";
-
 import {
   SearchBox,
   OptionsBox,
@@ -14,6 +11,7 @@ import {
   DownloadParsedResults,
   ParseTable,
   BestMatchSettingsPopper,
+  MatchThresholdPopper,
   DownloadSettings,
 } from "../components/";
 
@@ -23,13 +21,100 @@ import {
   requestResolveNames,
   requestParseNames,
   requestSources,
-  requestFamilyClassifications
+  requestFamilyClassifications,
 } from "../actions";
+import _ from "lodash";
+
+// TODO: this function does not belong here
+// this function groups names that matched the same species
+const applyMatchThreshold = (rows, matchingThreshold) => {
+  // group data using
+  // Author_matched + Name_matched + Overall_score + Accepted_name
+  return (
+    _.chain(rows)
+      // group all records returned for a specific name together
+      .groupBy("Name_submitted")
+      .map((group) => {
+        // count the number of matches above threshold
+        let aboveThresholdCount = 0;
+        let clearedGroup = group.map((row) => {
+          // clear out matches bellow threshold
+          if (row["Overall_score"] < matchingThreshold) {
+            return {
+              ID: row["ID"],
+              Name_submitted: row["Name_submitted"],
+              Overall_score: "",
+              Name_matched_id: "",
+              Name_matched: "[No match found]",
+              Name_score: "",
+              Name_matched_rank: "",
+              Author_submitted: row["Author_submitted"],
+              Author_matched: "",
+              Author_score: "",
+              Canonical_author: "",
+              Name_matched_accepted_family: "",
+              Genus_submitted: row["Genus_submitted"],
+              Genus_matched: "",
+              Genus_score: "",
+              Specific_epithet_submitted: row["Specific_epithet_submitted"],
+              Specific_epithet_matched: "",
+              Specific_epithet_score: "",
+              Family_submitted: row["Family_submitted"],
+              Family_matched: "",
+              Family_score: "",
+              Infraspecific_rank: "",
+              Infraspecific_epithet_matched: "",
+              Infraspecific_epithet_score: "",
+              Infraspecific_rank_2: "",
+              Infraspecific_epithet_2_matched: "",
+              Infraspecific_epithet_2_score: "",
+              Annotations: "",
+              Unmatched_terms: "",
+              Name_matched_url: "",
+              Name_matched_lsid: "",
+              Phonetic: "",
+              Taxonomic_status: "",
+              Accepted_name: "",
+              Accepted_species: "",
+              Accepted_name_author: "",
+              Accepted_name_id: "",
+              Accepted_name_rank: "",
+              Accepted_name_url: "",
+              Accepted_name_lsid: "",
+              Accepted_family: "",
+              Overall_score_order: "1",
+              Highertaxa_score_order: "1",
+              Source: "",
+              Warnings: "",
+              selected: row["selected"],
+              unique_id: row["unique_id"],
+            };
+          }
+          // if the record is not bellow threshold increase conunt and return it filled
+          aboveThresholdCount = aboveThresholdCount + 1;
+          return row;
+        });
+        // if number of matches above threshold >= 1
+        if (aboveThresholdCount >= 1) {
+          // remove all records that did not match the threshold
+          return clearedGroup.filter(
+            (row) => row["Name_matched"] !== "[No match found]"
+          );
+        } else {
+          // else return the single top entry with empty fields
+          return clearedGroup[0];
+        }
+      })
+      // flatten to remove groupById
+      .flatten()
+      .value()
+  );
+};
 
 function IndexApp({ sourcesAvailable, familiesAvailable }) {
   // TODO: having all these states does not seem fun
   // state where we keep the results that come from the API
-  const [result, setResult] = useState([]);
+  const [resolvedNames, setResolvedNames] = useState([]);
   // state where we store the parsed names
   const [parsedNames, setParsedNames] = useState([]);
   // we keep the sources selected by the user here
@@ -47,6 +132,9 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   // this is used to keep track of the submission time
   // when we download the settings
   const [queryTimeTracker, setQueryTime] = useState({ start: null, end: null });
+  // keep track of the matching threshold
+  const [matchingThreshold, setMatchingThreshold] = useState(0.51);
+  const [plantNames, setPlantNames] = useState([]);
 
   // function to query data from the api
   // FIXME: move this function to a separate file
@@ -61,6 +149,8 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
       .filter((f) => f.length > 0)
       // add index starting from 1
       .map((v, i) => [i + 1, v]);
+    // save the plant names to use later
+    setPlantNames(names);
 
     // don't do anything if no names are provided
     if (names.length == 0) {
@@ -68,7 +158,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     }
     // clear results
     // TODO: rename this to setResolvedNames
-    setResult([]);
+    setResolvedNames([]);
     setParsedNames([]);
     // show spinner
     setLoadingStatus(true);
@@ -82,7 +172,8 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         // record start and end time
         setQueryTime({ start: start, end: Date() });
         setBestMatchingSetting("Overall_score_order");
-        setResult(res);
+        // add a function to filter results based on score
+        setResolvedNames(applyMatchThreshold(res, matchingThreshold));
       });
     }
 
@@ -114,6 +205,11 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     setBestMatchingSetting(column);
     setResult(sortedData);
   };
+
+  //  if matching threshold changes, re-do the query
+  useEffect(() => {
+    queryNames(plantNames);
+  }, [matchingThreshold]);
 
   //
   return (
@@ -153,7 +249,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                     onChangeSources={(sources) => setSourcesQuery(sources)}
                   />
                 </Grid>
-                {result.length > 0 && (
+                {resolvedNames.length > 0 && (
                   <Grid lg={12} xs={12} item>
                     <Paper>
                       <Box ml={2} pt={2} display="flex">
@@ -161,7 +257,14 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                           bestMatchingSetting={bestMatchingSetting}
                           onClickSort={sortByColumnHandler}
                         />
-                        <DownloadResolvedResults data={result} />
+                        <MatchThresholdPopper
+                          onChangeMatchingThreshold={(mt) => {
+                            // reapply the matching threshold
+                            setMatchingThreshold(mt);
+                          }}
+                          matchingThreshold={matchingThreshold}
+                        />
+                        <DownloadResolvedResults data={resolvedNames} />
                         <DownloadSettings
                           settings={{
                             time: queryTimeTracker,
@@ -175,7 +278,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                       </Box>
                       <Box pb={1}>
                         <ResolveTable
-                          tableData={result}
+                          tableData={resolvedNames}
                           onChangeSelectedRow={changeSelectedRowHandler}
                         />
                       </Box>
