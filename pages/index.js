@@ -134,12 +134,15 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   const [queryTimeTracker, setQueryTime] = useState({ start: null, end: null });
   // keep track of the matching threshold
   const [matchingThreshold, setMatchingThreshold] = useState(0.51);
-  const [plantNames, setPlantNames] = useState([]);
+  // keep the user input to be used later
+  const [plantNames, setPlantNames] = useState('');
 
   // function to query data from the api
   // FIXME: move this function to a separate file
   const queryNames = (names) => {
-    // names from the search box
+    // keep names from the search box
+    setPlantNames(names);
+    // process names
     const queryNames = names
       // break lines
       .split("\n")
@@ -150,7 +153,6 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
       // add index starting from 1
       .map((v, i) => [i + 1, v]);
     // save the plant names to use later
-    setPlantNames(names);
 
     // don't do anything if no names are provided
     if (names.length == 0) {
