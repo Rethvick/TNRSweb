@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changelog
 - Threshold slider to restrict the resolve function
+- Fixed resolve table: author name now concatenates Canonical_author instead of Accepted_name_author
 
 ## [1.0.0] - 2020-02-01
 
