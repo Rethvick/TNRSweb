@@ -82,7 +82,7 @@ export function ResolveTable({ tableData, onChangeSelectedRow }) {
         </TableCell>
         <TableCell>{row.Name_submitted} </TableCell>
         <TableCell>
-          {row.Name_matched + " " + row.Accepted_name_author}{" "}
+          {row.Name_matched + " " + row.Canonical_author}{" "}
           {allRows.length > 1 && (
             <Link
               href="#"
