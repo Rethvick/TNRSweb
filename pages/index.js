@@ -86,7 +86,7 @@ const applyMatchThreshold = (rows, matchingThreshold) => {
               Highertaxa_score_order: "1",
               Source: "",
               Warnings: "",
-              selected: row["selected"],
+              selected: true,
               unique_id: row["unique_id"],
             };
           }
@@ -175,7 +175,10 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         setQueryTime({ start: start, end: Date() });
         setBestMatchingSetting("Overall_score_order");
         // add a function to filter results based on score
-        setResolvedNames(applyMatchThreshold(res, matchingThreshold));
+        console.log(res)
+        let threholdFilteredNames = applyMatchThreshold(res, matchingThreshold);
+        console.log(threholdFilteredNames)
+        setResolvedNames(threholdFilteredNames)
       });
     }
 
