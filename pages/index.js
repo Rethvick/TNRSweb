@@ -193,7 +193,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                             familyClassification: familyQuery,
                             sourcesSelected: sourcesQuery,
                             jobType: queryType,
-                            matchingThreshold: matchingThreshold
+                            matchingThreshold: matchingThreshold,
                           }}
                         />
                       </Box>
