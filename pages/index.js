@@ -26,7 +26,6 @@ import {
 } from "../actions";
 import _ from "lodash";
 
-
 function IndexApp({ sourcesAvailable, familiesAvailable }) {
   // TODO: having all these states does not seem fun
   // state where we keep the results that come from the API
@@ -49,9 +48,9 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   // when we download the settings
   const [queryTimeTracker, setQueryTime] = useState({ start: null, end: null });
   // keep track of the matching threshold
-  const [matchingThreshold, setMatchingThreshold] = useState(0.51);
+  const [matchingThreshold, setMatchingThreshold] = useState(0.53);
   // keep the user input to be used later
-  const [plantNames, setPlantNames] = useState('');
+  const [plantNames, setPlantNames] = useState("");
 
   // function to query data from the api
   // FIXME: move this function to a separate file
@@ -91,10 +90,10 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         setQueryTime({ start: start, end: Date() });
         setBestMatchingSetting("Overall_score_order");
         // add a function to filter results based on score
-        console.log(res)
+        console.log(res);
         let threholdFilteredNames = applyMatchThreshold(res, matchingThreshold);
-        console.log(threholdFilteredNames)
-        setResolvedNames(threholdFilteredNames)
+        console.log(threholdFilteredNames);
+        setResolvedNames(threholdFilteredNames);
       });
     }
 
