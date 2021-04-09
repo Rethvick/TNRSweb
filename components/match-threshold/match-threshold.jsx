@@ -37,7 +37,7 @@ export function MatchThresholdPopper({
   return (
     <>
       <Button variant="contained" type="button" onClick={handleClick}>
-        Match Threshold
+        Match {matchingThreshold}
       </Button>
       <Popover
         open={open}
