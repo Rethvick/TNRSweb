@@ -95,7 +95,7 @@ export function ResolveTable({ tableData, onChangeSelectedRow }) {
             </Link>
           )}
         </TableCell>
-        <TableCell>{mkSourceLinks(row)}</TableCell>a
+        <TableCell>{mkSourceLinks(row)}</TableCell>
         {/* Avoid rounding scores when it is empty to avoid 'aN' */}
         {row.Overall_score ? (
           <TableCell>{roundScore(row.Overall_score)}</TableCell>
