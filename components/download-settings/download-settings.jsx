@@ -18,6 +18,7 @@ export function DownloadSettings({ settings }) {
     data.push("Sources selected : [" + settings.sourcesSelected + "]");
     data.push("Classification: " + settings.familyClassification);
     data.push("Constrain by higher taxonomy: " + settings.higherTaxonomy);
+    data.push("Matching Threshold: " + settings.matchingThreshold);
     // generate download file
     generateDownloadFile(data.join("\n"), "settings", "txt");
   };

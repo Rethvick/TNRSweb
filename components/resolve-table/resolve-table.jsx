@@ -95,8 +95,13 @@ export function ResolveTable({ tableData, onChangeSelectedRow }) {
             </Link>
           )}
         </TableCell>
-        <TableCell>{mkSourceLinks(row)}</TableCell>
-        <TableCell>{roundScore(row.Overall_score)}</TableCell>
+        <TableCell>{mkSourceLinks(row)}</TableCell>a
+        {/* Avoid rounding scores when it is empty to avoid 'aN' */}
+        {row.Overall_score ? (
+          <TableCell>{roundScore(row.Overall_score)}</TableCell>
+        ) : (
+          <TableCell></TableCell>
+        )}
         <TableCell>{row.Taxonomic_status}</TableCell>
         <TableCell>
           {row.Accepted_name + " " + row.Accepted_name_author}{" "}
