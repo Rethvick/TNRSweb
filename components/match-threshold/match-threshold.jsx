@@ -56,7 +56,6 @@ export function MatchThresholdPopper({
           <Box pb={3} pt={3} px={4} width="300px">
             <Typography>Select the matching threshold</Typography>
             <Slider
-              defaultValue={0.53}
               step={0.01}
               marks
               min={0}
@@ -73,6 +72,17 @@ export function MatchThresholdPopper({
             >
               Apply
             </Button>
+            {tmpMatchingThreshold !== process.env.defaultMatchingThreshold && (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  setTmpMatchingThreshold(process.env.defaultMatchingThreshold);
+                }}
+              >
+                Set default
+              </Button>
+            )}
           </Box>
         </Paper>
       </Popover>
@@ -90,7 +100,7 @@ export function MatchThresholdPopper({
             onClick={() => {
               setAnchorEl(null);
               setDialogOpen(false);
-              onChangeMatchingThreshold(tmpMatchingThreshold)
+              onChangeMatchingThreshold(tmpMatchingThreshold);
             }}
             color="primary"
             autoFocus
