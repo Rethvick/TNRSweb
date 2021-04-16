@@ -68,6 +68,7 @@ export const requestResolveNames = (queryNames, sourcesQuery, familyQuery) => {
       class: familyQuery,
       mode: "resolve",
       matches: "all",
+      acc: "0",
     },
     data: queryNames,
   };
