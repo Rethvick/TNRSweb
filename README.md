@@ -1,10 +1,7 @@
 # TNRS
 
-TNRSweb is a web interface for the Taxonomic Name Resolution Service (TNRS), 
-an application for the correction and standardization of scientific names. 
-The main TNRS application repository is at https://github.com/ojalaquellueva/TNRSbatch. 
-Other TNRS interfaces include the TNRS API (https://github.com/ojalaquellueva/TNRSapi) 
-and the RTNRS R package (https://github.com/EnquistLab/RTNRS).
+TNRSweb is a web interface for the Taxonomic Name Resolution Service (TNRS), an application for the correction and standardization of scientific names. 
+The main TNRS application repository is at https://github.com/ojalaquellueva/TNRSbatch. Other TNRS interfaces include the TNRS API (https://github.com/ojalaquellueva/TNRSapi) and the RTNRS R package (https://github.com/EnquistLab/RTNRS).
 
 ## How to contribute
 
