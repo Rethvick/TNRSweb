@@ -25,7 +25,7 @@ After you install `npm` you can proceed and clone this repository.
 The next steps are to run `npm install` inside this folder.
 This command will install all the packages listed in `packages.json` that are required by this project.
 
-The command `npm run dev` will start an http server on http:localhost:3000 that should be accessible through your web browser.
+The command `npm run dev` will start an http server on http://localhost:3000 that should be accessible through your web browser.
 
 After running `npm run dev`, wait a while until you see all of the following:
 
