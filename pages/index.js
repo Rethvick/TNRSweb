@@ -49,7 +49,9 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
   // when we download the settings
   const [queryTimeTracker, setQueryTime] = useState({ start: null, end: null });
   // keep track of the matching threshold
-  const [matchingThreshold, setMatchingThreshold] = useState(process.env.defaultMatchingThreshold)
+  const [matchingThreshold, setMatchingThreshold] = useState(
+    process.env.defaultMatchingThreshold
+  );
   // keep the user input to be used later
   const [plantNames, setPlantNames] = useState("");
 
