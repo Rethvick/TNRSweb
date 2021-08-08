@@ -649,7 +649,7 @@ function AboutApp({ collaboratorsAvailable }) {
           </Typography>
           <Typography variant="body2" align="justify">
             Funding provided by the National Science Foundation Plant
-            Cyberinfrastructure Program (grant #DBI-0735191) and National
+            Cyberinfrastructure Program (grant {"#DBI-0735191"}) and National
             Science Foundation Harnessing the Data Revolution Grant HDR 1934790
             to Brian J. Enquist.
           </Typography>
