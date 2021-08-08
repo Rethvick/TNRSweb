@@ -49,7 +49,7 @@ export function TopBar() {
       <Container className={classes.container}>
         <Toolbar>
           <Box mr={2}>
-            <img src='logo_highres.png' height='40px'></img>
+            <img src='/logo_highres.png' height='40px'></img>
           </Box>
           <Box mr={1}>
             <Link href="/" passHref>
