@@ -9,7 +9,7 @@ import {
   Box,
   Divider,
   Hidden,
-  Link
+  Link,
 } from "@material-ui/core";
 
 import { requestSources } from "../actions";
@@ -17,7 +17,6 @@ import { requestSources } from "../actions";
 const apiServer = process.env.apiServer;
 
 function SourcesApp({ sourcesAvailable }) {
-  console.log(sourcesAvailable);
   return (
     <>
       <Layout>
@@ -39,15 +38,15 @@ function SourcesApp({ sourcesAvailable }) {
                 <ListItem>
                   <Hidden xsDown>
                     <ListItemIcon>
-                      <div>
+                <Box p={4}>
                         {/* FIXME: make this fit a small screen */}
                         <img
-                          style={{ objectFit: "none" }}
-                          height="200"
-                          width="200"
-                          src={apiServer + s.logo_path}
+                          style={{ objectFit: "scale-down" }}
+                          height="150"
+                          width="150"
+                          src={s.logo_path}
                         />
-                      </div>
+                      </Box>
                     </ListItemIcon>
                   </Hidden>
                   <ListItemText>
@@ -63,7 +62,8 @@ function SourcesApp({ sourcesAvailable }) {
                     <Box>
                       <Link href={s.dataUrl} size="small" color="primary">
                         Data
-                      </Link>{" | "}
+                      </Link>
+                      {" | "}
                       <Link href={s.sourceUrl} size="small" color="primary">
                         Learn More
                       </Link>
