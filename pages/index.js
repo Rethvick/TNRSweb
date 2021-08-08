@@ -141,11 +141,11 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         <title>TNRS</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box display="flex" flexDirection="column" minHeight="100vh">
+      <Box display="flex" flexDirection="column" minHeight="90vh">
         <Box>
           <TopBar />
         </Box>
-        <Box flexGrow={1} my={2}>
+        <Box flexGrow={1} py={2}>
           <main>
             <Container maxWidth="lg">
               <Grid
