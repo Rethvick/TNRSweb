@@ -22,6 +22,14 @@ Make sure you have `npm` installed before you continue:
 
 After you install `npm` you can proceed and clone this repository.
 
+You also need node:
+
+```
+❯ node --version
+v15.14.0
+```
+
+
 The next steps are to run `npm install` inside this folder.
 This command will install all the packages listed in `packages.json` that are required by this project.
 
