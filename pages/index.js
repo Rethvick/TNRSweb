@@ -26,7 +26,7 @@ import {
 } from "../actions";
 import _ from "lodash";
 
-function IndexApp({}) {
+function IndexApp() {
   // TODO: having all these states does not seem fun
   // TODO: group states that belong to the same thing together
   // state where we keep the results that come from the API
@@ -59,6 +59,7 @@ function IndexApp({}) {
 
   // function to query data from the api
   // FIXME: move this function to a separate file
+  // TODO: needs the rest
   const queryNames = (names) => {
     // keep names from the search box
     setPlantNames(names);
@@ -115,8 +116,9 @@ function IndexApp({}) {
     }
   };
 
+  // rowToSelect =
   const changeSelectedRowHandler = (rowToSelect) => {
-    let new_results = result.map((row) => {
+    let new_results = resolvedNames.map((row) => {
       if (row.unique_id == rowToSelect.unique_id) {
         row.selected = true;
         return row;
@@ -127,13 +129,13 @@ function IndexApp({}) {
         return row;
       }
     });
-    setResult(new_results);
+    setResolvedNames(new_results);
   };
 
   const sortByColumnHandler = (column) => {
-    let sortedData = sortByColumn(result, column);
+    let sortedData = sortByColumn(resolvedNames, column);
     setBestMatchingSetting(column);
-    setResult(sortedData);
+    setResolvedNames(sortedData);
   };
 
   //  if matching threshold changes, re-do the query
@@ -170,8 +172,6 @@ function IndexApp({}) {
                 </Grid>
                 <Grid lg={6} xs={12} item>
                   <OptionsBox
-                    //sourcesAvailable={sourcesAvailable}
-                    //familiesAvailable={familiesAvailable}
                     queryType={queryType}
                     onChangeQueryType={(queryType) => setQueryType(queryType)}
                     onChangeFamily={(family) => setFamilyQuery(family)}
