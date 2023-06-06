@@ -1,6 +1,6 @@
 import axios from "axios";
 import { translateWarningCode } from "../warnings";
-import _ from 'lodash';
+import _ from "lodash";
 const apiEndPoint = process.env.apiEndPoint;
 
 // TODO: this function does not belong here
@@ -72,6 +72,8 @@ export const requestResolveNames = (queryNames, sourcesQuery, familyQuery) => {
     },
     data: queryNames,
   };
+
+  console.log(queryObject);
   // sending the request to the API
   return axios
     .post(apiEndPoint, queryObject, {

@@ -26,19 +26,21 @@ import {
 } from "../actions";
 import _ from "lodash";
 
-function IndexApp({ sourcesAvailable, familiesAvailable }) {
+function IndexApp({}) {
   // TODO: having all these states does not seem fun
   // TODO: group states that belong to the same thing together
   // state where we keep the results that come from the API
   const [resolvedNames, setResolvedNames] = useState([]);
   // state where we store the parsed names
   const [parsedNames, setParsedNames] = useState([]);
+
   // we keep the sources selected by the user here
-  const [sourcesQuery, setSourcesQuery] = useState(sourcesAvailable.join(","));
+  const [sourcesQuery, setSourcesQuery] = useState("");
   // use the first family available
-  const [familyQuery, setFamilyQuery] = useState(
-    familiesAvailable[0].sourceName
-  );
+  const [familyQuery, setFamilyQuery] = useState("");
+  //   familiesAvailable[0].sourceName
+  // );
+  //
   // keep a status for when the system is loading
   const [loadingStatus, setLoadingStatus] = useState(false);
   // resolve or parse
@@ -61,7 +63,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     // keep names from the search box
     setPlantNames(names);
     // process names
-    const queryNames = names
+    const queryNamesStr = names
       // break lines
       .split("\n")
       // remove extra white spaces
@@ -87,21 +89,26 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
       // show spinner
       let start = Date();
       // request the data and set result
-      requestResolveNames(queryNames, sourcesQuery, familyQuery).then((res) => {
-        setLoadingStatus(false);
-        // record start and end time
-        setQueryTime({ start: start, end: Date() });
-        setBestMatchingSetting("Overall_score_order");
-        // add a function to filter results based on score
-        console.log(res);
-        let threholdFilteredNames = applyMatchThreshold(res, matchingThreshold);
-        console.log(threholdFilteredNames);
-        setResolvedNames(threholdFilteredNames);
-      });
+      requestResolveNames(queryNamesStr, sourcesQuery, familyQuery).then(
+        (res) => {
+          setLoadingStatus(false);
+          // record start and end time
+          setQueryTime({ start: start, end: Date() });
+          setBestMatchingSetting("Overall_score_order");
+          // add a function to filter results based on score
+          console.log(res);
+          let threholdFilteredNames = applyMatchThreshold(
+            res,
+            matchingThreshold
+          );
+          console.log(threholdFilteredNames);
+          setResolvedNames(threholdFilteredNames);
+        }
+      );
     }
 
     if (queryType === "parse") {
-      requestParseNames(queryNames).then((res) => {
+      requestParseNames(queryNamesStr).then((res) => {
         setLoadingStatus(false);
         setParsedNames(res);
       });
@@ -163,10 +170,9 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                 </Grid>
                 <Grid lg={6} xs={12} item>
                   <OptionsBox
-                    sourcesAvailable={sourcesAvailable}
-                    familiesAvailable={familiesAvailable}
+                    //sourcesAvailable={sourcesAvailable}
+                    //familiesAvailable={familiesAvailable}
                     queryType={queryType}
-                    familyQuery={familyQuery}
                     onChangeQueryType={(queryType) => setQueryType(queryType)}
                     onChangeFamily={(family) => setFamilyQuery(family)}
                     onChangeSources={(sources) => setSourcesQuery(sources)}
@@ -232,15 +238,5 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     </>
   );
 }
-
-// setting initial props with sources and families
-// these are necessary to render the application
-IndexApp.getInitialProps = async () => {
-  let sources = await requestSources();
-  // get only the names
-  let sourceNames = sources.map((s) => s.sourceName);
-  let families = await requestFamilyClassifications();
-  return { sourcesAvailable: sourceNames, familiesAvailable: families };
-};
 
 export default IndexApp;

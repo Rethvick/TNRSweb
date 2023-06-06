@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useStyles } from "./options-box.style";
 import {
   Paper,
@@ -14,22 +14,46 @@ import {
   Link,
 } from "@material-ui/core";
 
+import { requestSources, requestFamilyClassifications } from "../../actions";
+
 export function OptionsBox({
   queryType,
   onChangeQueryType,
-  sourcesAvailable,
   onChangeSources,
-  familiesAvailable,
-  familyQuery,
   onChangeFamily,
 }) {
   const classes = useStyles();
+
+  // sources and familiesAvailable
+  const [familiesAvailable, setFamiliesAvailable] = useState([]);
+  const [familyQuery, setFamilyQuery] = useState("");
+
   // populate souce state with sources available
-  let [sourcesState, setSourcesState] = useState(
-    sourcesAvailable?.map((name) => {
-      return { name: name, enabled: true };
-    })
-  );
+  let [sourcesState, setSourcesState] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      let sources = await requestSources();
+      // get only the names
+      let sourceNames = sources.map((s) => s.sourceName);
+      let families = await requestFamilyClassifications();
+
+      setSourcesState(
+        sourceNames.map((name) => {
+          return { name: name, enabled: true };
+        })
+      );
+
+      setFamiliesAvailable(families);
+      setFamilyQuery(families[0].sourceName);
+
+      // push names up to index
+      onChangeSources(sourceNames.join(","));
+      onChangeFamily(families[0].sourceName);
+    }
+
+    fetchData();
+  }, []);
 
   // controls the behavior of the user when he clicks the switch
   const handleChangeSources = (name) => {
@@ -40,15 +64,20 @@ export function OptionsBox({
       }
       return source;
     });
-    
+
     setSourcesState(tmpSourcesState);
-    
+
     // send result to the index page
     let sourceNames = tmpSourcesState
       .filter((s) => s.enabled)
       .map((s) => s.name)
       .join(",");
     onChangeSources(sourceNames);
+  };
+
+  const handleSelectFamily = (name) => {
+    onChangeFamily(name);
+    setFamilyQuery(name);
   };
 
   return (
@@ -73,7 +102,7 @@ export function OptionsBox({
               <FormControl variant="outlined" fullWidth>
                 <Select
                   value={familyQuery}
-                  onChange={(e) => onChangeFamily(e.target.value)}
+                  onChange={(e) => handleSelectFamily(e.target.value)}
                 >
                   {familiesAvailable.map((f) => (
                     <MenuItem key={f.sourceName} value={f.sourceName}>
