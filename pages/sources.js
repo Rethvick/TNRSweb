@@ -15,8 +15,6 @@ import {
 
 import { requestSources } from "../actions";
 
-const apiServer = process.env.apiServer;
-
 function SourcesApp() {
   let [sourcesState, setSourcesState] = useState([]);
   useEffect(() => {

@@ -20,8 +20,6 @@ import {
   sortByColumn,
   requestResolveNames,
   requestParseNames,
-  requestSources,
-  requestFamilyClassifications,
   applyMatchThreshold,
 } from "../actions";
 import _ from "lodash";
