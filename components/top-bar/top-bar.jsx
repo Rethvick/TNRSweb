@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import {
@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { requestMeta } from "../../actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +45,19 @@ const useStyles = makeStyles((theme) => ({
 
 export function TopBar() {
   const classes = useStyles();
+
+  //
+  const [appVersion, setAppVersion] = useState([]);
+  // retrieve the version information
+  useEffect(() => {
+    async function fetchData() {
+      let meta = await requestMeta();
+      setAppVersion(meta.code_version)
+    }
+    fetchData();
+  }, []);
+
+
   return (
     <AppBar position="static">
       <Container className={classes.container}>
@@ -69,7 +83,7 @@ export function TopBar() {
           </Hidden>
           <Hidden smDown>
             <Typography variant="overline" className={classes.title}>
-              Taxonomic Name Resolution Service v5.0
+              Taxonomic Name Resolution Service v{appVersion}
             </Typography>
             <Link href="/" passHref>
               <Button component="a" color="inherit">
