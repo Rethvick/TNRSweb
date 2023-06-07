@@ -1,5 +1,5 @@
 import { Layout } from "../components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   Typography,
@@ -103,8 +103,18 @@ function BibTexDialog({ displayText }) {
   );
 }
 
-function HowCiteApp({ citationsAvailable }) {
-  let renderedCitations = renderCitations(citationsAvailable);
+function HowCiteApp() {
+  let [renderedCitations, setRenderedCitations] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      let citations = await requestCitations();
+      let rendered = renderCitations(citations);
+      setRenderedCitations(rendered);
+    }
+    fetchData();
+  }, []);
+
+
   return (
     <>
       <Layout>
@@ -134,6 +144,8 @@ function HowCiteApp({ citationsAvailable }) {
         {renderedCitations.tropicos}
         {renderedCitations.tpl}
         {renderedCitations.usda}
+
+
       </Layout>
     </>
   );
