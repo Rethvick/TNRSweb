@@ -65,6 +65,8 @@ function SourcesApp() {
                       {s.description} <br />
                       <br />
                       Date Accessed: {s.tnrsDateAccessed}
+                      <br />
+                      Version: {s.version}
                     </Typography>
                     <br />
                     <Box>
