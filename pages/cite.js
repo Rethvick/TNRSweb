@@ -16,50 +16,6 @@ import { requestCitations } from "../actions";
 
 const Cite = require("citation-js");
 
-const renderCitations = (citationsAvailable) => {
-  var result = {};
-  citationsAvailable.map((citation) => {
-    // parse data
-    let parsed = new Cite(citation.citation);
-    // get today's data
-    let options = { year: "numeric", month: "short", day: "numeric" };
-    let today = new Date();
-    // fill accessed_date
-    var accessed_date =
-      ", " +
-      parsed.data[0].note?.replace(
-        "<date_of_access>",
-        today.toLocaleDateString("en-US", options)
-      );
-    // check if note was empty
-    if (accessed_date == ", undefined") {
-      accessed_date = "";
-    }
-
-    let parsedRendered =
-      parsed.format("bibliography", {
-        format: "text",
-        template: "apa",
-        lang: "en-US",
-        // remove part of the html that contains the closing div tag
-        // and add the accessed date
-      }) + accessed_date;
-
-    result[citation.source] = (
-      <div>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: parsedRendered,
-          }}
-        ></div>
-        <BibTexDialog displayText={citation.citation} />
-        <br />
-      </div>
-    );
-  });
-  return result;
-};
-
 function BibTexDialog({ displayText }) {
   const [open, setOpen] = useState(false);
 
@@ -80,17 +36,7 @@ function BibTexDialog({ displayText }) {
         <DialogTitle id="alert-dialog-title">{"BibTeX entry"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {displayText.split("\n").map((line, index) => {
-              if ((index > 0) & (line != "}")) {
-                line = "\xa0\xa0\xa0\xa0" + line;
-              }
-              return (
-                <span key={index}>
-                  {line}
-                  <br />
-                </span>
-              );
-            })}
+            {displayText}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -104,12 +50,38 @@ function BibTexDialog({ displayText }) {
 }
 
 function HowCiteApp() {
-  let [renderedCitations, setRenderedCitations] = useState([]);
+  let [publicCitation, setPublicCitation] = useState('');
+  let [tnrsCitation, setTnrsCitation] = useState('');
+  let [sourcesCitations, setSourcesCitations] = useState([]);
+
   useEffect(() => {
     async function fetchData() {
+      // get citations from the API
       let citations = await requestCitations();
-      let rendered = renderCitations(citations);
-      setRenderedCitations(rendered);
+      var parsedCitations = []
+
+      // parse them using citation-js
+      for (let c in citations) {
+        let parsed = new Cite(citations[c].citation);
+
+        let formatted = parsed.format('bibliography', {
+          format: 'html',
+          template: 'apa',
+          lang: 'en-US'
+        })
+        // push everything to the vector
+        parsedCitations.push({ 'source': citations[c].source, 'parsed': parsed, 'raw': citations[c].citation, 'formatted': formatted })
+      }
+
+      // split by subheader
+      let pub = parsedCitations.filter(o => o.source === 'tnrs_pub')[0]
+      let tnrs = parsedCitations.filter(o => o.source === 'tnrs')[0]
+      let sources = parsedCitations.filter(o => o.source !== 'tnrs').filter(o => o.source !== 'tnrs_pub')
+
+      // set state
+      setPublicCitation(pub)
+      setTnrsCitation(tnrs)
+      setSourcesCitations(sources)
     }
     fetchData();
   }, []);
@@ -122,38 +94,52 @@ function HowCiteApp() {
           How to Cite the TNRS
         </Typography>
 
-        {/*<Typography variant="h6" gutterBottom align="justify">*/}
         <Typography variant="h5" gutterBottom align="justify">
           To cite the Taxonomic Name Resolution Service:
         </Typography>
-
-        {renderedCitations.tnrs_pub}
+        <div>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: tnrsCitation.formatted,
+            }}
+          ></div>
+          <BibTexDialog displayText={tnrsCitation.raw} />
+          <br />
+        </div>
 
         <Typography variant="h5" gutterBottom align="justify">
           If results derived from the TNRS are used in a publication, please
           cite:
         </Typography>
-
-        {renderedCitations.tnrs}
+        <div>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: publicCitation.formatted,
+            }}
+          ></div>
+          <BibTexDialog displayText={publicCitation.raw} />
+          <br />
+        </div>
 
         <Typography variant="h5" gutterBottom align="justify">
           Please acknowledge separately the individual taxonomic sources used to
           process your data:
         </Typography>
-
-        {renderedCitations.tropicos}
-        {renderedCitations.tpl}
-        {renderedCitations.usda}
-
+        {sourcesCitations.map((s) => (
+          <div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: s.formatted,
+              }}
+            ></div>
+            <BibTexDialog displayText={s.raw} />
+            <br />
+          </div>
+        ))}
 
       </Layout>
     </>
   );
 }
-
-HowCiteApp.getInitialProps = async () => {
-  let citations = await requestCitations();
-  return { citationsAvailable: citations };
-};
 
 export default HowCiteApp;
