@@ -66,7 +66,10 @@ function SourcesApp() {
                       <br />
                       Date Accessed: {s.tnrsDateAccessed}
                       <br />
-                      Version: {s.version}
+                      {/* Display version only when available */}
+                      {s.version !== null &&
+                        <span>Version: {s.version}</span>
+                      }
                     </Typography>
                     <br />
                     <Box>
