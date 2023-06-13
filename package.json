@@ -1,6 +1,6 @@
 {
-  "name": "nextjs",
-  "version": "4.0.0",
+  "name": "TNRSweb",
+  "version": "1.0.2",
   "private": true,
   "dependencies": {
     "@material-ui/core": "4.11.3",
@@ -22,5 +22,9 @@
     "export": "next build && next export",
     "start": "next start",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
+  },
+  "devDependencies": {
+    "eslint": "^7.26.0",
+    "eslint-plugin-react": "^7.23.2"
   }
 }

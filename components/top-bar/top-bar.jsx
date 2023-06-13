@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
+import { LowResMenu } from "./low-res";
+import { useStyles } from "./styles";
+import { requestMeta } from "../../actions";
+
 import {
   Box,
   AppBar,
@@ -8,40 +12,9 @@ import {
   Toolbar,
   Typography,
   Button,
-  makeStyles,
   Hidden,
-  Menu,
-  MenuItem,
-  IconButton,
-  Link as MUILink,
 } from "@material-ui/core";
 
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { requestMeta } from "../../actions";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  homeLink: {
-    textDecoration: "none !important",
-  },
-  menuButton: {
-    marginRight: theme.spacing(0),
-    paddingRight: theme.spacing(0),
-  },
-  container: {
-    [theme.breakpoints.down("md")]: {
-      padding: theme.spacing(0),
-    },
-  },
-}));
 
 export function TopBar() {
   const classes = useStyles();
@@ -52,7 +25,8 @@ export function TopBar() {
   useEffect(() => {
     async function fetchData() {
       let meta = await requestMeta();
-      setAppVersion(meta.code_version)
+      setAppVersion(meta.app_version)
+      console.log(meta)
     }
     fetchData();
   }, []);
@@ -127,58 +101,3 @@ export function TopBar() {
   );
 }
 
-export function LowResMenu() {
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <div>
-      <IconButton
-        className={classes.menuButton}
-        onClick={handleClick}
-        component="a"
-        color="inherit"
-      >
-        <MoreVertIcon />
-      </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleClose} component={MUILink} href="/about">
-          About
-        </MenuItem>
-        <MenuItem
-          onClick={handleClose}
-          component={MUILink}
-          href="/instructions"
-        >
-          Instructions
-        </MenuItem>
-        <MenuItem onClick={handleClose} component={MUILink} href="/tnrsapi">
-          Api
-        </MenuItem>
-        <MenuItem onClick={handleClose} component={MUILink} href="/sources">
-          Sources
-        </MenuItem>
-        <MenuItem onClick={handleClose} component={MUILink} href="/cite">
-          Cite
-        </MenuItem>
-        <MenuItem onClick={handleClose} component={MUILink} href="/contribute">
-          Contribute
-        </MenuItem>
-      </Menu>
-    </div>
-  );
-}

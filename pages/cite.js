@@ -58,8 +58,8 @@ function HowCiteApp() {
     async function fetchData() {
       // get citations from the API
       let citations = await requestCitations();
-      var parsedCitations = []
 
+      var parsedCitations = []
       // parse them using citation-js
       for (let c in citations) {
         let parsed = new Cite(citations[c].citation);
@@ -125,8 +125,8 @@ function HowCiteApp() {
           Please acknowledge separately the individual taxonomic sources used to
           process your data:
         </Typography>
-        {sourcesCitations.map((s) => (
-          <div>
+        {sourcesCitations.map((s, k) => (
+          <div key={k}>
             <div
               dangerouslySetInnerHTML={{
                 __html: s.formatted,
