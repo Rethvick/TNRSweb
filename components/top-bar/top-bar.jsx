@@ -26,7 +26,6 @@ export function TopBar() {
     async function fetchData() {
       let meta = await requestMeta();
       setAppVersion(meta.app_version)
-      console.log(meta)
     }
     fetchData();
   }, []);

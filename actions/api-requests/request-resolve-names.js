@@ -73,7 +73,6 @@ export const requestResolveNames = (queryNames, sourcesQuery, familyQuery) => {
     data: queryNames,
   };
 
-  console.log(queryObject);
   // sending the request to the API
   return axios
     .post(apiEndPoint, queryObject, {

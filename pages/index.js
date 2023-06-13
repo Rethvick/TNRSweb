@@ -15,18 +15,29 @@ import {
   DownloadSettings,
 } from "../components/";
 
-// TODO: sortByColumn could have a better name
 import {
   sortByColumn,
   requestResolveNames,
   requestParseNames,
   applyMatchThreshold,
 } from "../actions";
+
 import _ from "lodash";
 
+const splitNames = (names) => {
+  return names
+    // break lines
+    .split("\n")
+    // remove extra white spaces
+    .map((name) => name.replace(/\s+/g, " ").trim())
+    // remove empty lines
+    .filter((f) => f.length > 0)
+    // add index starting from 1
+    .map((v, i) => [i + 1, v]);
+  // save the plant names to use later
+}
+
 function IndexApp() {
-  // TODO: having all these states does not seem fun
-  // TODO: group states that belong to the same thing together
   // state where we keep the results that come from the API
   const [resolvedNames, setResolvedNames] = useState([]);
   // state where we store the parsed names
@@ -36,54 +47,42 @@ function IndexApp() {
   const [sourcesQuery, setSourcesQuery] = useState("");
   // use the first family available
   const [familyQuery, setFamilyQuery] = useState("");
-  //   familiesAvailable[0].sourceName
-  // );
-  //
+
   // keep a status for when the system is loading
   const [loadingStatus, setLoadingStatus] = useState(false);
-  // resolve or parse
+
+  // query options
   const [queryType, setQueryType] = useState("resolve");
-  //
   const [bestMatchingSetting, setBestMatchingSetting] = useState();
-  // this is used to keep track of the submission time
-  // when we download the settings
   const [queryTimeTracker, setQueryTime] = useState({ start: null, end: null });
-  // keep track of the matching threshold
   const [matchingThreshold, setMatchingThreshold] = useState(
     process.env.defaultMatchingThreshold
   );
+
   // keep the user input to be used later
   const [plantNames, setPlantNames] = useState("");
 
   // function to query data from the api
-  // FIXME: move this function to a separate file
-  // TODO: needs the rest
   const queryNames = (names) => {
     // keep names from the search box
     setPlantNames(names);
+
     // process names
-    const queryNamesStr = names
-      // break lines
-      .split("\n")
-      // remove extra white spaces
-      .map((name) => name.replace(/\s+/g, " ").trim())
-      // remove empty lines
-      .filter((f) => f.length > 0)
-      // add index starting from 1
-      .map((v, i) => [i + 1, v]);
-    // save the plant names to use later
+    const queryNamesStr = splitNames(names)
 
     // don't do anything if no names are provided
     if (names.length == 0) {
       return;
     }
+
     // clear results
-    // TODO: rename this to setResolvedNames
     setResolvedNames([]);
     setParsedNames([]);
     // show spinner
     setLoadingStatus(true);
-    //
+
+
+    // if the user wants to resolve the names
     if (queryType === "resolve") {
       // show spinner
       let start = Date();
@@ -95,26 +94,27 @@ function IndexApp() {
           setQueryTime({ start: start, end: Date() });
           setBestMatchingSetting("Overall_score_order");
           // add a function to filter results based on score
-          console.log(res);
           let threholdFilteredNames = applyMatchThreshold(
             res,
             matchingThreshold
           );
-          console.log(threholdFilteredNames);
           setResolvedNames(threholdFilteredNames);
         }
       );
     }
 
+    // if the user wants to parse the names
     if (queryType === "parse") {
-      requestParseNames(queryNamesStr).then((res) => {
+      requestParseNames(queryNamesStr).then((response) => {
         setLoadingStatus(false);
-        setParsedNames(res);
+        setParsedNames(response);
       });
     }
   };
 
-  // rowToSelect =
+  // when the user opens the dialog with multiple
+  // if the user selects a different row,
+  // this function will add true to that particular row
   const changeSelectedRowHandler = (rowToSelect) => {
     let new_results = resolvedNames.map((row) => {
       if (row.unique_id == rowToSelect.unique_id) {
@@ -130,6 +130,8 @@ function IndexApp() {
     setResolvedNames(new_results);
   };
 
+  // if the user decides to use a different column
+  // to sort results, such as Higher_taxa_score_order
   const sortByColumnHandler = (column) => {
     let sortedData = sortByColumn(resolvedNames, column);
     setBestMatchingSetting(column);
