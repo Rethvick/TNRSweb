@@ -15,101 +15,108 @@ import {
   DownloadSettings,
 } from "../components/";
 
-// TODO: sortByColumn could have a better name
 import {
   sortByColumn,
   requestResolveNames,
   requestParseNames,
-  requestSources,
-  requestFamilyClassifications,
   applyMatchThreshold,
 } from "../actions";
+
 import _ from "lodash";
 
-function IndexApp({ sourcesAvailable, familiesAvailable }) {
-  // TODO: having all these states does not seem fun
-  // TODO: group states that belong to the same thing together
+const splitNames = (names) => {
+  return names
+    // break lines
+    .split("\n")
+    // remove extra white spaces
+    .map((name) => name.replace(/\s+/g, " ").trim())
+    // remove empty lines
+    .filter((f) => f.length > 0)
+    // add index starting from 1
+    .map((v, i) => [i + 1, v]);
+  // save the plant names to use later
+}
+
+function IndexApp() {
   // state where we keep the results that come from the API
   const [resolvedNames, setResolvedNames] = useState([]);
   // state where we store the parsed names
   const [parsedNames, setParsedNames] = useState([]);
+
   // we keep the sources selected by the user here
-  const [sourcesQuery, setSourcesQuery] = useState(sourcesAvailable.join(","));
+  const [sourcesQuery, setSourcesQuery] = useState("");
   // use the first family available
-  const [familyQuery, setFamilyQuery] = useState(
-    familiesAvailable[0].sourceName
-  );
+  const [familyQuery, setFamilyQuery] = useState("");
+
   // keep a status for when the system is loading
   const [loadingStatus, setLoadingStatus] = useState(false);
-  // resolve or parse
+
+  // query options
   const [queryType, setQueryType] = useState("resolve");
-  //
   const [bestMatchingSetting, setBestMatchingSetting] = useState();
-  // this is used to keep track of the submission time
-  // when we download the settings
   const [queryTimeTracker, setQueryTime] = useState({ start: null, end: null });
-  // keep track of the matching threshold
   const [matchingThreshold, setMatchingThreshold] = useState(
     process.env.defaultMatchingThreshold
   );
+
   // keep the user input to be used later
   const [plantNames, setPlantNames] = useState("");
 
   // function to query data from the api
-  // FIXME: move this function to a separate file
   const queryNames = (names) => {
     // keep names from the search box
     setPlantNames(names);
+
     // process names
-    const queryNames = names
-      // break lines
-      .split("\n")
-      // remove extra white spaces
-      .map((name) => name.replace(/\s+/g, " ").trim())
-      // remove empty lines
-      .filter((f) => f.length > 0)
-      // add index starting from 1
-      .map((v, i) => [i + 1, v]);
-    // save the plant names to use later
+    const queryNamesStr = splitNames(names)
 
     // don't do anything if no names are provided
     if (names.length == 0) {
       return;
     }
+
     // clear results
-    // TODO: rename this to setResolvedNames
     setResolvedNames([]);
     setParsedNames([]);
     // show spinner
     setLoadingStatus(true);
-    //
+
+
+    // if the user wants to resolve the names
     if (queryType === "resolve") {
       // show spinner
       let start = Date();
       // request the data and set result
-      requestResolveNames(queryNames, sourcesQuery, familyQuery).then((res) => {
-        setLoadingStatus(false);
-        // record start and end time
-        setQueryTime({ start: start, end: Date() });
-        setBestMatchingSetting("Overall_score_order");
-        // add a function to filter results based on score
-        console.log(res);
-        let threholdFilteredNames = applyMatchThreshold(res, matchingThreshold);
-        console.log(threholdFilteredNames);
-        setResolvedNames(threholdFilteredNames);
-      });
+      requestResolveNames(queryNamesStr, sourcesQuery, familyQuery).then(
+        (res) => {
+          setLoadingStatus(false);
+          // record start and end time
+          setQueryTime({ start: start, end: Date() });
+          setBestMatchingSetting("Overall_score_order");
+          // add a function to filter results based on score
+          let threholdFilteredNames = applyMatchThreshold(
+            res,
+            matchingThreshold
+          );
+          setResolvedNames(threholdFilteredNames);
+        }
+      );
     }
 
+    // if the user wants to parse the names
     if (queryType === "parse") {
-      requestParseNames(queryNames).then((res) => {
+      requestParseNames(queryNamesStr).then((response) => {
         setLoadingStatus(false);
-        setParsedNames(res);
+        setParsedNames(response);
       });
     }
   };
 
+  // when the user opens the dialog with multiple
+  // if the user selects a different row,
+  // this function will add true to that particular row
   const changeSelectedRowHandler = (rowToSelect) => {
-    let new_results = result.map((row) => {
+    let new_results = resolvedNames.map((row) => {
       if (row.unique_id == rowToSelect.unique_id) {
         row.selected = true;
         return row;
@@ -120,13 +127,15 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
         return row;
       }
     });
-    setResult(new_results);
+    setResolvedNames(new_results);
   };
 
+  // if the user decides to use a different column
+  // to sort results, such as Higher_taxa_score_order
   const sortByColumnHandler = (column) => {
-    let sortedData = sortByColumn(result, column);
+    let sortedData = sortByColumn(resolvedNames, column);
     setBestMatchingSetting(column);
-    setResult(sortedData);
+    setResolvedNames(sortedData);
   };
 
   //  if matching threshold changes, re-do the query
@@ -163,10 +172,7 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
                 </Grid>
                 <Grid lg={6} xs={12} item>
                   <OptionsBox
-                    sourcesAvailable={sourcesAvailable}
-                    familiesAvailable={familiesAvailable}
                     queryType={queryType}
-                    familyQuery={familyQuery}
                     onChangeQueryType={(queryType) => setQueryType(queryType)}
                     onChangeFamily={(family) => setFamilyQuery(family)}
                     onChangeSources={(sources) => setSourcesQuery(sources)}
@@ -232,15 +238,5 @@ function IndexApp({ sourcesAvailable, familiesAvailable }) {
     </>
   );
 }
-
-// setting initial props with sources and families
-// these are necessary to render the application
-IndexApp.getInitialProps = async () => {
-  let sources = await requestSources();
-  // get only the names
-  let sourceNames = sources.map((s) => s.sourceName);
-  let families = await requestFamilyClassifications();
-  return { sourcesAvailable: sourceNames, familiesAvailable: families };
-};
 
 export default IndexApp;

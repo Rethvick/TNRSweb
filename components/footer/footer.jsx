@@ -1,4 +1,4 @@
-import { Link, Typography, Box, Grid, Divider } from "@material-ui/core";
+import { Typography, Box, Grid, Divider } from "@material-ui/core";
 import { ContainerLG } from "../";
 
 function TNRSFooter() {
@@ -103,7 +103,7 @@ export function Footer() {
   return (
     <footer>
       <ContainerLG>
-        <Divider/>
+        <Divider />
         <TNRSFooter />
       </ContainerLG>
     </footer>

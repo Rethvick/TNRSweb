@@ -1,4 +1,5 @@
 import { Layout } from "../components";
+import { useState, useEffect } from "react";
 
 import {
   Typography,
@@ -14,9 +15,16 @@ import {
 
 import { requestSources } from "../actions";
 
-const apiServer = process.env.apiServer;
+function SourcesApp() {
+  let [sourcesState, setSourcesState] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      let sources = await requestSources();
+      setSourcesState(sources);
+    }
+    fetchData();
+  }, []);
 
-function SourcesApp({ sourcesAvailable }) {
   return (
     <>
       <Layout>
@@ -33,12 +41,12 @@ function SourcesApp({ sourcesAvailable }) {
             taxonomic information:
           </Typography>
           <List>
-            {sourcesAvailable.map((s) => (
+            {sourcesState.map((s) => (
               <div key={s.sourceName}>
                 <ListItem>
                   <Hidden xsDown>
                     <ListItemIcon>
-                <Box p={4}>
+                      <Box p={4}>
                         {/* FIXME: make this fit a small screen */}
                         <img
                           style={{ objectFit: "scale-down" }}
@@ -57,6 +65,11 @@ function SourcesApp({ sourcesAvailable }) {
                       {s.description} <br />
                       <br />
                       Date Accessed: {s.tnrsDateAccessed}
+                      <br />
+                      {/* Display version only when available */}
+                      {s.version !== null &&
+                        <span>Version: {s.version}</span>
+                      }
                     </Typography>
                     <br />
                     <Box>
@@ -96,11 +109,5 @@ function SourcesApp({ sourcesAvailable }) {
     </>
   );
 }
-
-// making initial props available
-SourcesApp.getInitialProps = async () => {
-  let sources = await requestSources();
-  return { sourcesAvailable: sources };
-};
 
 export default SourcesApp;
