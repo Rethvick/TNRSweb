@@ -51,65 +51,6 @@ function AboutApp() {
         <Link href="#funding">Funding</Link>
         <br />
         <br />
-        <div id="newtnrs">
-          <Typography variant="h5" gutterBottom align="justify">
-            Welcome to the new TNRS!
-          </Typography>
-
-          <Typography variant="body2" gutterBottom align="justify">
-            TNRS Version 5.0, released on Feb. 24, 2021, is a major upgrade of
-            the original Taxonomic Name Resolution Service released in 2013.
-            Much of the application has been completely redesigned to simplify
-            maintenance, speed development, improve performance, and provide
-            access to a wider community of users. Major changes include:
-          </Typography>
-          <List>
-            <ListItem>
-              <Typography variant="body2">
-                <strong>
-                  New, full-featured <Link href="/tnrsapi">API</Link>.
-                </strong>
-                The API available with earlier versions of the TNRS provided
-                access to only a subset of the features available to users of
-                the TNRS web interface. As of TNRS 5.0, all major application
-                logic is now embedded within the core services layers, and the
-                API has been reconfigured as an intermediate layer which handles
-                all requests to the core services. The full suite of TNRS
-                capabilities are available at all entry points, whether calling
-                the API directly, or indirectly via external applications such
-                as the <Link href="/tnrsapi#rtnrs">TNRS R package</Link> or this web
-                interface.
-              </Typography>
-            </ListItem>
-            <ListItem>
-              <Typography variant="body2">
-                <strong> Parallel processing for faster performance.</strong>{" "}
-                Requests to the TNRS API are futher managed by a controller
-                layer which breaks large requests into multiple batches that can
-                be distributed simultaneously across multiple processors. This
-                architecture provides processing speeds up to 30x faster than
-                the original TNRS.
-              </Typography>
-            </ListItem>
-            <ListItem>
-              <Typography variant="body2">
-                <strong>Mobile friendly</strong> The TNRS web interface was
-                completely rebuilt using React JS, a lightweight, client-side
-                architecture that runs as easily on mobile devices as it does on
-                desktop machines.
-              </Typography>
-            </ListItem>
-            <ListItem>
-              <Typography variant="body2">
-                <strong>New database.</strong> The TNRS database was rebuilt in
-                July 2020 with updated taxonomic reference information from all{" "}
-                <Link href="/sources">taxonomic sources</Link>. New sources will be
-                added in 2021, with updates increased to a quarterly basis.
-              </Typography>
-            </ListItem>
-          </List>
-          <br />
-        </div>
 
         <div id="whattnrs">
           <Typography variant="h5" gutterBottom align="justify">
