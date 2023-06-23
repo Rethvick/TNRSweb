@@ -14,8 +14,6 @@ import {
 
 import { requestCollaborators } from "../actions/";
 
-const apiServer = process.env.apiServer;
-
 function AboutApp() {
   //
   const [collaborators, setCollaborators] = useState([]);
