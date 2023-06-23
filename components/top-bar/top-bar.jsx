@@ -88,11 +88,6 @@ export function TopBar() {
                 Cite
               </Button>
             </Link>
-            <Link href="/contribute" passHref>
-              <Button size="small" component="a" color="inherit">
-                Contribute
-              </Button>
-            </Link>
           </Hidden>
         </Toolbar>
       </Container>
