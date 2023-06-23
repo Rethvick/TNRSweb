@@ -563,7 +563,6 @@ function AboutApp() {
           <Typography variant="h6" gutterBottom align="justify">
             Institutions
           </Typography>
-          {/* Collaborators */}
           <List>
             {collaborators.map((c, idx) => (
               <div key={idx}>
@@ -574,7 +573,7 @@ function AboutApp() {
                         style={{ objectFit: "scale-down" }}
                         height="50"
                         width="50"
-                        src={apiServer + c.logo_path}
+                        src={c.logo_path}
                       />
                     </div>
                   </ListItemIcon>
