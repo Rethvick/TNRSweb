@@ -10,7 +10,7 @@ import {
 
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
-export function LowResMenu() {
+export function LowResMenu({ menuLinks }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -39,25 +39,12 @@ export function LowResMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} component={MUILink} href="/about">
-          About
-        </MenuItem>
-        <MenuItem
-          onClick={handleClose}
-          component={MUILink}
-          href="/instructions"
-        >
-          Instructions
-        </MenuItem>
-        <MenuItem onClick={handleClose} component={MUILink} href="/tnrsapi">
-          Api
-        </MenuItem>
-        <MenuItem onClick={handleClose} component={MUILink} href="/sources">
-          Sources
-        </MenuItem>
-        <MenuItem onClick={handleClose} component={MUILink} href="/cite">
-          Cite
-        </MenuItem>
+
+        {menuLinks.map((item, k) =>
+          <MenuItem onClick={handleClose} component={MUILink} href={item.href}>
+            {item.name}
+          </MenuItem>
+        )}
       </Menu>
     </div>
   );
