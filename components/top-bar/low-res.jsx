@@ -41,7 +41,7 @@ export function LowResMenu({ menuLinks }) {
       >
 
         {menuLinks.map((item, k) =>
-          <MenuItem onClick={handleClose} component={MUILink} href={item.href}>
+          <MenuItem key={k} onClick={handleClose} component={MUILink} href={item.href}>
             {item.name}
           </MenuItem>
         )}
