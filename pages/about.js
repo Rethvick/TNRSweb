@@ -1,4 +1,6 @@
 import { Layout } from "../components";
+import { useState, useEffect } from "react";
+
 
 import {
   Typography,
@@ -12,9 +14,18 @@ import {
 
 import { requestCollaborators } from "../actions/";
 
-const apiServer = process.env.apiServer;
+function AboutApp() {
+  //
+  const [collaborators, setCollaborators] = useState([]);
+  // retrieve the version information
+  useEffect(() => {
+    async function fetchData() {
+      let collaborators = await requestCollaborators();
+      setCollaborators(collaborators)
+    }
+    fetchData();
+  }, []);
 
-function AboutApp({ collaboratorsAvailable }) {
   return (
     <>
       <Layout>
@@ -38,65 +49,6 @@ function AboutApp({ collaboratorsAvailable }) {
         <Link href="#funding">Funding</Link>
         <br />
         <br />
-        <div id="newtnrs">
-          <Typography variant="h5" gutterBottom align="justify">
-            Welcome to the new TNRS!
-          </Typography>
-
-          <Typography variant="body2" gutterBottom align="justify">
-            TNRS Version 5.0, released on Feb. 24, 2021, is a major upgrade of
-            the original Taxonomic Name Resolution Service released in 2013.
-            Much of the application has been completely redesigned to simplify
-            maintenance, speed development, improve performance, and provide
-            access to a wider community of users. Major changes include:
-          </Typography>
-          <List>
-            <ListItem>
-              <Typography variant="body2">
-              <strong>
-                New, full-featured <Link href="/tnrsapi">API</Link>.
-              </strong>
-                The API available with earlier versions of the TNRS provided
-                access to only a subset of the features available to users of
-                the TNRS web interface. As of TNRS 5.0, all major application
-                logic is now embedded within the core services layers, and the
-                API has been reconfigured as an intermediate layer which handles
-                all requests to the core services. The full suite of TNRS
-                capabilities are available at all entry points, whether calling
-                the API directly, or indirectly via external applications such
-                as the <Link href="/tnrsapi#rtnrs">TNRS R package</Link> or this web
-                interface.
-              </Typography>
-            </ListItem>
-            <ListItem>
-              <Typography variant="body2">
-                <strong> Parallel processing for faster performance.</strong>{" "}
-                Requests to the TNRS API are futher managed by a controller
-                layer which breaks large requests into multiple batches that can
-                be distributed simultaneously across multiple processors. This
-                architecture provides processing speeds up to 30x faster than
-                the original TNRS.
-              </Typography>
-            </ListItem>
-            <ListItem>
-              <Typography variant="body2">
-                <strong>Mobile friendly</strong> The TNRS web interface was
-                completely rebuilt using React JS, a lightweight, client-side
-                architecture that runs as easily on mobile devices as it does on
-                desktop machines.
-              </Typography>
-            </ListItem>
-            <ListItem>
-              <Typography variant="body2">
-                <strong>New database.</strong> The TNRS database was rebuilt in
-                July 2020 with updated taxonomic reference information from all{" "}
-                <Link href="/sources">taxonomic sources</Link>. New sources will be
-                added in 2021, with updates increased to a quarterly basis.
-              </Typography>
-            </ListItem>
-          </List>
-          <br />
-        </div>
 
         <div id="whattnrs">
           <Typography variant="h5" gutterBottom align="justify">
@@ -128,100 +80,100 @@ function AboutApp({ collaboratorsAvailable }) {
             steps:
             <br />
           </Typography>
-            <List>
-              <ListItem>
-                <Typography variant="body2">
-                  1. <strong>Parse</strong>. The TNRS first parses (splits) the
-                  name into its components parts. Components of a species name
-                  include genus, specific epithet, and authority, if included.
-                  If the name is a subspecies or variety, the parser will also
-                  separate the rank indicator ("var.", "subsp.", "sbsp.", etc.)
-                  and the subspecific epithet. The parser also detects and
-                  separates standard botanical annotations such as "sp. nov."
-                  (new species) and "ined." (unpublished name) as well as
-                  indicators of uncertainty such as "cf." ("compare with") and
-                  "aff." (affinis, related to but not the same). Finally, any
-                  unrecognized components are saved as "Unmatched_Terms".
-                  Separating "contaminants" from standard components increases
-                  the chance that the TNRS will match the intended name. Parsing
-                  is performed by the{" "}
-                  <Link href="http://gni.globalnames.org/" target="_blank">
-                    Global Names
-                  </Link>{" "}
-                  <Link
-                    href="https://github.com/GlobalNamesArchitecture/biodiversity"
-                    target="_blank"
-                  >
-                    Biodiversity Name Parser
-                  </Link>
-                  .
-                </Typography>
-              </ListItem>
-              <ListItem>
-                <Typography variant="body2">
-                  2. <strong>Match</strong>. The parsed name components are
-                  again matched against known scientific names in the TNRS
-                  database. The TNRS attempts both exact matching and fuzzy
-                  matching using the{" "}
-                  <Link
-                    href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0107510"
-                    target="_blank"
-                  >
-                    Taxamatch
-                  </Link>{" "}
-                  taxonomic fuzzy matching algorithm. The Taxamatch algorithm
-                  speeds up fuzzy matching by searching within the taxonomic
-                  hierarchy. For example, once a genus has been identified, only
-                  species within that genus are searched.
-                </Typography>
-              </ListItem>
-              The steps in name matching are illustrated in the figure below:
-              <br />
-              <br />
-              <img src="/name_matching.png" />
-              <br />
-              <br />
-              <ListItem>
-                <Typography variant="body2">
-                  3. <strong>Correct</strong>. Once the TNRS has discovered the
-                  most likely intended scientific name, it will then examine the
-                  taxonomic status of that name. If the name is an outdated
-                  synonym of another name, the TNRS will return the "Accepted"
-                  (correct) name along with matched name, according to the
-                  taxonomic sources selected by the user. For some erroneous
-                  names, the TNRS will return only the matched name but no
-                  accepted name. This can happen is the accepted name is missing
-                  or unknown in the selected taxonomic database, or if the name
-                  matched is nomenclaturally invalid (e.g., "Invalid",
-                  "Illegitimate"), in which case an accepted name may not exist.
-                </Typography>
-              </ListItem>
-              The steps in name correction are illustrated in the figure below:
-              <br />
-              <br />
-              <img src="/taxonomic_status.png" />
-              <br />
-              <br />
-              <ListItem>
-                <Typography variant="body2">
-                  3. <strong>Select Best Match</strong>. Different sources can
-                  sometimes return different names as the single correct
-                  (accepted) name. Even if you are using only one taxonomic
-                  source, a submitted name can sometimes fuzzy match to multiple
-                  names with exactly the same match score. In such cases, the
-                  TNRS uses a conservative "Best Match Algorithm" to sort the
-                  names in descending order of match quality, preferring, for
-                  example, synonyms which have been corrected to a different
-                  accepted name over the same name labelled as accepted. After
-                  applying these rules, the TNRS marks the top-ranked name as
-                  the single best match. In such cases, the TNRS will alert you
-                  that multiple matches were found, allowing you to select an
-                  alternative match if preferred. We recommend that users
-                  examine all alternative matches rather than accepting
-                  uncritically the TNRS's choice of "Best Match".
-                </Typography>
-              </ListItem>
-            </List>
+          <List>
+            <ListItem>
+              <Typography variant="body2">
+                1. <strong>Parse</strong>. The TNRS first parses (splits) the
+                name into its components parts. Components of a species name
+                include genus, specific epithet, and authority, if included.
+                If the name is a subspecies or variety, the parser will also
+                separate the rank indicator ("var.", "subsp.", "sbsp.", etc.)
+                and the subspecific epithet. The parser also detects and
+                separates standard botanical annotations such as "sp. nov."
+                (new species) and "ined." (unpublished name) as well as
+                indicators of uncertainty such as "cf." ("compare with") and
+                "aff." (affinis, related to but not the same). Finally, any
+                unrecognized components are saved as "Unmatched_Terms".
+                Separating "contaminants" from standard components increases
+                the chance that the TNRS will match the intended name. Parsing
+                is performed by the{" "}
+                <Link href="http://gni.globalnames.org/" target="_blank">
+                  Global Names
+                </Link>{" "}
+                <Link
+                  href="https://github.com/GlobalNamesArchitecture/biodiversity"
+                  target="_blank"
+                >
+                  Biodiversity Name Parser
+                </Link>
+                .
+              </Typography>
+            </ListItem>
+            <ListItem>
+              <Typography variant="body2">
+                2. <strong>Match</strong>. The parsed name components are
+                again matched against known scientific names in the TNRS
+                database. The TNRS attempts both exact matching and fuzzy
+                matching using the{" "}
+                <Link
+                  href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0107510"
+                  target="_blank"
+                >
+                  Taxamatch
+                </Link>{" "}
+                taxonomic fuzzy matching algorithm. The Taxamatch algorithm
+                speeds up fuzzy matching by searching within the taxonomic
+                hierarchy. For example, once a genus has been identified, only
+                species within that genus are searched.
+              </Typography>
+            </ListItem>
+            The steps in name matching are illustrated in the figure below:
+            <br />
+            <br />
+            <img src="/name_matching.png" />
+            <br />
+            <br />
+            <ListItem>
+              <Typography variant="body2">
+                3. <strong>Correct</strong>. Once the TNRS has discovered the
+                most likely intended scientific name, it will then examine the
+                taxonomic status of that name. If the name is an outdated
+                synonym of another name, the TNRS will return the "Accepted"
+                (correct) name along with matched name, according to the
+                taxonomic sources selected by the user. For some erroneous
+                names, the TNRS will return only the matched name but no
+                accepted name. This can happen is the accepted name is missing
+                or unknown in the selected taxonomic database, or if the name
+                matched is nomenclaturally invalid (e.g., "Invalid",
+                "Illegitimate"), in which case an accepted name may not exist.
+              </Typography>
+            </ListItem>
+            The steps in name correction are illustrated in the figure below:
+            <br />
+            <br />
+            <img src="/taxonomic_status.png" />
+            <br />
+            <br />
+            <ListItem>
+              <Typography variant="body2">
+                3. <strong>Select Best Match</strong>. Different sources can
+                sometimes return different names as the single correct
+                (accepted) name. Even if you are using only one taxonomic
+                source, a submitted name can sometimes fuzzy match to multiple
+                names with exactly the same match score. In such cases, the
+                TNRS uses a conservative "Best Match Algorithm" to sort the
+                names in descending order of match quality, preferring, for
+                example, synonyms which have been corrected to a different
+                accepted name over the same name labelled as accepted. After
+                applying these rules, the TNRS marks the top-ranked name as
+                the single best match. In such cases, the TNRS will alert you
+                that multiple matches were found, allowing you to select an
+                alternative match if preferred. We recommend that users
+                examine all alternative matches rather than accepting
+                uncritically the TNRS's choice of "Best Match".
+              </Typography>
+            </ListItem>
+          </List>
         </div>
 
         <div id="wheretnrs">
@@ -609,9 +561,8 @@ function AboutApp({ collaboratorsAvailable }) {
           <Typography variant="h6" gutterBottom align="justify">
             Institutions
           </Typography>
-          {/* Collaborators */}
           <List>
-            {collaboratorsAvailable.map((c, idx) => (
+            {collaborators.map((c, idx) => (
               <div key={idx}>
                 <ListItem alignItems="flex-start">
                   <ListItemIcon>
@@ -620,7 +571,7 @@ function AboutApp({ collaboratorsAvailable }) {
                         style={{ objectFit: "scale-down" }}
                         height="50"
                         width="50"
-                        src={apiServer + c.logo_path}
+                        src={c.logo_path}
                       />
                     </div>
                   </ListItemIcon>
@@ -660,10 +611,5 @@ function AboutApp({ collaboratorsAvailable }) {
     </>
   );
 }
-
-AboutApp.getInitialProps = async () => {
-  let collaborators = await requestCollaborators();
-  return { collaboratorsAvailable: collaborators };
-};
 
 export default AboutApp;

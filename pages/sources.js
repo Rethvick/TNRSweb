@@ -13,14 +13,19 @@ import {
   Link,
 } from "@material-ui/core";
 
-import { requestSources } from "../actions";
+import { requestSources, requestMeta } from "../actions";
 
 function SourcesApp() {
-  let [sourcesState, setSourcesState] = useState([]);
+  const [sourcesState, setSourcesState] = useState([]);
+  const [appVersion, setAppVersion] = useState([]);
+
   useEffect(() => {
     async function fetchData() {
       let sources = await requestSources();
       setSourcesState(sources);
+
+      let meta = await requestMeta();
+      setAppVersion(meta.app_version)
     }
     fetchData();
   }, []);
@@ -36,8 +41,7 @@ function SourcesApp() {
             Taxonomic data providers
           </Typography>
           <Typography variant="body2" gutterBottom align="justify">
-            {/* TODO: dynamic numbering here */}
-            TNRS version 5.0 consults the following sources of nomenclatural and
+            TNRS version {appVersion} consults the following sources of nomenclatural and
             taxonomic information:
           </Typography>
           <List>
