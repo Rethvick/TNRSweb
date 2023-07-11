@@ -2,7 +2,6 @@ import axios from "axios";
 
 const apiEndPoint = process.env.apiEndPoint;
 
-// TODO: move this to an action
 export const requestSources = async () => {
   // query source
   let query = {

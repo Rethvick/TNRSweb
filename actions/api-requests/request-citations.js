@@ -2,7 +2,6 @@ import axios from "axios";
 
 const apiEndPoint = process.env.apiEndPoint;
 
-// TODO: move this function somewhere else
 export const requestCitations = async () => {
   const query = {
     opts: {

@@ -2,30 +2,26 @@ import axios from "axios";
 
 const apiEndPoint = process.env.apiEndPoint;
 
-export const requestFamilyClassifications = async () => {
-  // query source
-  let query = {
+export const requestDataDictionary = async () => {
+  const query = {
     opts: {
-      mode: "classifications",
+      mode: "dd",
     },
   };
-  // axios
+
   return await axios
     .post(apiEndPoint, query, {
       headers: { "Content-Type": "application/json" },
     })
     .then(
       (response) => {
+        // setSources(response.data);
         return response.data;
       },
       () => {
-        alert("There was an error while retrieving the classifications");
+        alert("There was an error while retrieving the data dictionary");
       }
     );
 };
-
-
-
-
 
 
