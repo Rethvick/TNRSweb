@@ -40,8 +40,8 @@ function AboutApp() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {dataDictionary.map((row) => (
-                <TableRow key={row.name}>
+              {dataDictionary.map((row, k) => (
+                <TableRow key={k}>
                   <TableCell>{row.col_name}</TableCell>
                   <TableCell>{row.data_type}</TableCell>
                   <TableCell>{row.description}</TableCell>

@@ -19,6 +19,15 @@ import {
 export function TopBar() {
   const classes = useStyles();
 
+  const menuLinks = [
+    { href: '/', name: 'Home' },
+    { href: '/about', name: 'About' },
+    { href: '/instructions', name: 'Instructions' },
+    { href: '/tnrsapi', name: 'API' },
+    { href: '/cite', name: 'Cite' },
+    { href: '/data-dictionary', name: 'Data Dictionary' }
+  ]
+
   //
   const [appVersion, setAppVersion] = useState([]);
   // retrieve the version information
@@ -52,46 +61,25 @@ export function TopBar() {
           </Box>
           <Box flexGrow={1} />
           <Hidden mdUp>
-            <LowResMenu />
+            <LowResMenu menuLinks={menuLinks} />
           </Hidden>
           <Hidden smDown>
             <Typography variant="overline" className={classes.title}>
               Taxonomic Name Resolution Service v{appVersion}
             </Typography>
-            <Link href="/" passHref>
-              <Button component="a" color="inherit">
-                Home
-              </Button>
-            </Link>
-            <Link href="/about" passHref>
-              <Button size="small" component="a" color="inherit">
-                About
-              </Button>
-            </Link>
-            <Link href="/instructions" passHref>
-              <Button size="small" component="a" color="inherit">
-                Instructions
-              </Button>
-            </Link>
-            <Link href="/tnrsapi" passHref>
-              <Button size="small" component="a" color="inherit">
-                Api
-              </Button>
-            </Link>
-            <Link href="/sources" passHref>
-              <Button size="small" component="a" color="inherit">
-                Sources
-              </Button>
-            </Link>
-            <Link href="/cite" passHref>
-              <Button size="small" component="a" color="inherit">
-                Cite
-              </Button>
-            </Link>
+
+            {menuLinks.map((item, k) =>
+              <Link href={item.href} key={k} passHref>
+                <Button component="a" color="inherit">
+                  {item.name}
+                </Button>
+              </Link>
+            )}
+
           </Hidden>
         </Toolbar>
       </Container>
-    </AppBar>
+    </AppBar >
   );
 }
 
