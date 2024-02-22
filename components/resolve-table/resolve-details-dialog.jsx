@@ -1,26 +1,27 @@
 import {
   Box,
-  Dialog,
-  DialogTitle,
-  Button,
-  TableContainer,
-  TableRow,
-  TableCell,
-  TableBody,
-  Table,
+      Dialog,
+      DialogTitle,
+      Button,
+      TableContainer,
+      TableRow,
+      TableCell,
+      TableBody,
+      Table,
 } from "@material-ui/core";
 
 // shows the dialog with details of each row
 export function DetailsDialog(props) {
-  //
   const { onClose, open, row } = props;
 
   // make a copy of the object being displayed
   let dataToDisplay = { ...row };
 
-  // delete unecessary fields
+  delete dataToDisplay.selected; // Remove old 'selected' field
+
+
+  // delete unnecessary fields
   const deleteFields = [
-    "selected",
     "unique_id",
     "ID",
     "Canonical_author",
@@ -37,31 +38,32 @@ export function DetailsDialog(props) {
     "Genus_submitted",
     "Author_submitted",
     "Name_matched_id",
+    "WarningsEng",
   ];
 
   // we want to show only a subset of fields
   deleteFields.forEach((field) => delete dataToDisplay[field]);
 
   return (
-    <Dialog open={open} maxWidth="lg">
-      <DialogTitle>Name submited: {dataToDisplay.Name_submitted}</DialogTitle>
-      <Box m={4} mt={0}>
-        <TableContainer>
-          <Table size="small">
-            <TableBody>
-              {Object.entries(dataToDisplay).map(([key, value], idx) => (
-                <TableRow key={idx}>
-                  <TableCell>{key}</TableCell>
-                  <TableCell>{value}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Button variant="contained" color="primary" onClick={onClose}>
-          Close
-        </Button>
-      </Box>
-    </Dialog>
+      <Dialog open={open} maxWidth="lg">
+        <DialogTitle>Name submitted: {dataToDisplay.Name_submitted}</DialogTitle>
+        <Box m={4} mt={0}>
+          <TableContainer>
+            <Table size="small">
+              <TableBody>
+                {Object.entries(dataToDisplay).map(([key, value], idx) => (
+                    <TableRow key={idx}>
+                      <TableCell>{key}</TableCell>
+                      <TableCell>{value}</TableCell>
+                    </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Button variant="contained" color="primary" onClick={onClose}>
+            Close
+          </Button>
+        </Box>
+      </Dialog>
   );
 }
