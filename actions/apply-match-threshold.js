@@ -64,7 +64,7 @@ export const applyMatchThreshold = (rows, matchingThreshold) => {
               unique_id: row["unique_id"],
             };
           }
-          // if the record is not bellow threshold increase conunt and return it filled
+          // if the record is not bellow threshold increase count and return it filled
           aboveThresholdCount = aboveThresholdCount + 1;
           return row;
         });
