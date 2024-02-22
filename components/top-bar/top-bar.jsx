@@ -24,6 +24,7 @@ export function TopBar() {
     { href: '/about', name: 'About' },
     { href: '/instructions', name: 'Instructions' },
     { href: '/tnrsapi', name: 'API' },
+    { href: '/sources', name: 'Sources'},
     { href: '/cite', name: 'Cite' },
     { href: '/data-dictionary', name: 'Data Dictionary' }
   ]
@@ -45,7 +46,11 @@ export function TopBar() {
       <Container className={classes.container}>
         <Toolbar>
           <Box mr={2}>
-            <img src='/logo_highres.png' height='40px'></img>
+            <Link href="/" passHref>
+              <a>
+                <img src='/logo_highres.png' height='40px' alt = "TNRS"></img>
+              </a>
+            </Link>
           </Box>
           <Box mr={1}>
             <Link href="/" passHref>
