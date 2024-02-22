@@ -24,20 +24,12 @@ function InstructionsApp() {
             </ListItem>
             <ListItem>
               <Typography variant="body2">
-                2. <strong>Choose your settings</strong>. For most users, the
-                default settings are generally best. However, if you only want
-                to parse your names into their component parts, without matching
-                or resolving, then set "Processing Mode" to "Perform Name
-                Resolution". For "Family Classification", option "Tropicos" uses
-                APG IV families for all matched and accepted names (i.e., the
-                classification used by source "Tropicos"). "Tropicos" is
-                currently the only available family classification; however,
-                this may change in the future. By default, setting "Sources"
-                includes all available taxonomic sources. However, some users
-                may prefer or be required to use only a single taxonomic source.
-                For example, government users in the U.S.A. may be required to
-                resolve species names using USDA Plants taxonomy only (source
-                "USDA").
+                2. <strong>Choose your settings</strong>. For most users, the default settings are generally best. However, if you only want to parse your names into their component parts, without matching or resolving, then set "Processing Mode" to "Perform Name Resolution".
+                By default, setting "Taxonomic sources" includes only one global taxonomic source, WFO.
+                However, some users may prefer to select WCVP, a different global taxonomic source.
+                Please note that WCVP includes vascular plants only (flowering plants, conifers, ferns, clubmosses and firmosses) whereas WFO also includes bryophytes (mosses, liverworts and hornworts) in addition to vascular plants.
+                In general, we do not recommend using more than one taxonomic source at the same time, as different taxonomic opinions may result in synonymous spelling variants of the same name being treated as separate accepted species.
+                If >1 taxonomic source is used, name resolution results should be reviewed carefully. Also note that source CACT covers family Cactaceae only.
               </Typography>
             </ListItem>
             <ListItem>

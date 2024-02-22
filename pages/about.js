@@ -350,78 +350,84 @@ function AboutApp() {
           <Typography variant="body2" gutterBottom align="justify">
             Brad Boyle (
             <Link
-              href="https://github.com/ojalaquellueva/tnrs_db"
-              target="_blank"
+                href="https://github.com/ojalaquellueva/tnrs_db"
+                target="_blank"
             >
               TNRS database
             </Link>
             ,{" "}
             <Link
-              href="https://github.com/ojalaquellueva/TNRSapi"
-              target="_blank"
+                href="https://github.com/ojalaquellueva/TNRSapi"
+                target="_blank"
             >
               API
             </Link>{" "}
             and{" "}
             <Link
-              href="https://github.com/ojalaquellueva/TNRSbatch"
-              target="_blank"
+                href="https://github.com/ojalaquellueva/TNRSbatch"
+                target="_blank"
             >
               TNRS batch/parallelization update
             </Link>
             )
-            <br />
+            <br/>
             Naim Matasci (
             <Link href="https://github.com/nmatasci/TNRSbatch" target="_blank">
               Original TNRS batch mode/parallelization
             </Link>
             )
-            <br />
+            <br/>
             Dmitry Mozzherin (
             <Link
-              href="https://github.com/GlobalNamesArchitecture/biodiversity"
-              target="_blank"
+                href="https://github.com/GlobalNamesArchitecture/biodiversity"
+                target="_blank"
             >
               Name parser
             </Link>
             )
-            <br />
+            <br/>
             Tony Rees (
             <Link
-              href="http://www.cmar.csiro.au/datacentre/taxamatch.htm"
-              target="_blank"
+                href="http://www.cmar.csiro.au/datacentre/taxamatch.htm"
+                target="_blank"
             >
               Fuzzy matching module
             </Link>
             )
-            <br />
+            <br/>
             Michael Giddens (
             <Link
-              href="http://www.silverbiology.com/products/taxamatch/"
-              target="_blank"
+                href="http://www.silverbiology.com/products/taxamatch/"
+                target="_blank"
             >
               Taxamatch PHP adaptation
             </Link>
             )
-            <br />
+            <br/>
             George C. Barbosa (
             <Link href="https://github.com/EnquistLab/TNRSweb" target="_blank">
               TNRSweb
             </Link>{" "}
             Javascript/Node.js user interface)
-            <br />
+            <br/>
             Rohith Kumar Sajja (
             <Link href="https://github.com/EnquistLab/TNRSweb" target="_blank">
               TNRSweb
             </Link>{" "}
             Javascript/Node.js user interface)
-            <br />
+            <br/>
+            Rethvick Sriram Yugendra Babu (
+            <Link href="https://github.com/EnquistLab/TNRSweb" target="_blank">
+              TNRSweb
+            </Link>{" "}
+            Javascript/Node.js user interface)
+            <br/>
           </Typography>
           <Typography variant="h6" gutterBottom align="justify">
             Project direction and development - Original{" "}
             <Link
-              href="https://github.com/iPlantCollaborativeOpenSource/TNRS"
-              target="_blank"
+                href="https://github.com/iPlantCollaborativeOpenSource/TNRS"
+                target="_blank"
             >
               iPlant TNRS
             </Link>{" "}

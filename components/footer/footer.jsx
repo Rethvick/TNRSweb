@@ -18,11 +18,12 @@ function TNRSFooter() {
                 <img
                   style={{ objectFit: "contain" }}
                   src="/logo_highres.png"
-                  height="80"
+                  height="120"
                   width="80"
+                  alt = "TNRS"
                 ></img>
                 <Box>
-                  <Typography variant="h3">TNRS</Typography>
+                  <Typography variant="h1">TNRS</Typography>
                   <Typography variant="h6">
                     Taxonomic Name Resolution Service
                   </Typography>
@@ -41,7 +42,7 @@ function TNRSFooter() {
               <Box display="flex">
                 <Box flexGrow={1}></Box>
                 <Box>
-                  <img src="/bien.png" height="35"></img>
+                  <img src="/bien.png" height="35" alt = "BIEN"></img>
                 </Box>
               </Box>
             </Grid>
@@ -52,7 +53,7 @@ function TNRSFooter() {
               <Box display="flex">
                 <Box flexGrow={1}></Box>
                 <Box>
-                  <img src="/uoa.png" height="50"></img>
+                  <img src="/UA.png" height="50" alt = "UofA"></img>
                 </Box>
               </Box>
             </Grid>
@@ -63,7 +64,7 @@ function TNRSFooter() {
               <Box display="flex">
                 <Box flexGrow={1}></Box>
                 <Box>
-                  <img src="/nsf.png" height="50"></img>
+                  <img src="/nsf.png" height="50" alt = "NSF"></img>
                 </Box>
               </Box>
             </Grid>
@@ -74,7 +75,7 @@ function TNRSFooter() {
               <Box display="flex">
                 <Box flexGrow={1}></Box>
                 <Box>
-                  <img src="/mbg.png" height="50"></img>
+                  <img src="/mbg.png" height="50" alt = "MBG"></img>
                 </Box>
               </Box>
             </Grid>
@@ -85,7 +86,7 @@ function TNRSFooter() {
               <Box display="flex">
                 <Box flexGrow={1}></Box>
                 <Box>
-                  <img src="/nceas.png" height="50"></img>
+                  <img src="/nceas.png" height="50" alt = "NCEAS"></img>
                 </Box>
               </Box>
             </Grid>

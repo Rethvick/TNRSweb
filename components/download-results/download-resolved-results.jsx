@@ -109,41 +109,48 @@ export function DownloadResolvedResults({ data }) {
 }
 
 const generateDownloadFile = (
-  data,
-  fileName,
-  fileFormat,
-  matchesToDownload
+    data,
+    fileName,
+    fileFormat,
+    matchesToDownload
 ) => {
-  // add the entire list of columns
-  const fields = Object.keys(data[0]);
-  // create a new var to hold the results to download
-  let downloadData;
-  // if we want all matches, simple reference the new var
-  if (matchesToDownload === "all") {
-    downloadData = data;
-    // if we want only best matches, filter data
-  } else if (matchesToDownload === "best") {
-    downloadData = data.filter((f) => f.selected === true);
+  const cleanedData = data.map((item) => {
+    const {WarningsEng, selected, unique_id, ...rest } = item;
+    // Determine Best_match_highertaxa based on your criteria
+    const Best_match_highertaxa = item.Highertaxa_score_order?.includes("1");
+    return {
+      ...rest,
+      Warnings: item.Warnings,
+      Best_match_overall_score: selected,
+      Best_match_highertaxa,
+      unique_id,
+    };
+  });
+
+  // Determine fields for CSV/TSV dynamically
+  // This step ensures all fields are included in the correct order, and 'unique_id' is at the end
+  let fields = Object.keys(cleanedData[0]);
+
+  let downloadData = cleanedData;
+
+  // Filter the data if only best matches are to be downloaded
+  if (matchesToDownload === "best") {
+    downloadData = cleanedData.filter((f) => f.Best_match_overall_score === true);
   }
-  //
-  let opts;
+
+  let opts = { fields };
   if (fileFormat == "tsv") {
-    opts = { fields, delimiter: "\t" };
-  } else {
-    opts = { fields };
+    opts = { ...opts, delimiter: "\t" };
   }
+
   const parser = new Parser(opts);
-  // convert data to CSV
+
+  // Convert data to CSV or TSV
   try {
-    // convert data (json) to csv
-    const csv = parser.parse(downloadData, opts);
-    // create the download file
-    const csvBlob = new Blob([csv], { type: "text/plain;charset=utf-8" });
-    saveAs(csvBlob, fileName + "." + fileFormat);
-    //
+    const fileContent = parser.parse(downloadData, opts);
+    const fileBlob = new Blob([fileContent], { type: "text/plain;charset=utf-8" });
+    saveAs(fileBlob, `${fileName}.${fileFormat}`);
   } catch (error) {
-    // TODO: think about what to do in case of errors
-    // for now, logging the error to the console
     console.error(error);
   }
 };

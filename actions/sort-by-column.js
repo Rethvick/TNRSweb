@@ -1,22 +1,18 @@
 export const sortByColumn = (data, column) => {
-  // make sure the right columns are used
-  if (
-    ["Highertaxa_score_order", "Overall_score_order"].includes(column) === false
-  ) {
-    throw "Trying to sort using a wrong column"
+  // To Ensure the right columns are used
+  if (!["Highertaxa_score_order", "Overall_score_order"].includes(column)) {
+    throw new Error("Trying to sort using a wrong column");
   }
-  // TODO: make sure column has order
-  // for each point in the data, change the row where Hihertaxa===1
-  return data.map((row) => {
-    // if the row order is 1
-    if (row[column] === "1") {
-      // set selected to true
-      row.selected = true;
-    } else {
-      // else set it to false
-      row.selected = false;
-    }
-    // then return the row
-    return row;
+
+  // Sort the data based on the specified column
+  const sortedData = [...data].sort((a, b) => {
+    // The values in the specified column are numeric scores
+    const scoreA = parseFloat(a[column]);
+    const scoreB = parseFloat(b[column]);
+    // Sort in descending order of scores
+    return scoreB - scoreA;
   });
+
+
+  return sortedData;
 };

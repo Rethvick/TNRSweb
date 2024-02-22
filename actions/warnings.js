@@ -60,7 +60,7 @@ export const shortText2DetailedExplanation = (text) => {
       case "[Ambiguous]":
         return "More than one name with the same score and acceptance.";
       case "[HigherTaxa]":
-        return "Another name with lower overall score has a better matching higher taxon.";
+        return "Another name with lower overall score has a better matching higher taxon.\n\n\nNote: You may need to lower match threshold to see this match.";
       case "[Overall]":
         return "Another name in different higher taxon has better overall score.";
     }
