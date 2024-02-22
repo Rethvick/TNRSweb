@@ -29,78 +29,74 @@ export function BestMatchSettingsPopper({ onClickSort, bestMatchingSetting }) {
     setDialogSort(e.target.value);
     setDialogOpen(true);
   };
-
+    const handleConfirmSortOrder = () => {
+        setAnchorEl(null);
+        setDialogOpen(false);
+        onClickSort(dialogSort);
+    };
   const open = Boolean(anchorEl);
 
   return (
-    <>
-      <Button variant="contained" type="button" onClick={handleClick}>
-        Best Match Settings
-      </Button>
-      <Popover
-        open={open}
-        onClose={() => setAnchorEl(null)}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-      >
-        <Paper elevation={3}>
-          <Box py={1} pl={2}>
-            <FormControl>
-              <FormGroup>
-                <FormControl>
-                  <RadioGroup
-                    value={bestMatchingSetting}
-                    onChange={handleChangeSortOrder}
-                  >
-                    <FormControlLabel
-                      value="Overall_score_order"
-                      control={<Radio />}
-                      label="Sort by Overall Score"
-                    />
-                    <FormControlLabel
-                      value="Highertaxa_score_order"
-                      control={<Radio />}
-                      label="Sort by Higher Taxonomy"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </FormGroup>
-            </FormControl>
-          </Box>
-        </Paper>
-      </Popover>
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-        <DialogTitle>{"Action Required"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            All your previous changes will be overridden, are you sure you want
-            to continue?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => {
-              setAnchorEl(null);
-              setDialogOpen(false);
-              onClickSort(dialogSort);
+      <>
+        <Button variant="contained" type="button" onClick={handleClick}>
+          Best Match Settings
+        </Button>
+        <Popover
+            open={open}
+            onClose={() => setAnchorEl(null)}
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
             }}
-            color="primary"
-            autoFocus
-          >
-            Yes
-          </Button>
-          <Button onClick={() => setDialogOpen(false)} color="primary">
-            No
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+        >
+          <Paper elevation={3}>
+            <Box py={1} pl={2}>
+              <FormControl>
+                <FormGroup>
+                  <FormControl>
+                    <RadioGroup
+                        value={bestMatchingSetting}
+                        onChange={handleChangeSortOrder}
+                    >
+                      <FormControlLabel
+                          value="Overall_score_order"
+                          control={<Radio />}
+                          label="Sort by Overall Score"
+                      />
+                      <FormControlLabel
+                          value="Highertaxa_score_order"
+                          control={<Radio />}
+                          label="Sort by Higher Taxonomy"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </FormGroup>
+              </FormControl>
+            </Box>
+          </Paper>
+        </Popover>
+        <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+          <DialogTitle>{"Action Required"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              All your previous changes will be overridden, are you sure you want
+              to continue?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+              <Button onClick={handleConfirmSortOrder} color="primary" autoFocus>
+              Yes
+            </Button>
+            <Button onClick={() => setDialogOpen(false)} color="primary">
+              No
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </>
   );
 }
